@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>游戏订单管理</title>
+  <style>
+    /* Reset & 全局 */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: "PingFang SC","Microsoft YaHei",sans-serif;
+      background-color: #fafafa;
+      color: #333;
+      font-size: 14px;
+      padding-bottom: 80px;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #222;
+      margin: 16px 0;
+    }
+    h1 { font-size: 20px; }
+    h2 { font-size: 18px; }
+
+    /* 侧边栏 */
+    #sidebar {
+      position: fixed; top:0; left:0;
+      width:100px; height:100vh;
+      background:#fff; border-right:1px solid #e0e0e0;
+      padding-top:20px; overflow-y:auto; z-index:100;
+    }
+    #sidebar a {
+      display:block; padding:10px;
+      font-size:12px; color:#555; text-decoration:none;
+      border-left:3px solid transparent;
+      transition:all .2s; margin-bottom:4px;
+    }
+    #sidebar a:hover {
+      background:#f0f0f0; border-color:#1976d2; color:#1976d2;
+    }
+
+    /* 主内容区 */
+    #content, #orderPage {
+      margin-left:120px; padding:20px;
+    }
+    #orderPage { display:none; }
+
+    .category {
+      margin-bottom:24px; padding:16px;
+      background:#fff; border-left:4px solid #1976d2;
+      box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    }
+    .category h2 { color:#1976d2; font-size:16px; }
+
+    .game-item {
+      background:#fff; margin:12px 0; padding:12px;
+      border-left:4px solid #ff8a65;
+      box-shadow:0 1px 2px rgba(0,0,0,0.05);
+    }
+    .game-title { font-weight:600; margin-bottom:4px; }
+    .game-size { font-size:10px; color:#d32f2f; margin-bottom:8px; }
+    .buttons { display:flex; gap:8px; }
+    .buttons button {
+      flex:1; background:#1976d2; color:#fff;
+      border:none; padding:6px; font-size:12px;
+      cursor:pointer; transition:background .2s;
+    }
+    .buttons button:hover { background:#155a9c; }
+
+    /* 订单详情表 */
+    #orderPage table {
+      width:100%; border-collapse:collapse; margin-top:12px;
+    }
+    #orderPage th, #orderPage td {
+      border:1px solid #ddd; padding:8px; text-align:center;
+    }
+    #orderPage th { background:#f5f5f5; }
+
+    /* 底部 */
+    .footer {
+      position:fixed; bottom:0; left:0; width:100%;
+      background:#fff; border-top:1px solid #e0e0e0;
+      padding:10px 20px; display:flex;
+      justify-content:space-between; align-items:center;
+    }
+    .footer button {
+      background:#ff8a65; color:#fff;
+      border:none; padding:8px 16px;
+      font-size:14px; cursor:pointer; transition:background .2s;
+    }
+    .footer button:hover { background:#e06e53; }
+    #totalSize { font-weight:600; }
+
+    /* 响应式 */
+    @media(max-width:600px){
+      #sidebar{width:80px;}
+      #content,#orderPage{margin-left:90px;padding:12px;}
+      h1{font-size:18px;}
+      .category{padding:12px;margin-bottom:20px;}
+      .buttons button{padding:5px;font-size:11px;}
+      .footer{flex-direction:column;gap:8px;}
+      .footer button{width:100%;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 侧边栏 -->
+  <div id="sidebar"></div>
+
+  <!-- 主选择页 -->
+  <div id="content">
+    <h1>游戏订单管理</h1>
+    <div id="gameCategories"></div>
+  </div>
+
+  <!-- 订单详情页 -->
+  <div id="orderPage">
+    <h2>订单详情</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>游戏名称</th>
+          <th>数量</th>
+          <th>单款容量 (GB)</th>
+          <th>小计容量 (GB)</th>
+        </tr>
+      </thead>
+      <tbody id="orderTableBody"></tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" style="text-align:right;font-weight:600;">总容量：</td>
+          <td id="orderTotal">0</td>
+        </tr>
+      </tfoot>
+    </table>
+    <div style="text-align:center; margin-top:16px;">
+      <button onclick="backToShop()">返回继续选购</button>
+      <button onclick="confirmOrder()">确认订单</button>
+    </div>
+  </div>
+
+  <!-- 底部栏 -->
+  <div class="footer">
+    <span id="totalSize">总容量：0 GB</span>
+    <button onclick="generateOrder()">生成订单</button>
+  </div>
+
+  <script>
+    const gameData = {
+      "动作冒险":[
+        {code:"A1",name:"艾尔登法环",size:60},
+        {code:"A2",name:"刺客信条4：黑旗",size:40},
+        {code:"A3",name:"对马岛之魂",size:40}
+      ],
+      "角色扮演":[
+        {code:"B1",name:"博德之门3",size:70},
+        {code:"B2",name:"刺客信条：幻景",size:50},
+        {code:"B3",name:"刺客信条：奥德赛",size:60}
+      ],
+      "射击游戏":[
+        {code:"C1",name:"使命召唤4重制版",size:40},
+        {code:"C2",name:"使命召唤2重制版",size:45}
+      ]
+    };
+    let selected = {}, total=0;
+
+    function displayCategories(){
+      const cont=document.getElementById("gameCategories"); cont.innerHTML="";
+      for(let cat in gameData){
+        const sec=document.createElement("div"); sec.className="category"; sec.id=cat;
+        sec.innerHTML=`<h2>${cat}</h2>`;
+        gameData[cat].forEach(g=>{
+          const it=document.createElement("div"); it.className="game-item";
+          it.innerHTML=`<div class="game-title">${g.name}</div>
+            <div class="game-size">${g.size} GB</div>
+            <div class="buttons">
+              <button onclick="add('${g.code}',${g.size})">+</button>
+              <button onclick="remove('${g.code}',${g.size})">-</button>
+              <span id="qty-${g.code}">0</span>
+            </div>`;
+          sec.appendChild(it);
+        });
+        cont.appendChild(sec);
+      }
+    }
+
+    function generateSidebar(){
+      const sb=document.getElementById("sidebar"); sb.innerHTML="";
+      for(let cat in gameData){
+        const a=document.createElement("a"); a.href=`#${cat}`; a.textContent=cat;
+        sb.appendChild(a);
+      }
+    }
+
+    function add(code,size){
+      if(!selected[code]||selected[code]===0){
+        selected[code]=1; total+=size;
+        document.getElementById(`qty-${code}`).textContent=1;
+        updateTotal();
+      }
+    }
+    function remove(code,size){
+      if(selected[code]&&selected[code]===1){
+        selected[code]=0; total-=size;
+        document.getElementById(`qty-${code}`).textContent=0;
+        updateTotal();
+      }
+    }
+    function updateTotal(){
+      document.getElementById("totalSize").textContent=`总容量：${total} GB`;
+    }
+
+    function generateOrder(){
+      const tbody=document.getElementById("orderTableBody"); tbody.innerHTML="";
+      let sum=0, rows="";
+      for(let cat in gameData){
+        gameData[cat].forEach(g=>{
+          const q=selected[g.code]||0;
+          if(q>0){
+            const sub=q*g.size; sum+=sub;
+            rows+=`<tr>
+              <td>${g.name}</td>
+              <td>${q}</td>
+              <td>${g.size}</td>
+              <td>${sub}</td>
+            </tr>`;
+          }
+        });
+      }
+      tbody.innerHTML=rows;
+      document.getElementById("orderTotal").textContent=sum;
+      document.getElementById("content").style.display="none";
+      document.getElementById("sidebar").style.display="none";
+      document.querySelector(".footer").style.display="none";
+      document.getElementById("orderPage").style.display="block";
+      window.location.hash="#orderPage";
+    }
+
+    function backToShop(){
+      document.getElementById("orderPage").style.display="none";
+      document.getElementById("content").style.display="block";
+      document.getElementById("sidebar").style.display="block";
+      document.querySelector(".footer").style.display="flex";
+      window.location.hash="";
+    }
+
+    function confirmOrder(){
+      const orderData = {
+        orderId: Date.now(),
+        games: Object.keys(selected).filter(code => selected[code] > 0).map(code => ({
+          code,
+          name: gameData[Object.keys(gameData).find(cat => gameData[cat].some(game => game.code === code))].find(game => game.code === code).name,
+          quantity: selected[code]
+        }))
+      };
+
+      fetch("https://your-backend-url/submitOrder", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(orderData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert("订单已提交！");
+        backToShop();
+      })
+      .catch(error => {
+        console.error("订单提交失败", error);
+        alert("提交失败，请重试！");
+      });
+    }
+
+    window.onload = () => {
+      generateSidebar();
+      displayCategories();
+    };
+  </script>
+</body>
+</html>
