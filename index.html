@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>游戏订单管理</title>
   <style>
-    /* Reset & 全局 */
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family: "PingFang SC","Microsoft YaHei",sans-serif;
@@ -148,31 +147,36 @@
 
   <script>
     const gameData = {
-      "动作冒险":[
-        {code:"A1",name:"艾尔登法环",size:60},
-        {code:"A2",name:"刺客信条4：黑旗",size:40},
-        {code:"A3",name:"对马岛之魂",size:40}
+      "动作冒险": [
+        {code: "A1", name: "艾尔登法环", size: 60},
+        {code: "C1", name: "刺客信条4：黑旗", size: 40},
+        {code: "C2", name: "刺客信条：幻景", size: 50},
+        {code: "C3", name: "刺客信条：奥德赛", size: 60},
+        {code: "C4", name: "刺客信条：起源", size: 45},
+        {code: "C5", name: "刺客信条：英灵殿", size: 55},
+        {code: "C6", name: "刺客信条：大革命", size: 35}
       ],
-      "角色扮演":[
-        {code:"B1",name:"博德之门3",size:70},
-        {code:"B2",name:"刺客信条：幻景",size:50},
-        {code:"B3",name:"刺客信条：奥德赛",size:60}
+      "角色扮演": [
+        {code: "B1", name: "博德之门3", size: 70},
+        {code: "B2", name: "冰汽时代2", size: 70}
       ],
-      "射击游戏":[
-        {code:"C1",name:"使命召唤4重制版",size:40},
-        {code:"C2",name:"使命召唤2重制版",size:45}
+      "策略游戏": [
+        {code: "C7", name: "城市天际线2", size: 40}
+      ],
+      "赛车游戏": [
+        {code: "C8", name: "尘埃拉力赛2.0", size: 25}
       ]
     };
-    let selected = {}, total=0;
+    let selected = {}, total = 0;
 
-    function displayCategories(){
-      const cont=document.getElementById("gameCategories"); cont.innerHTML="";
-      for(let cat in gameData){
-        const sec=document.createElement("div"); sec.className="category"; sec.id=cat;
-        sec.innerHTML=`<h2>${cat}</h2>`;
-        gameData[cat].forEach(g=>{
-          const it=document.createElement("div"); it.className="game-item";
-          it.innerHTML=`<div class="game-title">${g.name}</div>
+    function displayCategories() {
+      const cont = document.getElementById("gameCategories"); cont.innerHTML = "";
+      for (let cat in gameData) {
+        const sec = document.createElement("div"); sec.className = "category"; sec.id = cat;
+        sec.innerHTML = `<h2>${cat}</h2>`;
+        gameData[cat].forEach(g => {
+          const it = document.createElement("div"); it.className = "game-item";
+          it.innerHTML = `<div class="game-title">${g.name}</div>
             <div class="game-size">${g.size} GB</div>
             <div class="buttons">
               <button onclick="add('${g.code}',${g.size})">+</button>
@@ -185,98 +189,101 @@
       }
     }
 
-    function generateSidebar(){
-      const sb=document.getElementById("sidebar"); sb.innerHTML="";
-      for(let cat in gameData){
-        const a=document.createElement("a"); a.href=`#${cat}`; a.textContent=cat;
+    function generateSidebar() {
+      const sb = document.getElementById("sidebar"); sb.innerHTML = "";
+      for (let cat in gameData) {
+        const a = document.createElement("a"); a.href = `#${cat}`; a.textContent = cat;
         sb.appendChild(a);
       }
     }
 
-    function add(code,size){
-      if(!selected[code]||selected[code]===0){
-        selected[code]=1; total+=size;
-        document.getElementById(`qty-${code}`).textContent=1;
+    function add(code, size) {
+      if (!selected[code] || selected[code] === 0) {
+        selected[code] = 1; total += size;
+        document.getElementById(`qty-${code}`).textContent = 1;
         updateTotal();
       }
-    }
-    function remove(code,size){
-      if(selected[code]&&selected[code]===1){
-        selected[code]=0; total-=size;
-        document.getElementById(`qty-${code}`).textContent=0;
-        updateTotal();
-      }
-    }
-    function updateTotal(){
-      document.getElementById("totalSize").textContent=`总容量：${total} GB`;
     }
 
-    function generateOrder(){
-      const tbody=document.getElementById("orderTableBody"); tbody.innerHTML="";
-      let sum=0, rows="";
-      for(let cat in gameData){
-        gameData[cat].forEach(g=>{
-          const q=selected[g.code]||0;
-          if(q>0){
-            const sub=q*g.size; sum+=sub;
-            rows+=`<tr>
-              <td>${g.name}</td>
-              <td>${q}</td>
-              <td>${g.size}</td>
-              <td>${sub}</td>
-            </tr>`;
+    function remove(code, size) {
+      if (selected[code] > 0) {
+        selected[code] = 0; total -= size;
+        document.getElementById(`qty-${code}`).textContent = 0;
+        updateTotal();
+      }
+    }
+
+    function updateTotal() {
+      document.getElementById("totalSize").textContent = `总容量：${total} GB`;
+    }
+
+    function generateOrder() {
+      const orderCodes = [];
+      for (let cat in gameData) {
+        gameData[cat].forEach(g => {
+          if (selected[g.code] > 0) {
+            orderCodes.push(g.code);
           }
         });
       }
-      tbody.innerHTML=rows;
-      document.getElementById("orderTotal").textContent=sum;
-      document.getElementById("content").style.display="none";
-      document.getElementById("sidebar").style.display="none";
-      document.querySelector(".footer").style.display="none";
-      document.getElementById("orderPage").style.display="block";
-      window.location.hash="#orderPage";
-    }
-
-    function backToShop(){
-      document.getElementById("orderPage").style.display="none";
-      document.getElementById("content").style.display="block";
-      document.getElementById("sidebar").style.display="block";
-      document.querySelector(".footer").style.display="flex";
-      window.location.hash="";
-    }
-
-    function confirmOrder(){
-      const orderData = {
-        orderId: Date.now(),
-        games: Object.keys(selected).filter(code => selected[code] > 0).map(code => ({
-          code,
-          name: gameData[Object.keys(gameData).find(cat => gameData[cat].some(game => game.code === code))].find(game => game.code === code).name,
-          quantity: selected[code]
-        }))
-      };
-
-      fetch("https://your-backend-url/submitOrder", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(orderData)
-      })
-      .then(response => response.json())
-      .then(data => {
-        alert("订单已提交！");
-        backToShop();
-      })
-      .catch(error => {
-        console.error("订单提交失败", error);
-        alert("提交失败，请重试！");
+      const orderCode = orderCodes.join("/");
+      const tbody = document.getElementById("orderTableBody");
+      tbody.innerHTML = ""; let sum = 0;
+      orderCodes.forEach(code => {
+        const g = gameData[Object.keys(gameData).find(c => gameData[c].some(game => game.code === code))].find(game => game.code === code);
+        const qty = selected[g.code] || 0;
+        if (qty > 0) {
+          const sub = qty * g.size;
+          sum += sub;
+          tbody.innerHTML += `<tr><td>${g.name}</td><td>${qty}</td><td>${g.size}</td><td>${sub}</td></tr>`;
+        }
       });
+      document.getElementById("orderTotal").textContent = sum;
+      document.getElementById("content").style.display = "none";
+      document.getElementById("sidebar").style.display = "none";
+      document.querySelector(".footer").style.display = "none";
+      document.getElementById("orderPage").style.display = "block";
+      window.location.hash = "#orderPage";
     }
 
-    window.onload = () => {
-      generateSidebar();
-      displayCategories();
-    };
+    function confirmOrder() {
+      const orderCodes = [];
+      for (let cat in gameData) {
+        gameData[cat].forEach(g => {
+          if (selected[g.code] > 0) {
+            orderCodes.push(g.code);
+          }
+        });
+      }
+      const orderCode = orderCodes.join("/");
+      
+      // 更新订单详情为游戏编号
+      const rows = document.querySelectorAll('#orderTableBody tr');
+      rows.forEach(row => {
+        const gameNameCell = row.cells[0]; // 获取游戏名称单元格
+        gameNameCell.textContent = orderCodes.shift(); // 替换为游戏编号
+      });
+
+      // 复制订单编号
+      const input = document.createElement('input');
+      input.value = `订单编号：${orderCode}`;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      alert(`订单已确认并已复制：${orderCode}`);
+    }
+
+    function backToShop() {
+      document.getElementById("orderPage").style.display = "none";
+      document.getElementById("content").style.display = "block";
+      document.getElementById("sidebar").style.display = "block";
+      document.querySelector(".footer").style.display = "flex";
+    }
+
+    // 初始化页面
+    displayCategories();
+    generateSidebar();
   </script>
+
 </body>
 </html>
