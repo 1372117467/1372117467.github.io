@@ -167,23 +167,119 @@
 </div>
 
 <script>
-  const gameData = {
-    "动作冒险": [
-      {code:"A1", name:"艾尔登法环", size:60},
-      {code:"C1", name:"刺客信条4：黑旗", size:40},
-      {code:"C2", name:"刺客信条：幻景", size:50}
-    ],
-    "角色扮演":[
-      {code:"B1", name:"博德之门3", size:70},
-      {code:"B2", name:"冰汽时代2", size:70}
-    ],
-    "策略游戏":[
-      {code:"C7", name:"城市天际线2", size:40}
-    ],
-    "赛车游戏":[
-      {code:"C8", name:"尘埃拉力赛2.0", size:25}
-    ]
-  };
+ const gameData = {
+  "动作冒险": [
+    { code: "A1", name: "艾尔登法环", size: 60 },
+    { code: "C1", name: "刺客信条4：黑旗", size: 40 },
+    { code: "C2", name: "刺客信条：幻景", size: 50 },
+    { code: "C3", name: "刺客信条：奥德赛", size: 60 },
+    { code: "C4", name: "刺客信条：起源", size: 55 },
+    { code: "C5", name: "刺客信条：英灵殿", size: 120 },
+    { code: "C6", name: "刺客信条：大革命", size: 45 },
+    { code: "G3", name: "鬼泣5", size: 40 },
+    { code: "G5", name: "古墓丽影：暗影", size: 45 },
+    { code: "G6", name: "古墓丽影9", size: 30 },
+    { code: "G7", name: "古墓丽影10：崛起", size: 35 },
+    { code: "D10", name: "对马岛之魂导演剪辑版", size: 50 },
+    { code: "S7", name: "神秘海域：盗贼遗产合集", size: 70 },
+    { code: "S20", name: "死亡搁浅：导演剪辑版", size: 65 },
+    { code: "Z14", name: "只狼", size: 25 },
+    { code: "Z24", name: "装甲核心6：境界天火", size: 55 }
+  ],
+  "角色扮演": [
+    { code: "B1", name: "博德之门3", size: 70 },
+    { code: "B2", name: "冰汽时代2", size: 70 },
+    { code: "H2", name: "霍格沃茨之遗", size: 80 },
+    { code: "H5", name: "荒野大镖客2", size: 150 },
+    { code: "H7", name: "荒野大镖客：救赎", size: 25 },
+    { code: "W4", name: "巫师3 次世代版", size: 50 },
+    { code: "Z6", name: "最终幻想 VII 重生", size: 100 },
+    { code: "Z7", name: "最终幻想VII：重制版", size: 85 },
+    { code: "Z19", name: "最终幻想16", size: 90 },
+    { code: "L3", name: "龙之信条2", size: 70 },
+    { code: "X12", name: "星空", size: 120 }
+  ],
+  "射击游戏": [
+    { code: "COD4CZ", name: "使命召唤4：现代战争重制版", size: 60 },
+    { code: "COD6CZ", name: "使命召唤6：现代战争2重制版", size: 65 },
+    { code: "COD7", name: "使命召唤7：黑色行动", size: 15 },
+    { code: "COD8", name: "使命召唤8：现代战争3", size: 20 },
+    { code: "COD9", name: "使命召唤9：黑色行动2", size: 25 },
+    { code: "COD10", name: "使命召唤10：幽灵", size: 30 },
+    { code: "COD11", name: "使命召唤11：高级战争", size: 35 },
+    { code: "COD12", name: "使命召唤12：黑色行动3", size: 80 },
+    { code: "COD13", name: "使命召唤13：无限战争", size: 70 },
+    { code: "COD14", name: "使命召唤14：二战", size: 75 },
+    { code: "COD15", name: "使命召唤15：黑色行动4", size: 90 },
+    { code: "COD17", name: "使命召唤17 黑色行动冷战", size: 100 },
+    { code: "H1", name: "毁灭战士", size: 70 },
+    { code: "G8", name: "光环：无限", size: 80 },
+    { code: "T4", name: "泰坦陨落2", size: 50 },
+    { code: "Z1", name: "战地1", size: 55 },
+    { code: "Z4", name: "战地4", size: 40 },
+    { code: "Z5", name: "战地5", size: 85 },
+    { code: "W7", name: "无主之地3", size: 75 }
+  ],
+  "赛车游戏": [
+    { code: "D4", name: "极限竞速：地平线4", size: 90 },
+    { code: "D5", name: "极限竞速：地平线5", size: 110 },
+    { code: "C8", name: "尘埃拉力赛2.0", size: 25 },
+    { code: "J1", name: "极品飞车1-21", size: 200 },
+    { code: "J10", name: "极速骑行5", size: 35 }
+  ],
+  "策略游戏": [
+    { code: "C7", name: "城市天际线2", size: 40 },
+    { code: "H8", name: "红色警戒2", size: 2 },
+    { code: "D12", name: "帝国时代2决定版", size: 30 },
+    { code: "D14", name: "帝国时代4", size: 50 },
+    { code: "W6", name: "文明6", size: 20 },
+    { code: "M7", name: "魔兽争霸Ⅲ：冰封王座", size: 2 },
+    { code: "Z17", name: "战争号令：地狱之门", size: 40 },
+    { code: "Z18", name: "战锤40K：行商浪人", size: 50 }
+  ],
+  "体育竞技": [
+    { code: "E1", name: "EA 运动 FC 25 足球", size: 60 },
+    { code: "N1", name: "NBA 2K23", size: 110 },
+    { code: "N3", name: "NBA18", size: 70 },
+    { code: "Z8", name: "足球经理2018-2023合集", size: 30 }
+  ],
+  "格斗游戏": [
+    { code: "J6", name: "街头霸王5", size: 45 },
+    { code: "H3", name: "火影忍者：终极风暴羁绊", size: 40 },
+    { code: "Q4", name: "拳皇15", size: 35 },
+    { code: "Q6", name: "拳皇14", size: 30 },
+    { code: "Z11", name: "真人快打11", size: 80 },
+    { code: "Z13", name: "真人快打X", size: 50 },
+    { code: "T3", name: "铁拳8", size: 75 }
+  ],
+  "开放世界/沙盒": [
+    { code: "G2", name: "侠盗猎车手/GTA5", size: 95 },
+    { code: "G10", name: "GTA4 合集", size: 30 },
+    { code: "S1", name: "赛博朋克2077", size: 70 },
+    { code: "H4", name: "幻兽帕鲁", size: 20 },
+    { code: "W5", name: "无人深空", size: 15 },
+    { code: "Q7", name: "骑马与砍杀2", size: 50 }
+  ],
+  "恐怖游戏": [
+    { code: "J3", name: "寂静岭2", size: 30 },
+    { code: "S9", name: "生化危机3", size: 25 },
+    { code: "S10", name: "生化危机4", size: 30 },
+    { code: "S13", name: "生化危机7", size: 35 },
+    { code: "S14", name: "生化危机8", size: 40 },
+    { code: "Z22", name: "直到黎明：重制版", size: 45 }
+  ],
+  "模拟经营": [
+    { code: "D8", name: "动物园之星", size: 25 },
+    { code: "X4", name: "幸福工厂", size: 15 },
+    { code: "O1", name: "欧洲卡车模拟2", size: 10 }
+  ],
+  "独立游戏": [
+    { code: "S5", name: "山河旅探", size: 5 },
+    { code: "S16", name: "双人成行", size: 50 },
+    { code: "X20", name: "兄弟：双子传说 重制版", size: 15 },
+    { code: "Z25", name: "植物大战僵尸杂交版", size: 0.5 }
+  ]
+};
 
   let selected = {}, total = 0;
 
