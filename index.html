@@ -1,173 +1,236 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>极客电玩</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>极客电玩订单系统</title>
   <style>
-    /* 全局平滑滚动过渡 */
-    html {
-      scroll-behavior: smooth;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: "Microsoft YaHei", sans-serif;
-      background-color: #f2f3f5;
-      color: #333;
+      font-family: 'Microsoft YaHei', sans-serif;
+      background-color: #f5f5f5;
     }
     header {
-      position: fixed; top:0; left:0;
-      width:100%; height:50px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
       background: linear-gradient(to right, #4b6cb7, #182848);
-      color: white; line-height:50px;
-      text-align:center; font-size:18px; font-weight:bold;
-      z-index:999; box-shadow:0 2px 5px rgba(0,0,0,0.1);
+      color: white;
+      text-align: center;
+      line-height: 60px;
+      font-size: 20px;
+      font-weight: bold;
+      z-index: 100;
     }
     #searchBox {
-      position: fixed; top:50px; left:0;
-      width:100%; height:40px;
-      background:#fff; padding:0 20px;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background: white;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      display: flex; align-items: center; justify-content: center;
+      z-index: 99;
     }
     #searchBox input {
-      width: 80%; height: 30px;
-      padding: 5px; font-size: 16px;
-      border: 1px solid #ddd; border-radius: 4px;
+      width: 80%;
+      height: 30px;
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
     }
     #sidebar {
-      position: fixed; top:90px; left:0;
-      width:100px; height:calc(100vh - 90px);
-      background:#fff; border-right:1px solid #e0e0e0;
-      padding-top:10px; overflow-y:auto;
+      position: fixed;
+      top: 110px;
+      left: 0;
+      width: 120px;
+      height: calc(100vh - 110px);
+      background: white;
+      overflow-y: auto;
+      border-right: 1px solid #eee;
     }
     #sidebar a {
-      display:block; padding:10px;
-      font-size:12px; color:#555; text-decoration:none;
-      border-left:3px solid transparent;
-      transition: all .3s;
+      display: block;
+      padding: 12px 15px;
+      color: #555;
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      transition: all 0.3s;
     }
     #sidebar a:hover {
-      background:#f0f0f0; border-color:#4b6cb7; color:#4b6cb7;
+      background: #f0f0f0;
+      border-left-color: #4b6cb7;
+      color: #4b6cb7;
     }
     #content {
-      margin-left:120px; padding:70px 20px 20px;
-    }
-    #orderPage {
-      display: none; padding: 20px;
-      background: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      border-radius: 6px;
+      margin-left: 120px;
+      padding: 120px 20px 80px;
     }
     .category {
-      margin-bottom:20px; padding:16px;
-      background:#fff; border-left:4px solid #4b6cb7;
-      border-radius:6px; box-shadow:0 1px 3px rgba(0,0,0,0.05);
-      transition: box-shadow .3s;
+      background: white;
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     .category h2 {
-      font-size:16px; color:#4b6cb7; margin-bottom:10px;
+      color: #4b6cb7;
+      margin-bottom: 15px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #eee;
     }
     .game-item {
-      background:#fafafa; padding:10px; margin:10px 0;
-      border-radius:4px; border:1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin: 10px 0;
+      background: #fafafa;
+      border-radius: 4px;
+      border: 1px solid #eee;
     }
-    .game-title { font-weight:600; font-size:15px; }
-    .game-size { font-size:12px; color:#666; margin:6px 0; }
-    .buttons {
-      display:flex; align-items:center; gap:8px;
+    .game-info {
+      flex: 1;
     }
-    .buttons button {
-      width:28px; height:28px; font-size:16px;
-      background:#4b6cb7; color:#fff; border:none; border-radius:4px;
-      cursor:pointer; transition: background .2s;
+    .game-title {
+      font-weight: bold;
+      margin-bottom: 5px;
     }
-    .buttons button:hover { background:#374e9b; }
-    .buttons span {
-      width:24px; text-align:center; font-size:14px;
+    .game-size {
+      color: #666;
+      font-size: 12px;
     }
-    #orderPage table {
-      width:100%; border-collapse:collapse; margin-top:12px;
+    .quantity-control {
+      display: flex;
+      align-items: center;
     }
-    #orderPage th, #orderPage td {
-      border:1px solid #ccc; padding:8px; text-align:center;
+    .quantity-control button {
+      width: 30px;
+      height: 30px;
+      background: #4b6cb7;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
     }
-    #orderPage th { background:#f0f0f0; }
-    #orderPage button {
-      margin:12px 6px; padding:8px 16px;
-      background:#4b6cb7; color:#fff; border:none; border-radius:4px;
-      cursor:pointer; transition: background .2s;
+    .quantity-control button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
     }
-    #orderPage button:hover { background:#374e9b; }
+    .quantity-control span {
+      width: 30px;
+      text-align: center;
+    }
+    #orderPage {
+      display: none;
+      padding: 20px;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    #orderTable {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+    #orderTable th, #orderTable td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+    #orderTable th {
+      background: #f5f5f5;
+    }
+    .remove-btn {
+      background: #ff5252;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
     .footer {
-      position: fixed; bottom:0; left:0; width:100%;
-      background:#fff; border-top:1px solid #e0e0e0;
-      display:flex; justify-content:space-between; align-items:center;
-      padding:10px 20px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      border-top: 1px solid #eee;
     }
     .footer button {
-      background:#ff7043; color:#fff; border:none;
-      padding:8px 16px; border-radius:4px; cursor:pointer;
-      transition: background .2s;
-    }
-    .footer button:hover { background:#e65a31; }
-    @media(max-width:600px) {
-      #sidebar { width:80px; }
-      #content { margin-left:90px; padding:70px 12px; }
-      .footer { flex-direction:column; gap:10px; }
-      .footer button { width:100%; }
+      background: #4b6cb7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-<header>极客电玩</header>
-
-<!-- 搜索框 -->
-<div id="searchBox">
-  <input type="text" id="searchInput" placeholder="搜索游戏..." oninput="filterGames()">
-</div>
-
-<div id="sidebar"></div>
-
-<div id="content">
-  <h1 style="text-align:center;">游戏订单管理</h1>
-  <div id="gameCategories"></div>
-  <div id="noSelectionMessage" style="display:none; text-align:center; margin-top:20px; color:red;">
-    <p>请先选择游戏后才能生成订单！</p>
+  <header>极客电玩订单系统</header>
+  
+  <div id="searchBox">
+    <input type="text" id="searchInput" placeholder="搜索游戏..." oninput="filterGames()">
   </div>
-</div>
-
-<div id="orderPage">
-  <h2>订单详情</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>游戏名称</th>
-        <th>数量</th>
-        <th>单款容量 (GB)</th>
-        <th>小计容量 (GB)</th>
-      </tr>
-    </thead>
-    <tbody id="orderTableBody"></tbody>
-    <tfoot>
-      <tr>
-        <td colspan="3" style="text-align:right;font-weight:600;">总容量：</td>
-        <td id="orderTotal">0</td>
-      </tr>
-    </tfoot>
-  </table>
-  <div style="text-align:center; margin-top:16px;">
-    <button onclick="backToShop()">返回继续选购</button>
-    <button onclick="confirmOrder()">确认订单</button>
+  
+  <div id="sidebar"></div>
+  
+  <div id="content">
+    <div id="gameCategories"></div>
+    <div id="noSelectionMessage" style="display:none; text-align:center; margin-top:20px; color:red;">
+      <p>请先选择游戏后才能生成订单！</p>
+    </div>
   </div>
-</div>
+  
+  <div id="orderPage">
+    <h2>订单详情</h2>
+    <table id="orderTable">
+      <thead>
+        <tr>
+          <th>游戏名称</th>
+          <th>单款容量 (GB)</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="orderTableBody"></tbody>
+      <tfoot>
+        <tr>
+          <td style="text-align:right;">总容量：</td>
+          <td id="orderTotal">0</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+    <div style="text-align:center; margin-top:20px;">
+      <button onclick="backToShop()">返回继续选购</button>
+      <button onclick="confirmOrder()">确认订单</button>
+    </div>
+  </div>
+  
+  <div class="footer">
+    <span id="totalSize">总容量：0 GB</span>
+    <button onclick="generateOrder()">生成订单</button>
+  </div>
 
-<div class="footer">
-  <span id="totalSize">总容量：0 GB</span>
-  <button onclick="generateOrder()">生成订单</button>
-</div>
-
-<script>
-const gameData = {
+  <script>
+    // 游戏数据示例
+    const gameData = {
   "动作冒险": [
     { code: "A1", name: "艾尔登法环", size: 60 },
     { code: "C1", name: "刺客信条4：黑旗", size: 40 },
@@ -358,140 +421,215 @@ const gameData = {
   ]
 };
 
-  let selected = {}, total = 0;
+    // 从localStorage加载数据
+    let selectedGames = JSON.parse(localStorage.getItem('selectedGames')) || {};
+    let totalSize = parseFloat(localStorage.getItem('totalSize')) || 0;
 
-  function displayCategories(filteredGames = null) {
-    const cont = document.getElementById("gameCategories");
-    cont.innerHTML = "";
-    for (let cat in gameData) {
-      const sec = document.createElement("div");
-      sec.className = "category";
-      sec.id = cat;
-      sec.innerHTML = `<h2>${cat}</h2>`;
-      const gamesToDisplay = filteredGames && filteredGames[cat] ? filteredGames[cat] : gameData[cat];
-      gamesToDisplay.forEach(g => {
-        const it = document.createElement("div");
-        it.className = "game-item";
-        it.innerHTML = `
-          <div class="game-title">${g.name}</div>
-          <div class="game-size">${g.size} GB</div>
-          <div class="buttons">
-            <button onclick="add('${g.code}',${g.size})">+</button>
-            <span id="qty-${g.code}">0</span>
-            <button onclick="remove('${g.code}',${g.size})">-</button>
-          </div>`;
-        sec.appendChild(it);
-      });
-      cont.appendChild(sec);
-    }
-  }
+    // 初始化页面
+    window.onload = function() {
+      generateSidebar();
+      displayCategories();
+      updateTotal();
+    };
 
-  function filterGames() {
-    const query = document.getElementById("searchInput").value.toLowerCase();
-    const filteredGames = {};
-    
-    for (let cat in gameData) {
-      filteredGames[cat] = gameData[cat].filter(game => game.name.toLowerCase().includes(query));
+    // 生成侧边栏分类
+    function generateSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.innerHTML = '';
+      for (const category in gameData) {
+        const link = document.createElement('a');
+        link.href = `#${category}`;
+        link.textContent = category;
+        sidebar.appendChild(link);
+      }
     }
 
-    displayCategories(filteredGames);
-  }
-
-  function generateSidebar() {
-    const sb = document.getElementById("sidebar");
-    sb.innerHTML = "";
-    for (let cat in gameData) {
-      const a = document.createElement("a");
-      a.href = `#${cat}`;
-      a.textContent = cat;
-      sb.appendChild(a);
+    // 显示游戏列表
+    function displayCategories(filteredData = null) {
+      const container = document.getElementById('gameCategories');
+      container.innerHTML = '';
+      
+      const data = filteredData || gameData;
+      
+      for (const category in data) {
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = 'category';
+        categoryDiv.id = category;
+        
+        const title = document.createElement('h2');
+        title.textContent = category;
+        categoryDiv.appendChild(title);
+        
+        data[category].forEach(game => createGameItem(categoryDiv, game));
+        container.appendChild(categoryDiv);
+      }
     }
-  }
 
-  function add(code, size) {
-    if (!selected[code]) {
-      selected[code] = 1;
-      total += size;
-      document.getElementById(`qty-${code}`).textContent = 1;
+    // 创建单个游戏项
+    function createGameItem(container, game) {
+      const gameItem = document.createElement('div');
+      gameItem.className = 'game-item';
+      
+      // 游戏信息
+      const gameInfo = document.createElement('div');
+      gameInfo.className = 'game-info';
+      gameInfo.innerHTML = `
+        <div class="game-title">${game.name}</div>
+        <div class="game-size">${game.size} GB</div>
+      `;
+      
+      // 数量控制
+      const quantityControl = document.createElement('div');
+      quantityControl.className = 'quantity-control';
+      quantityControl.innerHTML = `
+        <button ${selectedGames[game.code] ? '' : 'disabled'} onclick="decreaseQuantity('${game.code}', ${game.size})">-</button>
+        <span id="qty-${game.code}">${selectedGames[game.code] || 0}</span>
+        <button ${selectedGames[game.code] ? 'disabled' : ''} onclick="increaseQuantity('${game.code}', ${game.size})">+</button>
+      `;
+      
+      gameItem.appendChild(gameInfo);
+      gameItem.appendChild(quantityControl);
+      container.appendChild(gameItem);
+    }
+
+    // 增加数量
+    function increaseQuantity(code, size) {
+      if (!selectedGames[code]) {
+        selectedGames[code] = 1;
+        totalSize += size;
+        updateQuantityDisplay(code);
+        saveToLocalStorage();
+      }
+    }
+
+    // 减少数量
+    function decreaseQuantity(code, size) {
+      if (selectedGames[code]) {
+        selectedGames[code] = 0;
+        totalSize -= size;
+        updateQuantityDisplay(code);
+        saveToLocalStorage();
+      }
+    }
+
+    // 更新数量显示
+    function updateQuantityDisplay(code) {
+      const qtyElement = document.getElementById(`qty-${code}`);
+      const buttons = qtyElement.parentElement.getElementsByTagName('button');
+      
+      qtyElement.textContent = selectedGames[code] || 0;
+      buttons[0].disabled = !selectedGames[code];
+      buttons[1].disabled = selectedGames[code];
       updateTotal();
     }
-  }
 
-  function remove(code, size) {
-    if (selected[code]) {
-      selected[code] = 0;
-      total -= size;
-      document.getElementById(`qty-${code}`).textContent = 0;
+    // 更新总容量
+    function updateTotal() {
+      document.getElementById('totalSize').textContent = `总容量：${totalSize.toFixed(1)} GB`;
+    }
+
+    // 保存到本地存储
+    function saveToLocalStorage() {
+      localStorage.setItem('selectedGames', JSON.stringify(selectedGames));
+      localStorage.setItem('totalSize', totalSize.toString());
+    }
+
+    // 生成订单
+    function generateOrder() {
+      const selectedCount = Object.values(selectedGames).filter(v => v).length;
+      if (selectedCount === 0) {
+        document.getElementById('noSelectionMessage').style.display = 'block';
+        return;
+      }
+      
+      // 构建订单内容
+      const orderBody = document.getElementById('orderTableBody');
+      orderBody.innerHTML = '';
+      let orderTotal = 0;
+      
+      for (const category in gameData) {
+        gameData[category].forEach(game => {
+          if (selectedGames[game.code]) {
+            orderTotal += game.size;
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${game.name}</td>
+              <td>${game.size}</td>
+              <td><button class="remove-btn" onclick="removeFromOrder('${game.code}', ${game.size})">删除</button></td>
+            `;
+            orderBody.appendChild(row);
+          }
+        });
+      }
+      
+      // 更新订单页面
+      document.getElementById('orderTotal').textContent = orderTotal.toFixed(1);
+      document.getElementById('content').style.display = 'none';
+      document.getElementById('sidebar').style.display = 'none';
+      document.querySelector('.footer').style.display = 'none';
+      document.getElementById('orderPage').style.display = 'block';
+    }
+
+    // 删除订单项
+    function removeFromOrder(code, size) {
+      selectedGames[code] = 0;
+      totalSize -= size;
+      saveToLocalStorage();
+      generateOrder();
       updateTotal();
+      updateQuantityDisplay(code);
     }
-  }
 
-  function updateTotal() {
-    document.getElementById("totalSize").textContent = `总容量：${total} GB`;
-  }
+    // 确认订单（新增复制功能）
+    async function confirmOrder() {
+      const selectedCodes = Object.keys(selectedGames).filter(code => selectedGames[code]);
+      
+      if (selectedCodes.length === 0) {
+        alert("当前没有选中任何游戏！");
+        return;
+      }
 
-  function generateOrder() {
-    if (Object.keys(selected).length === 0) {
-      document.getElementById("noSelectionMessage").style.display = "block";
-      return;
+      try {
+        await navigator.clipboard.writeText(selectedCodes.join(','));
+        alert("订单已确认！游戏编码已复制：\n" + selectedCodes.join(', '));
+        
+        // 清空选择
+        selectedGames = {};
+        totalSize = 0;
+        saveToLocalStorage();
+        backToShop();
+        displayCategories();
+        updateTotal();
+      } catch (err) {
+        console.error('复制失败:', err);
+        alert("复制失败，请手动复制游戏编码");
+      }
     }
-    const orderTableBody = document.getElementById("orderTableBody");
-    orderTableBody.innerHTML = "";
-    let sum = 0;
-    for (let cat in gameData) {
-      gameData[cat].forEach(g => {
-        if (selected[g.code]) {
-          sum += g.size;
-          orderTableBody.innerHTML += `
-            <tr>
-              <td>${g.name}</td>
-              <td>1</td>
-              <td>${g.size}</td>
-              <td>${g.size}</td>
-            </tr>`;
-        }
-      });
+
+    // 返回商店
+    function backToShop() {
+      document.getElementById('content').style.display = 'block';
+      document.getElementById('sidebar').style.display = 'block';
+      document.querySelector('.footer').style.display = 'flex';
+      document.getElementById('orderPage').style.display = 'none';
+      document.getElementById('noSelectionMessage').style.display = 'none';
     }
-    document.getElementById("orderTotal").textContent = sum;
-    document.getElementById("content").style.display = "none";
-    document.getElementById("sidebar").style.display = "none";
-    document.querySelector(".footer").style.display = "none";
-    document.getElementById("orderPage").style.display = "block";
-  }
 
-  function confirmOrder() {
-    const codes = [];
-    for (let cat in gameData) {
-      gameData[cat].forEach(g => {
-        if (selected[g.code]) codes.push(g.code);
-      });
+    // 搜索功能
+    function filterGames() {
+      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = {};
+      
+      for (const category in gameData) {
+        filtered[category] = gameData[category].filter(game => 
+          game.name.toLowerCase().includes(keyword) || 
+          game.code.toLowerCase().includes(keyword)
+        );
+      }
+      
+      displayCategories(filtered);
     }
-    const codeStr = codes.join("/");
-    // 切换订单详情表中名称为编号
-    document.querySelectorAll("#orderTableBody tr").forEach((tr,i) => {
-      tr.cells[0].textContent = codes[i];
-    });
-    // 复制
-    const inp = document.createElement("input");
-    inp.value = codeStr;
-    document.body.appendChild(inp);
-    inp.select();
-    document.execCommand("copy");
-    inp.remove();
-    alert(`订单已确认并复制：${codeStr}`);
-  }
-
-  function backToShop() {
-    document.getElementById("content").style.display = "block";
-    document.getElementById("sidebar").style.display = "block";
-    document.querySelector(".footer").style.display = "flex";
-    document.getElementById("orderPage").style.display = "none";
-    document.getElementById("noSelectionMessage").style.display = "none";
-  }
-
-  // 初始化
-  displayCategories();
-  generateSidebar();
-</script>
+  </script>
 </body>
 </html>
