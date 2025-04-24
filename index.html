@@ -193,9 +193,6 @@
   
   <div id="content">
     <div id="gameCategories"></div>
-    <div id="noSelectionMessage" style="display:none; text-align:center; margin-top:20px; color:red;">
-      <p>请先选择游戏后才能生成订单！</p>
-    </div>
   </div>
   
   <div id="orderPage">
@@ -536,13 +533,6 @@
 
     // 生成订单
     function generateOrder() {
-      const selectedCount = Object.values(selectedGames).filter(v => v).length;
-      if (selectedCount === 0) {
-        document.getElementById('noSelectionMessage').style.display = 'block';
-        return;
-      }
-      
-      // 构建订单内容
       const orderBody = document.getElementById('orderTableBody');
       orderBody.innerHTML = '';
       let orderTotal = 0;
@@ -563,7 +553,6 @@
         });
       }
       
-      // 更新订单页面
       document.getElementById('orderTotal').textContent = orderTotal.toFixed(1);
       document.getElementById('content').style.display = 'none';
       document.getElementById('sidebar').style.display = 'none';
@@ -581,29 +570,46 @@
       updateQuantityDisplay(code);
     }
 
-    // 确认订单（新增复制功能）
+    // 确认订单
     async function confirmOrder() {
       const selectedCodes = Object.keys(selectedGames).filter(code => selectedGames[code]);
+      const orderTime = new Date().toLocaleString();
+      const totalGB = totalSize.toFixed(1);
       
-      if (selectedCodes.length === 0) {
-        alert("当前没有选中任何游戏！");
-        return;
-      }
-
       try {
-        await navigator.clipboard.writeText(selectedCodes.join(','));
-        alert("订单已确认！游戏编码已复制：\n" + selectedCodes.join(', '));
-        
-        // 清空选择
+        let alertMessage = `🕒 订单时间：${orderTime}\n`;
+        alertMessage += `🎮 已选游戏：${selectedCodes.length} 款\n`;
+        alertMessage += `💾 总容量：${totalGB} GB\n`;
+
+        if (selectedCodes.length > 0) {
+          await navigator.clipboard.writeText(selectedCodes.join(','));
+          alertMessage += "\n✅ 游戏编码已自动复制！⚠️请第一时间发给客服\n编码：" + selectedCodes.join(', ');
+        } else {
+          alertMessage += "\n⚠️ 注意：当前为空订单";
+        }
+
+        alert(alertMessage);
+
+        // 清空数据
         selectedGames = {};
         totalSize = 0;
         saveToLocalStorage();
         backToShop();
         displayCategories();
         updateTotal();
+
       } catch (err) {
-        console.error('复制失败:', err);
-        alert("复制失败，请手动复制游戏编码");
+        console.error('操作失败:', err);
+        let errorMessage = "❌ 订单提交失败！\n";
+        errorMessage += `⏰ 时间：${new Date().toLocaleString()}\n`;
+        
+        if (selectedCodes.length > 0) {
+          errorMessage += `⚠️ 请手动复制游戏编码：\n${selectedCodes.join(', ')}`;
+        } else {
+          errorMessage += "⚠️ 空订单提交失败，请重试";
+        }
+        
+        alert(errorMessage);
       }
     }
 
@@ -613,7 +619,6 @@
       document.getElementById('sidebar').style.display = 'block';
       document.querySelector('.footer').style.display = 'flex';
       document.getElementById('orderPage').style.display = 'none';
-      document.getElementById('noSelectionMessage').style.display = 'none';
     }
 
     // 搜索功能
