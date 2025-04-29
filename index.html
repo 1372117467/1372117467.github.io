@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>极客电玩订单系统</title>
   <style>
+    
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+    
     body {
       font-family: 'Microsoft YaHei', sans-serif;
       background-color: #f5f5f5;
@@ -179,8 +181,86 @@
       padding: 10px 20px;
       border-radius: 4px;
       cursor: pointer;
+       /* 新增自定义弹窗样式 */
+    .custom-alert {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      z-index: 9999;
+      max-width: 80%;
+      min-width: 300px;
+    }
+    .alert-content {
+      margin: 10px 0;
+    }
+    .game-codes {
+      background: #f5f5f5;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .copy-btn {
+      background: #4b6cb7;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .alert-buttons {
+      text-align: center;
+      margin-top: 15px;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 9998;
+    }
     }
   </style>
+  <style>
+    /* 新增防截图保护样式 */
+    body {
+      -webkit-user-select: none;  /* 禁止文本选择 */
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
+    #gameCategories::after {
+      content: "极客电玩内部系统 • 严禁截图";
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      color: rgba(75,108,183,0.2);
+      font-size: 24px;
+      transform: rotate(-15deg);
+      pointer-events: none;
+      z-index: 9999;
+    }
+    
+    /* 动态干扰线 */
+    @keyframes anti-screenshot {
+      0% { box-shadow: 0 0 10px rgba(75,108,183,0.1); }
+      50% { box-shadow: 0 0 15px rgba(255,82,82,0.2); }
+      100% { box-shadow: 0 0 10px rgba(75,108,183,0.1); }
+    }
+    body {
+      animation: anti-screenshot 2s infinite;
+    }
+    </style>
 </head>
 <body>
   <header>极客电玩订单系统</header>
@@ -208,7 +288,7 @@
       <tbody id="orderTableBody"></tbody>
       <tfoot>
         <tr>
-          <td style="text-align:right;">总容量：</td>
+          <td style="text-align:right;">总容量：(GB)</td>
           <td id="orderTotal">0</td>
           <td></td>
         </tr>
@@ -226,10 +306,35 @@
   </div>
 
   <script>
+    // 防截图保护功能
+document.addEventListener('keydown', function(e) {
+  // 检测 PrintScreen 和 Windows+Shift+S
+  if (e.key === 'PrintScreen' || (e.key === 's' && e.ctrlKey && e.shiftKey)) {
+    alert('⚠️ 系统检测到截图操作，请注意信息安全！');
+    document.body.style.filter = 'blur(5px)';
+    setTimeout(() => document.body.style.filter = '', 2000);
+  }
+});
+
+// 禁用右键菜单
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+  alert('右键功能已禁用');
+  return false;
+});
+
+// 防止控制台打开
+setInterval(function() {
+  if (window.outerWidth - window.innerWidth > 200 || 
+      window.outerHeight - window.innerHeight > 200) {
+    document.body.innerHTML = '<h1 style="color:red">检测到开发者工具，系统已锁定！</h1>';
+    window.location.reload();
+  }
+}, 1000);
     // 游戏数据示例
     const gameData = {
   "动作冒险": [
-    { code: "A1", name: "艾尔登法环", size: 60 },
+    { code: "A1", name: "艾尔登法环", size: 66.2 },
     { code: "C1", name: "刺客信条4：黑旗", size: 40 },
     { code: "C2", name: "刺客信条：幻景", size: 50 },
     { code: "C3", name: "刺客信条：奥德赛", size: 60 },
@@ -570,49 +675,124 @@
       updateQuantityDisplay(code);
     }
 
-    // 确认订单
-    async function confirmOrder() {
-      const selectedCodes = Object.keys(selectedGames).filter(code => selectedGames[code]);
-      const orderTime = new Date().toLocaleString();
-      const totalGB = totalSize.toFixed(1);
-      
+// 确认订单（已修改版本）
+async function confirmOrder() {
+  const selectedCodes = Object.keys(selectedGames).filter(code => selectedGames[code]);
+  const orderTime = new Date().toLocaleString();
+  const totalGB = totalSize.toFixed(1);
+  
+  try {
+    // 创建自定义弹窗
+    const modal = document.createElement('div');
+    modal.style = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      z-index: 9999;
+      width: 320px;
+      font-family: 'Microsoft YaHei';
+    `;
+    
+    modal.innerHTML = `
+      <h3 style="color:#4b6cb7; margin-bottom:15px;">订单生成成功！</h3>
+      <p style="margin:8px 0; font-size:14px;">🕒 时间：${orderTime}</p>
+      <p style="margin:8px 0; font-size:14px;">🎮 已选游戏：${selectedCodes.length} 款</p>
+      <p style="margin:8px 0; font-size:14px;">💾 总容量：${totalGB} GB</p>
+      <div style="margin:20px 0; text-align:center;">
+        <button onclick="copyGameCodes()" 
+          style="padding:10px 20px; 
+                 background:#4b6cb7; 
+                 color:white; 
+                 border:none; 
+                 border-radius:25px;
+                 cursor:pointer;
+                 transition: all 0.3s;"
+          onmouseover="this.style.transform='scale(1.05)'"
+          onmouseout="this.style.transform='scale(1)'">
+          复制游戏编码发给客服
+        </button>
+      </div>
+      <button onclick="closeModal()" 
+        style="padding:8px 16px;
+               background:#f0f0f0;
+               border:none;
+               border-radius:4px;
+               cursor:pointer;
+               float:right;">
+        关闭
+      </button>
+    `;
+
+    // 添加蒙版
+    const overlay = document.createElement('div');
+    overlay.style = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 9998;
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+
+    // 全局函数绑定
+    window.copyGameCodes = async () => {
       try {
-        let alertMessage = `🕒 订单时间：${orderTime}\n`;
-        alertMessage += `🎮 已选游戏：${selectedCodes.length} 款\n`;
-        alertMessage += `💾 总容量：${totalGB} GB\n`;
-
-        if (selectedCodes.length > 0) {
-          await navigator.clipboard.writeText(selectedCodes.join(','));
-          alertMessage += "\n✅ 游戏编码已自动复制！⚠️请第一时间发给客服\n编码：" + selectedCodes.join(', ');
-        } else {
-          alertMessage += "\n⚠️ 注意：当前为空订单";
-        }
-
-        alert(alertMessage);
-
-        // 清空数据
-        selectedGames = {};
-        totalSize = 0;
-        saveToLocalStorage();
-        backToShop();
-        displayCategories();
-        updateTotal();
-
+        await navigator.clipboard.writeText(selectedCodes.join(','));
+        modal.querySelector('button').innerHTML = '✅ 复制成功！';
+        setTimeout(() => {
+          overlay.remove();
+          modal.remove();
+        }, 1500);
       } catch (err) {
-        console.error('操作失败:', err);
-        let errorMessage = "❌ 订单提交失败！\n";
-        errorMessage += `⏰ 时间：${new Date().toLocaleString()}\n`;
-        
-        if (selectedCodes.length > 0) {
-          errorMessage += `⚠️ 请手动复制游戏编码：\n${selectedCodes.join(', ')}`;
-        } else {
-          errorMessage += "⚠️ 空订单提交失败，请重试";
-        }
-        
-        alert(errorMessage);
+        modal.innerHTML = `
+          <h3 style="color:#ff5252; margin-bottom:15px;">复制失败</h3>
+          <p>请手动选择下方文本：</p>
+          <textarea 
+            style="width:100%; 
+                   height:80px; 
+                   margin:10px 0;
+                   padding:8px;
+                   border:1px solid #ddd;" 
+            readonly>${selectedCodes.join(', ')}</textarea>
+          <button onclick="closeModal()" 
+            style="padding:8px 16px;
+                   background:#4b6cb7;
+                   color:white;
+                   border:none;
+                   border-radius:4px;
+                   cursor:pointer;">
+            关闭
+          </button>
+        `;
       }
-    }
+    };
 
+    window.closeModal = () => {
+      overlay.remove();
+      modal.remove();
+      // 清空数据
+      selectedGames = {};
+      totalSize = 0;
+      saveToLocalStorage();
+      backToShop();
+      displayCategories();
+      updateTotal();
+    };
+
+  } catch (err) {
+    console.error('订单提交失败:', err);
+    alert(`❌ 发生错误：${err.message}`);
+  }
+}
     // 返回商店
     function backToShop() {
       document.getElementById('content').style.display = 'block';
