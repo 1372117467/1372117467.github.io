@@ -2,10 +2,113 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+  <!-- 已有 meta 标签下方添加 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
   <title>极客电玩游戏选择系统</title>
   <style>
+    /* 原有样式保持不变... */
     
+    /* 新增移动端适配样式 */
+    @media (max-width: 768px) {
+        header {
+            height: 50px;
+            line-height: 50px;
+            font-size: 18px;
+        }
+        
+        #searchBox {
+            top: 50px;
+            height: 45px;
+            padding: 8px;
+        }
+        
+        #searchBox input {
+            width: 90%;
+            height: 28px;
+        }
+        
+        #sidebar {
+            width: 100%;
+            height: auto;
+            position: static;
+            display: flex;
+            flex-wrap: wrap;
+            overflow-x: auto;
+            overflow-y: hidden;
+            border-right: none;
+            border-bottom: 1px solid #eee;
+            padding: 5px 0;
+        }
+        
+        #sidebar a {
+            padding: 8px 12px;
+            margin: 0 5px;
+            border-left: none;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+        
+        #sidebar a:hover {
+            border-left-color: transparent;
+            border-bottom-color: #4b6cb7;
+        }
+        
+        #content {
+            margin-left: 0;
+            padding: 20px 10px 80px;
+        }
+        
+        .game-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .quantity-control {
+            margin-top: 10px;
+            align-self: flex-end;
+        }
+        
+        #orderPage {
+            padding: 15px;
+        }
+        
+        #orderTable th, #orderTable td {
+            padding: 8px 5px;
+            font-size: 14px;
+        }
+        
+        .footer {
+            height: 50px;
+            padding: 0 10px;
+        }
+        
+        .footer button {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+    }
+    
+    /* 针对小屏幕手机的额外调整 */
+    @media (max-width: 480px) {
+        .game-title {
+            font-size: 14px;
+        }
+        
+        .game-size {
+            font-size: 11px;
+        }
+        
+        #orderTable {
+            font-size: 13px;
+        }
+        
+        .remove-btn {
+            padding: 3px 6px;
+            font-size: 12px;
+        }
+    }
     * {
       margin: 0;
       padding: 0;
@@ -51,16 +154,36 @@
       border: 1px solid #ddd;
       border-radius: 4px;
     }
+    /* 修改侧边栏样式 */
     #sidebar {
-      position: fixed;
-      top: 110px;
-      left: 0;
-      width: 120px;
-      height: calc(100vh - 110px);
-      background: white;
-      overflow-y: auto;
-      border-right: 1px solid #eee;
+  position: fixed;
+  top: 110px;
+  left: 0;
+  width: 120px;
+  height: calc(100vh - 170px); /* 增加底部间距 */
+  background: white;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-right: 1px solid #eee;
+  scrollbar-width: thin;
+  scrollbar-color: #4b6cb7 #f0f0f0;
+  padding-bottom: 20px; /* 添加内边距 */
+}
+    
+    /* 自定义滚动条样式 - Chrome/Safari/Edge */
+    #sidebar::-webkit-scrollbar {
+      width: 6px;
     }
+    
+    #sidebar::-webkit-scrollbar-track {
+      background: #f0f0f0;
+    }
+    
+    #sidebar::-webkit-scrollbar-thumb {
+      background-color: #4b6cb7;
+      border-radius: 3px;
+    }
+    
     #sidebar a {
       display: block;
       padding: 12px 15px;
@@ -68,16 +191,22 @@
       text-decoration: none;
       border-left: 3px solid transparent;
       transition: all 0.3s;
+      white-space: nowrap; /* 防止文字换行 */
+      overflow: hidden; /* 隐藏溢出内容 */
+      text-overflow: ellipsis; /* 显示省略号 */
     }
+    
     #sidebar a:hover {
       background: #f0f0f0;
       border-left-color: #4b6cb7;
       color: #4b6cb7;
     }
+  
     #content {
-      margin-left: 120px;
-      padding: 120px 20px 80px;
-    }
+  margin-left: 120px;
+  padding: 120px 20px 100px; /* 增加底部内边距 */
+  min-height: calc(100vh - 220px); /* 确保足够高度 */
+}
     .category {
       background: white;
       margin-bottom: 20px;
@@ -162,18 +291,19 @@
       cursor: pointer;
     }
     .footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      background: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
-      border-top: 1px solid #eee;
-    }
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  border-top: 1px solid #eee;
+  z-index: 98; /* 确保在侧边栏下方 */
+}
     .footer button {
       background: #4b6cb7;
       color: white;
@@ -240,7 +370,7 @@
     }
     
     #gameCategories::after {
-      content: "极客电玩内部系统 • 严禁截图";
+      content: "内部系统 • 严禁截图";
       position: fixed;
       bottom: 80px;
       right: 20px;
@@ -306,6 +436,47 @@
   </div>
 
   <script>
+    // 在原有脚本中添加移动端支持
+    
+    // 修改 generateSidebar 函数
+    function generateSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.innerHTML = '';
+      for (const category in gameData) {
+        const link = document.createElement('a');
+        link.href = `#${category}`;
+        link.textContent = category;
+        // 添加触摸反馈
+        link.ontouchstart = function() {
+          this.style.transform = 'scale(0.98)';
+        };
+        link.ontouchend = function() {
+          this.style.transform = 'scale(1)';
+        };
+        sidebar.appendChild(link);
+      }
+    }
+    
+    // 修改按钮事件，添加触摸支持
+    function addMobileButtonEvents() {
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.ontouchstart = function() {
+          this.style.opacity = '0.8';
+        };
+        button.ontouchend = function() {
+          this.style.opacity = '1';
+        };
+      });
+    }
+    
+    // 在 window.onload 中调用
+    window.onload = function() {
+      generateSidebar();
+      displayCategories();
+      updateTotal();
+      addMobileButtonEvents(); // 新增
+    };
     // 防截图保护功能
 document.addEventListener('keydown', function(e) {
   // 检测 PrintScreen 和 Windows+Shift+S
