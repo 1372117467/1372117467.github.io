@@ -6,7 +6,7 @@
   <!-- 已有 meta 标签下方添加 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
-  <title>极客电玩游戏选择系统</title>
+  <title>DH电玩游戏选择系统</title>
   <style>
     /* 原有样式保持不变... */
     
@@ -161,13 +161,13 @@
   left: 0;
   width: 120px;
   height: calc(100vh - 170px); /* 增加底部间距 */
-  background: white;
+  background: rgb(255, 255, 255);
   overflow-y: auto;
   overflow-x: hidden;
   border-right: 1px solid #eee;
   scrollbar-width: thin;
   scrollbar-color: #4b6cb7 #f0f0f0;
-  padding-bottom: 20px; /* 添加内边距 */
+  padding-bottom: 100px; /* 添加内边距 */
 }
     
     /* 自定义滚动条样式 - Chrome/Safari/Edge */
@@ -207,29 +207,34 @@
   padding: 120px 20px 100px; /* 增加底部内边距 */
   min-height: calc(100vh - 220px); /* 确保足够高度 */
 }
-    .category {
-      background: white;
-      margin-bottom: 20px;
-      padding: 15px;
-      border-radius: 5px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .category h2 {
-      color: #4b6cb7;
-      margin-bottom: 15px;
-      padding-bottom: 5px;
-      border-bottom: 1px solid #eee;
-    }
-    .game-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      margin: 10px 0;
-      background: #fafafa;
-      border-radius: 4px;
-      border: 1px solid #eee;
-    }
+   .category {
+  background: white;
+  margin-bottom: 10px;  /* 减少分类容器之间的间距 */
+  padding: 10px 15px;  /* 减少内边距（原可能是15-20px） */
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+ /* 最紧凑版本 */
+.category h2 {
+  color: #4b6cb7;
+  margin: 0 0 2px 0; /* 上下左右边距 */
+  padding: 0 0 2px 0; 
+  border-bottom: 1px solid #eee;
+  font-size: 16px;
+  line-height: 1.2; /* 减少行高 */
+}
+
+.category {
+  background: white;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.game-item {
+  margin: 3px 0;
+}
     .game-info {
       flex: 1;
     }
@@ -370,11 +375,11 @@
     }
     
     #gameCategories::after {
-      content: "内部系统 • 严禁截图";
+      content: "DH电玩·免费选择游戏";
       position: fixed;
-      bottom: 80px;
-      right: 20px;
-      color: rgba(75,108,183,0.2);
+      bottom: 280px;
+      right: 120px;
+      color: rgba(29, 32, 37, 0.2);
       font-size: 24px;
       transform: rotate(-15deg);
       pointer-events: none;
@@ -393,7 +398,7 @@
     </style>
 </head>
 <body>
-  <header>游戏选择系统（游戏免费）</header>
+  <header>DH游戏选择系统</header>
   
   <div id="searchBox">
     <input type="text" id="searchInput" placeholder="搜索游戏..." oninput="filterGames()">
@@ -424,10 +429,43 @@
         </tr>
       </tfoot>
     </table>
-    <div style="text-align:center; margin-top:20px;">
-      <button onclick="backToShop()">返回继续选购</button>
-      <button onclick="confirmOrder()">确认订单</button>
-    </div>
+    <div style="text-align:center; margin-top:30px; display:flex; justify-content:center; gap:20px;">
+  <button 
+    onclick="backToShop()" 
+    style="
+      padding: 12px 30px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      color: #4b6cb7;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    "
+    onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 12px rgba(0,0,0,0.15)'"
+    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)'">
+    ← 返回继续选购
+  </button>
+  
+  <button 
+    onclick="confirmOrder()" 
+    style="
+      padding: 12px 30px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #4b6cb7, #182848);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    "
+    onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 12px rgba(0,0,0,0.2)'; this.style.background='linear-gradient(135deg, #3a5a9d, #101f38)'"
+    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)'; this.style.background='linear-gradient(135deg, #4b6cb7, #182848)'">
+    确认订单发给客服 →
+  </button>
+</div>
   </div>
   
   <div class="footer">
@@ -698,7 +736,7 @@ setInterval(function() {
     { "code": "D18", "name": "东方夜雀食堂", "size": 5.01 },
     { "code": "S33", "name": "失落城堡", "size": 2.39 },
     { "code": "Y9", "name": "以撒的结合 重生", "size": 2.09 },
-    { "code": "Z2", "name": "中国式家长", "size": 0.886 },
+    { "code": "Z2", "name": "中国式家长", "size": 0.886 }
   ],
 
   "角色扮演": [
@@ -1022,7 +1060,7 @@ async function confirmOrder() {
                border-radius:4px;
                cursor:pointer;
                float:right;">
-        关闭
+        全部关闭
       </button>
     `;
 
