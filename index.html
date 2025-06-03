@@ -542,8 +542,7 @@ setInterval(function() {
 }, 1000);
     // 游戏数据示例
     const gameData = {
-  "角色扮演RPG": [
-    { "code": "A1", "name": "艾尔登法环", "size": 66.2 },
+  "角色扮演": [
     { "code": "B1", "name": "博德之门3", "size": 147 },
     { "code": "C3", "name": "刺客信条：奥德赛", "size": 101 },
     { "code": "C4", "name": "刺客信条：起源", "size": 73.3 },
@@ -558,7 +557,12 @@ setInterval(function() {
     { "code": "X9", "name": "仙剑奇侠传7", "size": 43.4 },
     { "code": "D2", "name": "地铁：离去", "size": 100 },
     { "code": "N4", "name": "尼尔机械纪元 年度版", "size": 41.5 },
-    { "code": "Z27", "name": "最终幻想15", "size": 83.8 }
+    { "code": "Z27", "name": "最终幻想15", "size": 83.8 },
+    {"code": "A4", "name": "艾尔登法环：黑夜君临", "size": 20.6},
+    {"code": "A5", "name": "艾瑞卡", "size": 36.7},
+    {"code": "S37", "name": "上古卷轴5：天际 周年纪念版", "size": 31.4},
+    {"code": "X24", "name": "轩辕剑7", "size": 38.8},
+    {"code": "Y11", "name": "野狗子", "size": 26},
   ],
 
   "动作冒险": [
@@ -569,7 +573,6 @@ setInterval(function() {
     { "code": "D7", "name": "地平线：西之绝境", "size": 123 },
     { "code": "D10", "name": "对马岛之魂导演剪辑版", "size": 52.1 },
     { "code": "G1", "name": "孤岛惊魂6", "size": 77.4 },
-    { "code": "G2", "name": "侠盗猎车手/GTA5", "size": 98.3 },
     { "code": "G5", "name": "古墓丽影：暗影", "size": 37.4 },
     { "code": "G6", "name": "古墓丽影9", "size": 21.6 },
     { "code": "G7", "name": "古墓丽影10：崛起", "size": 27.2 },
@@ -586,6 +589,10 @@ setInterval(function() {
     { "code": "Z34", "name": "战争机器5", "size": 98.7 },
     { "code": "H23", "name": "哈迪斯 杀出地狱", "size": 11 },
     { "code": "H24", "name": "黑道圣徒4", "size": 28.3 },
+    {"code": "H25", "name": "海贼无双4：终极版", "size": 26.6},
+    {"code": "M14", "name": "马克思佩恩3", "size": 32.6},
+    {"code": "M16", "name": "盟军敢死队3高清重制版", "size": 3.66},
+    {"code": "Z35", "name": "灾后修复师", "size": 48.4}
   ],
 
   "射击类": [
@@ -613,6 +620,15 @@ setInterval(function() {
     { "code": "Z28", "name": "战锤40K：星际战士2", "size": 71.5 },
     { "code": "Q17", "name": "求生之路2", "size": 27.7 },
     { "code": "Z31", "name": "战地2", "size": 2.78 },
+    {"code": "J13", "name": "JOJO的奇妙冒险：群星之战重制版", "size": 5.05},
+    {"code": "J14", "name": "狙击精英V2", "size": 12.9},
+    {"code": "J15", "name": "狙击精英3", "size": 28.3},
+    {"code": "J16", "name": "狙击精英(2005)", "size": 3.06},
+    {"code": "K4", "name": "抗日：血战上海滩", "size": 0.262},
+    {"code": "W10", "name": "无主之地2", "size": 11.9},
+    {"code": "W11", "name": "无主之地：前传", "size": 31.1},
+    {"code": "Z37", "name": "终结者：反抗军", "size": 30},
+    {"code": "Z38", "name": "终结者：黑暗命运 - 反抗", "size": 14.6}
   ],
 
   "策略模拟": [
@@ -642,6 +658,11 @@ setInterval(function() {
     { "code": "Q18", "name": "全面战争中世纪2", "size": 15 },
     { "code": "S31", "name": "双点医院", "size": 8.3 },
     { "code": "W9", "name": "网吧模拟器", "size": 3.91 },
+    {"code": "C12", "name": "城市天际线", "size": 18.4},
+    {"code": "M17", "name": "魔法门之英雄无敌7", "size": 14.5},
+    {"code": "Q19", "name": "全面战争模拟器", "size": 4.49},
+    {"code": "Y12", "name": "英雄连2", "size": 32.1},
+    {"code": "S38", "name": "苏丹的游戏", "size": 2.36}
   ],
 
   "格斗/动作": [
@@ -661,7 +682,7 @@ setInterval(function() {
     { "code": "S23", "name": "死神：魂魄觉醒", "size": 71.7 }
   ],
 
-  "体育竞速": [
+  "体育竞技": [
     { "code": "D4", "name": "极限竞速：地平线4", "size": 110 },
     { "code": "D5", "name": "极限竞速：地平线5", "size": 175 },
     { "code": "C8", "name": "尘埃拉力赛2.0", "size": 109 },
@@ -673,11 +694,20 @@ setInterval(function() {
     { "code": "N1", "name": "NBA 2K23", "size": 137 },
     { "code": "N3", "name": "NBA18", "size": 66.1 },
     { "code": "Z8", "name": "足球经理2018-2023合集", "size": 21.1 },
-    { "code": "F2", "name": "FIFA 23", "size": 50.1 }
+    { "code": "F2", "name": "FIFA 23", "size": 50.1 },
+    {"code": "S39", "name": "实况足球2021", "size": 38.9},
+    {"code": "W12", "name": "美国职业摔角联盟2K25", "size": 97}
   ],
 
   "开放世界": [
+    {"code": "A4", "name": "艾尔登法环：黑夜君临", "size": 20.6},
+    {"code": "S37", "name": "上古卷轴5：天际 周年纪念版", "size": 31.4},
+    {"code": "F6", "name": "法外枭雄：滚石城", "size": 87.8},
+    {"code": "X24", "name": "轩辕剑7", "size": 38.8},
+    {"code": "Z36", "name": "庄园领主", "size": 11.7},
+    { "code": "G2", "name": "侠盗猎车手/GTA5", "size": 98.3 },
     { "code": "F1", "name": "辐射4 mod版", "size": 144 },
+    { "code": "A1", "name": "艾尔登法环", "size": 66.2 },
     { "code": "G10", "name": "GTA4 合集", "size": 45.2 },
     { "code": "H4", "name": "幻兽帕鲁", "size": 26.1 },
     { "code": "J2", "name": "禁闭求生", "size": 10.3 },
@@ -716,9 +746,18 @@ setInterval(function() {
     { "code": "S32", "name": "深海迷航", "size": 5.79 },
     { "code": "Z32", "name": "纸人：第一章", "size": 2.03 },
     { "code": "Z33", "name": "纸人2", "size": 7.41 },
+    {"code": "Y11", "name": "野狗子", "size": 26},
+    {"code": "A5", "name": "艾瑞卡", "size": 36.7},
+    {"code": "S34", "name": "杀手5：赦免", "size": 23.7},
+    {"code": "T6", "name": "她看到红色", "size": 2.37}
   ],
 
   "独立游戏": [
+     {"code": "S35", "name": "死亡细胞", "size": 2.58},
+    {"code": "T5", "name": "泰拉瑞亚", "size": 0.0221},
+    {"code": "P4", "name": "破碎族裔", "size": 9.24},
+    {"code": "S36", "name": "沙威玛传奇", "size": 0.0941},
+    {"code": "M15", "name": "米塔", "size": 2.88},
     { "code": "D1", "name": "迪士尼传奇米奇：重制版", "size": 23.7 },
     { "code": "L4", "name": "乐高DC超级反派", "size": 19.1 },
     { "code": "M5", "name": "麻布仔大冒险", "size": 53 },
@@ -856,8 +895,14 @@ setInterval(function() {
     { "code": "M12", "name": "毛线小精灵2", "size": 7.05 },
     { "code": "P3", "name": "披萨负鼠", "size": 0.875 },
     { "code": "Q8", "name": "潜水员戴夫", "size": 3.31 },
-  ]
-};
+  ],
+  "现实模拟": [
+    {"code": "F7", "name": "犯罪现场清洁工", "size": 32.9},
+    {"code": "W13", "name": "完蛋！我也能追到美女了", "size": 3.7},
+    {"code": "W14", "name": "完蛋了 我被女神包围了", "size": 1.84},
+    {"code": "M18", "name": "名利的游戏", "size": 21.1},
+     ],
+}
 
     // 从localStorage加载数据
     let selectedGames = JSON.parse(localStorage.getItem('selectedGames')) || {};
@@ -1013,7 +1058,11 @@ setInterval(function() {
 
 // 确认订单（已修改版本）
 async function confirmOrder() {
-  const selectedCodes = Object.keys(selectedGames).filter(code => selectedGames[code]);
+  // 获取并排序选中的游戏编码
+  const selectedCodes = Object.keys(selectedGames)
+    .filter(code => selectedGames[code])
+    .sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
+  
   const orderTime = new Date().toLocaleString();
   const totalGB = totalSize.toFixed(1);
   
