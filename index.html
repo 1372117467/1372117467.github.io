@@ -4,784 +4,780 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>DH游戏目录</title>
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-body {
-  font-family: 'Microsoft YaHei', sans-serif;
-  background-color: #f5f5f5;
-  -webkit-user-select: none;
-  user-select: none;
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
-  display: flex;
-  justify-content: center;
-  min-height: 100vh;
-}
-
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  background: linear-gradient(to right, #4b6cb7, #182848);
-  color: white;
-  text-align: center;
-  line-height: 60px;
-  font-size: 20px;
-  font-weight: bold;
-  z-index: 100;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-  padding-top: constant(safe-area-inset-top);
-  padding-top: env(safe-area-inset-top);
-}
-
-#searchBox {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 100%;
-  height: 50px;
-  background: white;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  z-index: 99;
-}
-
-#searchBox input {
-  width: 80%;
-  height: 30px;
-  padding: 5px 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: all 0.3s;
-}
-
-#searchBox input:focus {
-  border-color: #4b6cb7;
-  box-shadow: 0 0 0 2px rgba(75, 108, 183, 0.2);
-  outline: none;
-}
-
-#sidebar {
-  position: fixed;
-  top: 110px;
-  left: 0;
-  width: 120px;
-  height: calc(100vh - 170px);
-  background: white;
-  overflow-y: auto;
-  border-right: 1px solid #eee;
-  scrollbar-width: thin;
-  scrollbar-color: #4b6cb7 #f0f0f0;
-  z-index: 98;
-  transition: width 0.3s ease;
-}
-
-#sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-
-#sidebar::-webkit-scrollbar-track {
-  background: #f0f0f0;
-}
-
-#sidebar::-webkit-scrollbar-thumb {
-  background-color: #4b6cb7;
-  border-radius: 3px;
-}
-
-#sidebar a {
-  display: block;
-  padding: 12px 15px;
-  color: #555;
-  text-decoration: none;
-  border-left: 3px solid transparent;
-  transition: all 0.3s;
-}
-
-#sidebar a:hover, #sidebar a.active {
-  background: #f0f0f0;
-  border-left-color: #4b6cb7;
-  color: #4b6cb7;
-}
-
-#content {
-  margin-left: 120px;
-  padding: 120px 20px 100px;
-  min-height: calc(100vh - 220px);
-}
-
-.category {
-  background: white;
-  margin-bottom: 15px;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.category h2 {
-  color: #4b6cb7;
-  margin-bottom: 15px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #eee;
-  font-size: 18px;
-}
-
-.game-item {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  margin-bottom: 10px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  transition: all 0.3s;
-}
-
-.game-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-}
-
-.game-cover-container {
-  width: 60px;
-  height: 80px;
-  flex-shrink: 0;
-  margin-right: 15px;
-  border-radius: 4px;
-  overflow: hidden;
-  position: relative;
-}
-
-.game-cover {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s;
-}
-
-.game-item:hover .game-cover {
-  transform: scale(1.1);
-}
-
-.cover-error {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #4b6cb7, #182848);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.game-info {
-  flex-grow: 1;
-  min-width: 0;
-}
-
-.game-title {
-  font-weight: bold;
-  margin-bottom: 5px;
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-  word-break: break-word;
-}
-
-.game-size {
-  color: #666;
-  font-size: 12px;
-}
-
-.quantity-control {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-}
-
-.quantity-control button {
-  width: 25px;
-  height: 25px;
-  background: #4b6cb7;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.quantity-control button:not(:disabled):hover {
-  background: #3a5a97;
-}
-
-.quantity-control button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-.quantity-control span {
-  width: 30px;
-  text-align: center;
-  font-weight: 600;
-}
-
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  background: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  border-top: 1px solid #eee;
-  z-index: 98;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
-}
-
-.footer span {
-  font-weight: 500;
-  color: #333;
-}
-
-.footer button {
-  background: #4b6cb7;
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 15px;
-  transition: all 0.3s;
-}
-
-.footer button:hover {
-  background: #3a5a97;
-}
-
-/* 订单页面样式 */
-#orderPage {
-  display: none;
-  padding: 20px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-  margin: 30px auto;
-  width: 100%;
-  max-width: 800px;
-}
-
-.order-header {
-  text-align: center;
-  margin-bottom: 25px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eaeaea;
-}
-
-.order-header h2 {
-  color: #182848;
-  font-size: 28px;
-  margin-bottom: 8px;
-}
-
-.order-header p {
-  color: #666;
-  font-size: 16px;
-}
-
-.order-game-list {
-  max-height: 60vh;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #4b6cb7 #f0f0f0;
-  padding: 5px;
-}
-
-.order-game-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.order-game-list::-webkit-scrollbar-track {
-  background: #f0f0f0;
-}
-
-.order-game-list::-webkit-scrollbar-thumb {
-  background-color: #4b6cb7;
-  border-radius: 3px;
-}
-
-.game-card {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  margin-bottom: 12px;
-  background: #f9f9ff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  border: 1px solid #eaefff;
-  transition: all 0.3s;
-}
-
-.game-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 10px rgba(75, 108, 183, 0.15);
-}
-
-.order-game-cover-container {
-  width: 60px;
-  height: 80px;
-  flex-shrink: 0;
-  margin-right: 15px;
-  border-radius: 4px;
-  overflow: hidden;
-  position: relative;
-}
-
-.order-game-cover {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s;
-}
-
-.game-card:hover .order-game-cover {
-  transform: scale(1.1);
-}
-
-.order-cover-error {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #4b6cb7, #182848);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.order-game-details {
-  flex: 1;
-  min-width: 0;
-}
-
-.order-game-title {
-  font-weight: bold;
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 6px;
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-  word-break: break-word;
-}
-
-.order-game-size {
-  color: #666;
-  font-size: 14px;
-}
-
-.remove-btn {
-  background: #ff5252;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 13px;
-  margin-left: 10px;
-}
-
-.remove-btn:hover {
-  background: #e04141;
-}
-
-/* 修改后的订单摘要部分 - 更紧凑 */
-.order-summary {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(to right, #4b6cb710, #18284808);
-  padding: 12px 20px;
-  border-radius: 8px;
-  margin: 15px 0;
-}
-
-.order-summary-label {
-  font-size: 16px;
-  color: #182848;
-  font-weight: 500;
-}
-
-.order-summary-value {
-  font-size: 20px;
-  font-weight: bold;
-  color: #4b6cb7;
-}
-
-.buttons-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.order-btn {
-  padding: 12px 30px;
-  border-radius: 50px;
-  font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.back-btn {
-  background: white;
-  border: 2px solid #4b6cb7;
-  color: #4b6cb7;
-}
-
-.back-btn:hover {
-  background: #f0f3ff;
-}
-
-.confirm-btn {
-  background: linear-gradient(to right, #4b6cb7, #182848);
-  color: white;
-  border: none;
-}
-
-.confirm-btn:hover {
-  background: linear-gradient(to right, #5a7ac9, #20315c);
-}
-
-.order-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 7px 15px rgba(0,0,0,0.15);
-}
-
-.copy-notification {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(75, 108, 183, 0.95);
-  color: white;
-  padding: 12px 25px;
-  border-radius: 50px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-  z-index: 1000;
-  font-weight: bold;
-  display: none;
-  animation: fadeInOut 2.5s ease-in-out;
-}
-
-@keyframes fadeInOut {
-  0% { opacity: 0; bottom: 0; }
-  10% { opacity: 1; bottom: 20px; }
-  90% { opacity: 1; bottom: 20px; }
-  100% { opacity: 0; bottom: 0; }
-}
-
-/* 修改后的硬盘容量建议弹窗 - 更紧凑 */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s;
-}
-
-.modal-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.storage-modal {
-  background: white;
-  width: 90%;
-  max-width: 400px;
-  max-height: 80vh;
-  overflow-y: auto;
-  border-radius: 10px;
-  padding: 15px;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-  transform: translateY(20px);
-  transition: transform 0.3s;
-}
-
-.modal-overlay.active .storage-modal {
-  transform: translateY(0);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-}
-
-.modal-title {
-  font-size: 20px;
-  color: #182848;
-  font-weight: 600;
-}
-
-.close-modal {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #666;
-}
-
-.storage-list {
-  margin-top: 10px;
-}
-
-.storage-item {
-  background: #f8f9fa;
-  padding: 10px 12px;
-  border-radius: 6px;
-  margin-bottom: 8px;
-  border-left: 3px solid #4b6cb7;
-  font-size: 14px;
-}
-
-.storage-item strong {
-  color: #4b6cb7;
-}
-
-.warning {
-  color: #ff5252;
-  font-weight: 500;
-}
-
-.copy-container {
-  display: flex;
-  flex-direction: column;
-  margin-top: 15px;
-}
-
-.copy-text-area {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 12px;
-  padding: 12px;
-  border: 2px solid #4b6cb7;
-  border-radius: 8px;
-  font-family: 'Microsoft YaHei', sans-serif;
-  resize: none;
-  font-size: 14px;
-}
-
-.copy-btn {
-  background: #4b6cb7;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  transition: all 0.3s;
-}
-
-.copy-btn:hover {
-  background: #3a5a97;
-}
-
-/* 移动端优化 */
-@media (max-width: 768px) {
-  #sidebar {
-    width: 80px;
-    font-size: 14px;
-  }
-  #sidebar a {
-    padding: 10px 8px;
-    font-size: 12px;
-  }
-  #content {
-    margin-left: 80px;
-    width: 360px;
-    margin-right: auto;
-    padding: 120px 10px 100px;
-    box-sizing: border-box;
-  }
-  .game-item {
-    flex-wrap: wrap;
-    width: 100%;
-    max-width: 340px;
-    flex-wrap: nowrap;
-    padding: 8px;
-  }
-  .game-cover-container {
-    width: 50px;
-    height: 70px;
-    margin-right: 8px;
-  }
-  .game-title {
-    font-size: 13px;
-  }
-  .game-size {
-    font-size: 10px;
-  }
-  .quantity-control {
-    margin-left: auto;
-    margin-top: 5px;
-  }
-  #orderPage {
-    padding: 15px;
-    margin: 15px auto;
-    width: 360px;
-  }
-  .game-card {
-    flex-wrap: wrap;
-    width: 100%;
-    max-width: 340px;
-    padding: 8px;
-  }
-  .order-game-cover-container {
-    margin-right: 10px;
-  }
-  .order-game-details {
-    flex: 1 0 60%;
-    margin-bottom: 5px;
-  }
-  .remove-btn {
-    margin-left: auto;
-    margin-top: 5px;
-  }
-  .buttons-container {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .order-btn {
-    width: 100%;
-    padding: 12px;
-  }
-  .storage-modal {
-    width: 320px;
-    max-width: 320px;
-  }
-  #searchBox {
-    width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
-    padding: 8px;
-  }
-  #searchBox input {
-    width: 90%;
-    font-size: 12px;
-  }
-  .footer {
-    width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
-    padding: 0 10px;
-  }
-  .footer button {
-    padding: 8px 15px;
-    font-size: 13px;
-  }
-  #sidebar, .order-game-list {
-    scrollbar-width: none;
-  }
-  #sidebar::-webkit-scrollbar, .order-game-list::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  #sidebar {
-    width: 60px;
-    font-size: 12px;
-  }
-  #sidebar a {
-    padding: 8px 6px;
-    font-size: 10px;
-  }
-  #content {
-    margin-left: 60px;
-    width: 320px;
-    padding: 120px 5px 100px;
-  }
-  .game-title, .order-game-title {
-    font-size: 14px;
-  }
-  .game-size, .order-game-size {
-    font-size: 11px;
-  }
-  .footer button {
-    padding: 10px 20px;
-    font-size: 14px;
-  }
-  .storage-modal {
-    max-width: 300px;
-    width: 300px;
-    padding: 12px;
-  }
-  .modal-title {
-    font-size: 18px;
-  }
-  .storage-item {
-    font-size: 13px;
-    padding: 8px 10px;
-  }
-  .copy-text-area {
-    height: 90px;
-    font-size: 13px;
-  }
-  .copy-btn {
-    padding: 8px 12px;
-    font-size: 13px;
-  }
-  #orderPage {
-    width: 320px;
-    margin: 10px auto;
-    padding: 10px;
-  }
-}
-</style>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Microsoft YaHei', sans-serif;
+      background-color: #f5f5f5;
+      -webkit-user-select: none;
+      user-select: none;
+      padding-bottom: constant(safe-area-inset-bottom);
+      padding-bottom: env(safe-area-inset-bottom);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: linear-gradient(to right, #4b6cb7, #182848);
+      color: white;
+      text-align: center;
+      line-height: 60px;
+      font-size: 20px;
+      font-weight: bold;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      padding-top: constant(safe-area-inset-top);
+      padding-top: env(safe-area-inset-top);
+    }
+
+    #searchBox {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background: white;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 99;
+    }
+
+    #searchBox input {
+      width: 80%;
+      height: 30px;
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    #searchBox input:focus {
+      border-color: #4b6cb7;
+      box-shadow: 0 0 0 2px rgba(75, 108, 183, 0.2);
+      outline: none;
+    }
+
+    #sidebar {
+      position: fixed;
+      top: 110px;
+      left: 0;
+      width: 120px;
+      height: calc(100vh - 170px);
+      background: white;
+      overflow-y: auto;
+      border-right: 1px solid #eee;
+      scrollbar-width: thin;
+      scrollbar-color: #4b6cb7 #f0f0f0;
+      z-index: 98;
+      transition: width 0.3s ease;
+    }
+
+    #sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    #sidebar::-webkit-scrollbar-track {
+      background: #f0f0f0;
+    }
+
+    #sidebar::-webkit-scrollbar-thumb {
+      background-color: #4b6cb7;
+      border-radius: 3px;
+    }
+
+    #sidebar a {
+      display: block;
+      padding: 12px 15px;
+      color: #555;
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      transition: all 0.3s;
+    }
+
+    #sidebar a:hover, #sidebar a.active {
+      background: #f0f0f0;
+      border-left-color: #4b6cb7;
+      color: #4b6cb7;
+    }
+
+    #content {
+      margin-left: 120px;
+      padding: 120px 20px 100px;
+      min-height: calc(100vh - 220px);
+    }
+
+    .category {
+      background: white;
+      margin-bottom: 15px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .category h2 {
+      color: #4b6cb7;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #eee;
+      font-size: 18px;
+    }
+
+    .game-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+
+    .game-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    .game-cover-container {
+      width: 60px;
+      height: 80px;
+      flex-shrink: 0;
+      margin-right: 15px;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .game-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .game-item:hover .game-cover {
+      transform: scale(1.1);
+    }
+
+    .cover-error {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #4b6cb7, #182848);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .game-info {
+      flex-grow: 1;
+      min-width: 0;
+    }
+
+    .game-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      word-break: break-word;
+    }
+
+    .game-size {
+      color: #666;
+      font-size: 12px;
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+    }
+
+    .quantity-control button {
+      width: 25px;
+      height: 25px;
+      background: #4b6cb7;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .quantity-control button:not(:disabled):hover {
+      background: #3a5a97;
+    }
+
+    .quantity-control button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .quantity-control span {
+      width: 30px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      border-top: 1px solid #eee;
+      z-index: 98;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+    }
+
+    .footer span {
+      font-weight: 500;
+      color: #333;
+    }
+
+    .footer button {
+      background: #4b6cb7;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 15px;
+      transition: all 0.3s;
+    }
+
+    .footer button:hover {
+      background: #3a5a97;
+    }
+
+    #orderPage {
+      display: none;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      margin: 30px auto;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .order-header {
+      text-align: center;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    .order-header h2 {
+      color: #182848;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .order-header p {
+      color: #666;
+      font-size: 16px;
+    }
+
+    .order-game-list {
+      max-height: 60vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #4b6cb7 #f0f0f0;
+      padding: 5px;
+    }
+
+    .order-game-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .order-game-list::-webkit-scrollbar-track {
+      background: #f0f0f0;
+    }
+
+    .order-game-list::-webkit-scrollbar-thumb {
+      background-color: #4b6cb7;
+      border-radius: 3px;
+    }
+
+    .game-card {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      margin-bottom: 12px;
+      background: #f9f9ff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border: 1px solid #eaefff;
+      transition: all 0.3s;
+    }
+
+    .game-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(75, 108, 183, 0.15);
+    }
+
+    .order-game-cover-container {
+      width: 60px;
+      height: 80px;
+      flex-shrink: 0;
+      margin-right: 15px;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .order-game-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .game-card:hover .order-game-cover {
+      transform: scale(1.1);
+    }
+
+    .order-cover-error {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #4b6cb7, #182848);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .order-game-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .order-game-title {
+      font-weight: bold;
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 6px;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      word-break: break-word;
+    }
+
+    .order-game-size {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .remove-btn {
+      background: #ff5252;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 13px;
+      margin-left: 10px;
+    }
+
+    .remove-btn:hover {
+      background: #e04141;
+    }
+
+    .order-summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to right, #4b6cb710, #18284808);
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    .order-summary-label {
+      font-size: 16px;
+      color: #182848;
+      font-weight: 500;
+    }
+
+    .order-summary-value {
+      font-size: 20px;
+      font-weight: bold;
+      color: #4b6cb7;
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .order-btn {
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .back-btn {
+      background: white;
+      border: 2px solid #4b6cb7;
+      color: #4b6cb7;
+    }
+
+    .back-btn:hover {
+      background: #f0f3ff;
+    }
+
+    .confirm-btn {
+      background: linear-gradient(to right, #4b6cb7, #182848);
+      color: white;
+      border: none;
+    }
+
+    .confirm-btn:hover {
+      background: linear-gradient(to right, #5a7ac9, #20315c);
+    }
+
+    .order-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 15px rgba(0,0,0,0.15);
+    }
+
+    .copy-notification {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(75, 108, 183, 0.95);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 50px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      z-index: 1000;
+      font-weight: bold;
+      display: none;
+      animation: fadeInOut 2.5s ease-in-out;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; bottom: 0; }
+      10% { opacity: 1; bottom: 20px; }
+      90% { opacity: 1; bottom: 20px; }
+      100% { opacity: 0; bottom: 0; }
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .storage-modal {
+      background: white;
+      width: 90%;
+      max-width: 400px;
+      max-height: 80vh;
+      overflow-y: auto;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      transform: translateY(20px);
+      transition: transform 0.3s;
+    }
+
+    .modal-overlay.active .storage-modal {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .modal-title {
+      font-size: 20px;
+      color: #182848;
+      font-weight: 600;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .storage-list {
+      margin-top: 10px;
+    }
+
+    .storage-item {
+      background: #f8f9fa;
+      padding: 10px 12px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      border-left: 3px solid #4b6cb7;
+      font-size: 14px;
+    }
+
+    .storage-item strong {
+      color: #4b6cb7;
+    }
+
+    .warning {
+      color: #ff5252;
+      font-weight: 500;
+    }
+
+    .copy-container {
+      display: flex;
+      flex-direction: column;
+      margin-top: 15px;
+    }
+
+    .copy-text-area {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 12px;
+      padding: 12px;
+      border: 2px solid #4b6cb7;
+      border-radius: 8px;
+      font-family: 'Microsoft YaHei', sans-serif;
+      resize: none;
+      font-size: 14px;
+    }
+
+    .copy-btn {
+      background: #4b6cb7;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .copy-btn:hover {
+      background: #3a5a97;
+    }
+
+    @media (max-width: 768px) {
+      #sidebar {
+        width: 80px;
+        font-size: 14px;
+      }
+      #sidebar a {
+        padding: 10px 8px;
+        font-size: 12px;
+      }
+      #content {
+        margin-left: 80px;
+        width: 360px;
+        margin-right: auto;
+        padding: 120px 10px 100px;
+        box-sizing: border-box;
+      }
+      .game-item {
+        flex-wrap: wrap;
+        width: 100%;
+        max-width: 340px;
+        flex-wrap: nowrap;
+        padding: 8px;
+      }
+      .game-cover-container {
+        width: 50px;
+        height: 70px;
+        margin-right: 8px;
+      }
+      .game-title {
+        font-size: 13px;
+      }
+      .game-size {
+        font-size: 10px;
+      }
+      .quantity-control {
+        margin-left: auto;
+        margin-top: 5px;
+      }
+      #orderPage {
+        padding: 15px;
+        margin: 15px auto;
+        width: 360px;
+      }
+      .game-card {
+        flex-wrap: wrap;
+        width: 100%;
+        max-width: 340px;
+        padding: 8px;
+      }
+      .order-game-cover-container {
+        margin-right: 10px;
+      }
+      .order-game-details {
+        flex: 1 0 60%;
+        margin-bottom: 5px;
+      }
+      .remove-btn {
+        margin-left: auto;
+        margin-top: 5px;
+      }
+      .buttons-container {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .order-btn {
+        width: 100%;
+        padding: 12px;
+      }
+      .storage-modal {
+        width: 320px;
+        max-width: 320px;
+      }
+      #searchBox {
+        width: 100%;
+        max-width: 360px;
+        margin: 0 auto;
+        padding: 8px;
+      }
+      #searchBox input {
+        width: 90%;
+        font-size: 12px;
+      }
+      .footer {
+        width: 100%;
+        max-width: 360px;
+        margin: 0 auto;
+        padding: 0 10px;
+      }
+      .footer button {
+        padding: 8px 15px;
+        font-size: 13px;
+      }
+      #sidebar, .order-game-list {
+        scrollbar-width: none;
+      }
+      #sidebar::-webkit-scrollbar, .order-game-list::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #sidebar {
+        width: 60px;
+        font-size: 12px;
+      }
+      #sidebar a {
+        padding: 8px 6px;
+        font-size: 10px;
+      }
+      #content {
+        margin-left: 60px;
+        width: 320px;
+        padding: 120px 5px 100px;
+      }
+      .game-title, .order-game-title {
+        font-size: 14px;
+      }
+      .game-size, .order-game-size {
+        font-size: 11px;
+      }
+      .footer button {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+      .storage-modal {
+        max-width: 300px;
+        width: 300px;
+        padding: 12px;
+      }
+      .modal-title {
+        font-size: 18px;
+      }
+      .storage-item {
+        font-size: 13px;
+        padding: 8px 10px;
+      }
+      .copy-text-area {
+        height: 90px;
+        font-size: 13px;
+      }
+      .copy-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+      #orderPage {
+        width: 320px;
+        margin: 10px auto;
+        padding: 10px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>DH游戏选择系统</header>
@@ -805,17 +801,13 @@ header {
     <div class="order-game-list" id="orderListContainer"></div>
     
     <div class="order-summary compact-summary">
-      <div class="compact-label">总容量 (GB)</div>
-      <div class="compact-value" id="orderTotal">0</div>
+      <div class="order-summary-label">总容量 (GB)</div>
+      <div class="order-summary-value" id="orderTotal">0</div>
     </div>
     
     <div class="buttons-container">
-      <button class="order-btn confirm-btn" onclick="confirmOrder()">
-        确认订单发给客服
-      </button>
-      <button class="order-btn back-btn" onclick="backToShop()">
-        返回继续选购
-      </button>
+      <button class="order-btn confirm-btn" onclick="confirmOrder()">确认订单发给客服</button>
+      <button class="order-btn back-btn" onclick="backToShop()">返回继续选购</button>
     </div>
   </div>
   
@@ -828,7 +820,6 @@ header {
     游戏编号和总容量已复制
   </div>
   
-  <!-- 硬盘容量建议弹窗 -->
   <div class="modal-overlay" id="storageModal">
     <div class="storage-modal">
       <div class="modal-header">
@@ -846,564 +837,605 @@ header {
   <script>
     // 游戏数据
     const gameData = {
+    // 游戏数据
       "游戏前端": [
         { "code": "0", "name": "游戏前端（必选）", "size": 5,  "image": "images/游戏前端.webp"}
       ],
-      "游戏套餐": [ 
-        { "code": "PG", "name": "天马怀旧包6500款经典游戏", "size": 458,  "image": "images/天马怀旧包.webp"},
-        { "code": "63", "name": "双人游戏亲子73款合集", "size": 295,  "image": "images/双人游戏亲子合集.webp"},
+"游戏套餐": [ 
+     { "code": "PG", "name": "天马怀旧包6500款经典游戏", "size": 458,  "image": "images/天马怀旧包.webp"},
+     { "code": "63", "name": "双人游戏亲子73款合集（休闲多人游戏总和）", "size": 304,  "image": "images/双人游戏亲子合集.webp"},
       ],     
-      "热门游戏": [
-        { "code": "W19", "name": "黑神话悟空豪华版(需要联网)", "size": 134, "image": "images/W19.webp" },
-        {"code":"H28","name":"合金装备：食蛇者 重制版+预购特典+全DLC","size":93.8,"image":"images/H28.webp"},
-        {"code":"J1","name":"禁闭求生2 预购特典+全DLC","size":27.7,"image":"images/J1.webp"},
-        {"code": "L13", "name": "捞女游戏", "size": 21.7, "image": "images/L13.webp"},
-        {"code": "B1", "name": "博德之门3", "size": 147, "image": "images/B1.webp"},
-        {"code": "Z10", "name": "战神5：诸神黄昏", "size": 178, "image": "images/Z10.webp"},
-        {"code": "S1", "name": "赛博朋克2077", "size": 92.5, "image": "images/S1.webp"},
-        {"code": "H5", "name": "荒野大镖客2", "size": 119, "image": "images/H5.webp"},
-        {"code": "A1", "name": "艾尔登法环", "size": 66.2, "image": "images/A1.webp"},
-        {"code": "G2", "name": "GTA5/侠盗猎车手5增强版", "size": 98.3, "image": "images/G2.webp"},
-        {"code": "Z16", "name": "最后的生还者2", "size": 115, "image": "images/Z16.webp"},
-        {"code": "Z9", "name": "战神4", "size": 64.6, "image": "images/Z9.webp"},
-        {"code": "D5", "name": "极限竞速：地平线5", "size": 175, "image": "images/D5.webp"},
-        {"code": "M2", "name": "漫威蜘蛛侠2", "size": 111, "image": "images/M2.webp"},
-        {"code": "X11", "name": "消逝的光芒", "size": 39.4, "image": "images/X11.webp"},
-        {"code": "COD14", "name": "使命召唤14：二战", "size": 156, "image": "images/COD14.webp"},
-        {"code":"COD21","name":"使命召唤21：黑色行动 6","size":53.5,"image":"images/COD21.webp"},
-        {"code": "SWT2", "name": "塞尔达传说：旷野之息", "size": 15.7, "image": "images/SWT2.webp"},
-        {"code": "SWT3", "name": "塞尔达传说：王国之泪", "size": 16.6, "image": "images/SWT3.webp"},
-        {"code": "S8", "name": "双影奇境", "size": 87.7, "image": "images/S8.webp"},
-        {"code": "S16", "name": "双人成行", "size": 44.6, "image": "images/S16.webp"},
-        {"code": "D22", "name": "多重人生", "size": 48.1, "image": "images/D22.webp"},
-        {"code": "C7", "name": "城市天际线2", "size": 62.6, "image": "images/C7.webp"},
-        {"code": "C5", "name": "刺客信条：英灵殿", "size": 130, "image": "images/C5.webp"},
-        {"code": "S10", "name": "生化危机4重制版", "size": 59.1, "image": "images/S10.webp"},
-      ],
-      "休闲/多人游戏": [
-        {"code": "AW4", "name": "王国：两位君主", "size": 4.73, "image": "images/AW4.webp"},
-        {"code": "AB1", "name": "避风港", "size": 5.55, "image": "images/AB1.webp"},
-        {"code": "AC1", "name": "铲子骑士：口袋地牢", "size": 0.347, "image": "images/AC1.webp"},
-        {"code": "AC2", "name": "茶杯头", "size": 5.4, "image": "images/AC2.webp"},
-        {"code": "AC3", "name": "超级兔子人", "size": 1.63, "image": "images/AC3.webp"},
-        {"code": "AD1", "name": "哆啦A梦：自然王国与和乐家人", "size": 1.99, "image": "images/AD1.webp"},
-        {"code": "AD2", "name": "堆叠逐箱", "size": 2.6, "image": "images/AD2.webp"},
-        {"code": "AD3", "name": "洞穴探险2", "size": 0.699, "image": "images/AD3.webp"},
-        {"code": "AD4", "name": "捣蛋鹅", "size": 0.833, "image": "images/AD4.webp"},
-        {"code": "AE1", "name": "恶棍英雄", "size": 1.12, "image": "images/AE1.webp"},
-        {"code": "AF1", "name": "负鼠闹翻天", "size": 0.875, "image": "images/AF1.webp"},
-        {"code": "AF2", "name": "伐木工大冒险", "size": 0.506, "image": "images/AF2.webp"},
-        {"code": "AF3", "name": "非常英雄", "size": 2.87, "image": "images/AF3.webp"},
-        {"code": "AG1", "name": "狗狗", "size": 5.11, "image": "images/AG1.webp"},
-        {"code": "AG2", "name": "公路救赎", "size": 6.48, "image": "images/AG2.webp"},
-        {"code": "AH1", "name": "魂斗罗：加鲁加行动", "size": 9.33, "image": "images/AH1.webp"},
-        {"code": "AH2", "name": "魂斗罗：暴走军团", "size": 12.3, "image": "images/AH2.webp"},
-        {"code": "AH3", "name": "胡闹修车", "size": 2.06, "image": "images/AH3.webp"},
-        {"code": "AH4", "name": "混乱斗士", "size": 1.27, "image": "images/AH4.webp"},
-        {"code": "AH5", "name": "胡闹厨房：全都好吃", "size": 8.65, "image": "images/AH5.webp"},
-        {"code": "AH6", "name": "胡闹厨房2", "size": 8.01, "image": "images/AH6.webp"},
-        {"code": "AH7", "name": "胡闹搬家", "size": 1.33, "image": "images/AH7.webp"},
-        {"code": "AH8", "name": "海绵宝宝：争霸比基尼海滩", "size": 7.67, "image": "images/AH8.webp"},
-        {"code": "AH9", "name": "海绵宝宝：宇宙摇摆", "size": 7.95, "image": "images/AH9.webp"},
-        {"code": "AH10", "name": "胡闹装修", "size": 2.72, "image": "images/AH10.webp"},
-        {"code": "AJ1", "name": "加菲猫卡丁车：激情竞速", "size": 1.78, "image": "images/AJ1.webp"},
-        {"code": "AJ2", "name": "极速骑行：涡轮", "size": 1.22, "image": "images/AJ2.webp"},
-        {"code": "AJ3", "name": "九张羊皮纸", "size": 5.78, "image": "images/AJ3.webp"},
-        {"code": "AP2", "name": "破门而入2：北方特遣队", "size": 2.97, "image": "images/AP2.webp"},
-        {"code": "AL1", "name": "龙珠战士Z", "size": 8.16, "image": "images/AL1.webp"},
-        {"code": "AL2", "name": "洛克人Zero/ZX遗产合集", "size": 4.02, "image": "images/AL2.webp"},
-        {"code": "AL3", "name": "蜡笔小新：煤炭镇的小白", "size": 4.45, "image": "images/AL3.webp"},
-        {"code": "AL4", "name": "蜡笔小新 我与博士的暑假 ～没有终点的七日之旅～", "size": 2.42, "image": "images/AL4.webp"},
-        {"code": "AL5", "name": "蓝精灵卡丁车", "size": 2.22, "image": "images/AL5.webp"},
-        {"code": "AL6", "name": "蓝精灵：毒叶大作战", "size": 5.0, "image": "images/AL6.webp"},
-        {"code": "AM1", "name": "面包和年糕", "size": 0.98, "image": "images/AM1.webp"},
-        {"code": "AM2", "name": "猫咪斗恶龙2", "size": 0.413, "image": "images/AM2.webp"},
-        {"code": "AM3", "name": "模拟山羊3", "size": 11.8, "image": "images/AM3.webp"},
-        {"code": "AM4", "name": "魔法旅馆", "size": 0.95, "image": "images/AM4.webp"},
-        {"code": "AM5", "name": "魔法气泡™ 特趣思™ 俄罗斯方块™ 2", "size": 3.2, "image": "images/AM5.webp"},
-        {"code": "AM6", "name": "毛线小精灵2", "size": 7.05, "image": "images/AM6.webp"},
-        {"code": "AQ1", "name": "潜水员戴夫", "size": 3.31, "image": "images/AQ1.webp"},
-        {"code": "AQ2", "name": "枪、血与黑手党2", "size": 2.7, "image": "images/AQ2.webp"},
-        {"code": "AR1", "name": "人类：一败涂地", "size": 4.84, "image": "images/AR1.webp"},
-        {"code": "AR2", "name": "忍者神龟：施莱德的复仇 终极版", "size": 2.0, "image": "images/AR2.webp"},
-        {"code": "AS1", "name": "生死大乱斗", "size": 3.54, "image": "images/AS1.webp"},
-        {"code": "AS2", "name": "随动回旋镖", "size": 0.59, "image": "images/AS2.webp"},
-        {"code": "AS3", "name": "沙发怪兽", "size": 1.58, "image": "images/AS3.webp"},
-        {"code": "AF4", "name": "守护坚果", "size": 1.73, "image": "images/AF4.webp"},
-        {"code": "AS5", "name": "三位一体5", "size": 16.9, "image": "images/AS5.webp"},
-        {"code": "AT1", "name": "太空猴子", "size": 1.01, "image": "images/AT1.webp"},
-        {"code": "AT2", "name": "同舟共济", "size": 2.65, "image": "images/AT2.webp"},
-        {"code": "AW1", "name": "我的世界：地下城", "size": 5.43, "image": "images/AW1.webp"},
-        {"code": "AX1", "name": "携手并进", "size": 1.41, "image": "images/AX1.webp"},
-        {"code": "AX2", "name": "小小梦魇2", "size": 22.1, "image": "images/AX2.webp"},
-        {"code": "AX3", "name": "星露谷物语", "size": 0.661, "image": "images/AX3.webp"},
-        {"code": "AX4", "name": "橡胶强盗", "size": 1.22, "image": "images/AX4.webp"},
-        {"code": "AY1", "name": "together玩农场2", "size": 0.616, "image": "images/AY1.webp"},
-        {"code": "AY2", "name": "外星原始人：入侵", "size": 1.36, "image": "images/AY2.webp"},
-        {"code": "AY3", "name": "野餐大冒险", "size": 0.292, "image": "images/AY3.webp"},
-        {"code": "AY4", "name": "伊苏9：怪人之夜", "size": 14.9, "image": "images/AY4.webp"},
-        {"code": "AZ1", "name": "只只大冒险", "size": 5.91, "image": "images/AZ1.webp"},
-        {"code": "AZ2", "name": "纸人：传递冒险", "size": 1.43, "image": "images/AZ2.webp"},
-        {"code": "AZ3", "name": "终极鸡马", "size": 2.03, "image": "images/AZ3.webp"},
-        {"code": "AZ4", "name": "战锤40K：格拉迪乌斯-战争遗迹", "size": 4.66, "image": "images/AZ4.webp"},
-        {"code": "AC4", "name": "传说法师2", "size": 3.15, "image": "images/AC4.webp"},
-        {"code": "AH11", "name": "胡闹加油站", "size": 1.95, "image": "images/AH11.webp"},
-        {"code": "AS6", "name": "速速上菜", "size": 1.03, "image": "images/AS6.webp"},
-        {"code": "AW2", "name": "武装原型", "size": 0.548, "image": "images/AW2.webp"},
-        {"code": "AX5", "name": "星界战士", "size": 1.6, "image": "images/AX5.webp"},
-        {"code": "AC5", "name": " 超级炸弹人R2", "size": 14.6, "image": "images/AC5.webp" },  
-        {"code": "AW3", "name": "维度分割", "size": 0.431, "image": "images/AW3.webp"},  
-        { "code": "L14", "name": "链在一起", "size": 7.42, "image": "images/L14.webp" },
-        {"code": "AP1", "name": "破门而入：行动小队", "size": 0.065, "image": "images/AP1.webp"},
-      ],
-      "开放世界": [
-        {"code": "F6", "name": "法外枭雄：滚石城", "size": 87.8, "image": "images/F6.webp"},
-        {"code": "Z36", "name": "庄园领主", "size": 11.7, "image": "images/Z36.webp"},
-        {"code": "G10", "name": "GTA4/侠盗猎车手4", "size": 45.2, "image": "images/G10.webp"},
-        {"code": "H4", "name": "幻兽帕鲁", "size": 26.1, "image": "images/H4.webp"},
-        {"code": "K1", "name": "看门狗", "size": 16.8, "image": "images/K1.webp"},
-        {"code": "K2", "name": "看门狗2", "size": 45.4, "image": "images/K2.webp"},
-        {"code": "L5", "name": "猎人：野性的呼唤", "size": 94.1, "image": "images/L5.webp"},
-        {"code": "N2", "name": "虐杀原形1+2", "size": 20.8, "image": "images/N2.webp"},
-        {"code": "Q7", "name": "骑马与砍杀2", "size": 49.8, "image": "images/Q7.webp"},
-        {"code": "W5", "name": "无人深空", "size": 12.6, "image": "images/W5.webp"},
-        {"code": "Y6", "name": "遗迹2", "size": 86.5, "image": "images/Y6.webp"},
-        {"code": "Y7", "name": "幽灵行动：荒野完全版", "size": 86.3, "image": "images/Y7.webp"},
-        {"code": "Z12", "name": "正当防卫1-4", "size": 140, "image": "images/Z12.webp"},
-        {"code": "Y8", "name": "云族裔inZOI", "size": 22.2, "image": "images/Y8.webp"},
-        {"code":"K5","name":"看门狗：军团 终极版+全DLC","size":60.1,"image":"images/K5.webp"},
-        {"code": "S22", "name": "方舟：生存飞升", "size": 211, "image": "images/S22.webp"},
-      ],
-      "动作冒险": [
-        {"code": "H2", "name": "霍格沃茨之遗", "size": 73.9, "image": "images/H2.webp"},
-        {"code": "L6", "name": "浪人崛起", "size": 149, "image": "images/L6.webp"},
-        {"code": "R10", "name": "如龙：极2", "size": 41.2, "image": "images/R10.webp"},
-        {"code": "H27", "name": "合金装备5：幻痛", "size": 28.6, "image": "images/H27.webp"},
-        {"code": "C1", "name": "刺客信条4：黑旗", "size": 28.5, "image": "images/C1.webp"},
-        {"code": "C2", "name": "刺客信条：幻景", "size": 41.2, "image": "images/C2.webp"},
-        {"code": "C6", "name": "刺客信条：大革命", "size": 51.3, "image": "images/C6.webp"},
-        {"code": "D6", "name": "地平线：零之曙光", "size": 120, "image": "images/D6.webp"},
-        {"code": "D10", "name": "对马岛之魂导演剪辑版", "size": 52.1, "image": "images/D10.webp"},
-        {"code": "G1", "name": "孤岛惊魂6", "size": 77.4, "image": "images/G1.webp"},
-        {"code": "G5", "name": "古墓丽影：暗影", "size": 37.4, "image": "images/G5.webp"},
-        {"code": "G6", "name": "古墓丽影9", "size": 21.6, "image": "images/G6.webp"},
-        {"code": "G7", "name": "古墓丽影10：崛起", "size": 27.2, "image": "images/G7.webp"},
-        {"code": "S7", "name": "神秘海域：盗贼遗产合集", "size": 99.5, "image": "images/S7.webp"},
-        {"code": "Z15", "name": "最后的生还者", "size": 79.7, "image": "images/Z15.webp"},
-        {"code": "G11", "name": "孤岛惊魂 5", "size": 72.5, "image": "images/G11.webp"},
-        {"code": "G12", "name": "光与影：33号远征队", "size": 40.6, "image": "images/G12.webp"},
-        {"code": "H10", "name": "合金装备崛起：复仇", "size": 25, "image": "images/H10.webp"},
-        {"code": "S24", "name": "森林之子", "size": 14.8, "image": "images/S24.webp"},
-        {"code": "S25", "name": "沙石镇时光", "size": 27.8, "image": "images/S25.webp"},
-        {"code": "H23", "name": "哈迪斯 杀出地狱", "size": 11, "image": "images/H23.webp"},
-        {"code": "H24", "name": "黑道圣徒4", "size": 28.3, "image": "images/H24.webp"},
-        {"code": "H25", "name": "海贼无双4：终极版", "size": 26.6, "image": "images/H25.webp"},
-        {"code": "M14", "name": "马克思佩恩3", "size": 32.6, "image": "images/M14.webp"},
-        {"code": "M16", "name": "盟军敢死队3高清重制版", "size": 3.66, "image": "images/M16.webp"},
-        {"code": "Z35", "name": "灾后修复师", "size": 48.4, "image": "images/Z35.webp"},
-        {"code": "Q22", "name": "骑马与砍杀：战团", "size": 5.31, "image": "images/Q22.webp"},
-        {"code": "M19", "name": "盟军敢死队2高清重制版", "size": 3.38, "image": "images/M19.webp"},
-        {"code": "W14", "name": "长安：石之舞", "size": 1.84, "image": "images/W14.webp"},
-        { "code": "A6", "name": "暗黑血统：创世纪", "size": 10, "image": "images/A6.webp" },
-        { "code": "A7", "name": "暗黑血统3", "size": 20.6, "image": "images/A7.webp" },
-        { "code": "D9", "name": "地狱之刃 2：塞娜的传说", "size": 49.4, "image": "images/D9.webp" },
-        {"code": "F8", "name": "风暴崛起", "size": 42.4, "image": "images/F8.webp"},
-        {"code": "J2", "name": "禁闭求生", "size": 10.3, "image": "images/J2.webp"},
-        {"code": "Q2", "name": "夺宝奇兵：古老之圈", "size": 113, "image": "images/Q2.webp"},
-        {"code": "R6", "name": "如龙6：生命诗篇", "size": 39, "image": "images/R6.webp"},
-        {"code": "R8", "name": "瑞奇与叮当 时空跳转", "size": 40.3, "image": "images/R8.webp"},
-        {"code": "S2", "name": "四海兄弟2：最终版", "size": 44, "image": "images/S2.webp"},
-        {"code": "S3", "name": "四海兄弟3:最终版", "size": 55, "image": "images/S3.webp"},
-        {"code": "S4", "name": "四海兄弟：最终版", "size": 37.5, "image": "images/S4.webp"},
-        {"code": "S18", "name": "杀手3", "size": 76.5, "image": "images/S18.webp"},
-        {"code": "S19", "name": "杀手6", "size": 70.8, "image": "images/S19.webp"},
-        {"code": "S20", "name": "死亡搁浅：导演剪辑版", "size": 69.1, "image": "images/S20.webp"},
-        {"code": "W2", "name": "往日不再", "size": 44.6, "image": "images/W2.webp"},
-        {"code": "X3", "name": "消逝的光芒2：人与仁之战", "size": 69.7, "image": "images/X3.webp"},
-        {"code": "X5", "name": "细胞分裂6：黑名单", "size": 19.3, "image": "images/X5.webp"},
-        {"code": "X8", "name": "星球大战绝地：幸存者", "size": 129, "image": "images/X8.webp"},
-        {"code": "Y2", "name": "幽灵行者2", "size": 69.7, "image": "images/Y2.webp"},
-        {"code": "Y3", "name": "幽灵线：东京", "size": 23.4, "image": "images/Y3.webp"},
-        {"code": "R4", "name": "热血无赖", "size": 16.6, "image": "images/R4.webp"},
-        { "code": "C15", "name": "刺客信条：枭雄", "size": 68.3, "image": "images/C15.webp" },
-        { "code": "D23", "name": "盗贼遗产2", "size": 0.83, "image": "images/D23.webp" },
-        { "code": "Z42", "name": "咒术回战：双华乱舞", "size": 18.1, "image": "images/Z42.webp" },
-        {"code": "X26", "name": "心之眼豪华版", "size": 49.4, "image": "images/X26.webp"},    
-        {"code": "W21", "name": "午夜以南", "size": 84.6, "image": "images/W21.webp"},
-      ],
-      "射击游戏": [
-        {"code": "COD4CZ", "name": "使命召唤4：现代战争重制版", "size": 62.3, "image": "images/COD4CZ.webp"},
-        {"code": "COD6CZ", "name": "使命召唤6：现代战争2重制版", "size": 63.8, "image": "images/COD6CZ.webp"},
-        {"code": "COD7", "name": "使命召唤7：黑色行动", "size": 7.84, "image": "images/COD7.webp"},
-        {"code": "COD8", "name": "使命召唤8：现代战争3", "size": 13.7, "image": "images/COD8.webp"},
-        {"code": "COD9", "name": "使命召唤9：黑色行动2", "size": 15, "image": "images/COD9.webp"},
-        {"code": "COD10", "name": "使命召唤10：幽灵", "size": 28.9, "image": "images/COD10.webp"},
-        {"code": "COD11", "name": "使命召唤11：高级战争", "size": 36.6, "image": "images/COD11.webp"},
-        {"code": "COD12", "name": "使命召唤12：黑色行动3", "size": 125, "image": "images/COD12.webp"},
-        {"code": "COD13", "name": "使命召唤13：无限战争", "size": 72.3, "image": "images/COD13.webp"},
-        {"code": "COD15", "name": "使命召唤15：黑色行动4", "size": 142, "image": "images/COD15.webp"},
-        {"code": "COD16", "name": "使命召唤16：现代战争", "size": 194, "image": "images/COD16.webp"},
-        {"code":"COD17","name":"使命召唤17 黑色行动冷战","size":227,"image":"images/COD17.webp"},
-        {"code": "COD18", "name": "使命召唤18 先锋", "size": 81.4, "image": "images/COD18.webp"},
-        {"code": "COD19", "name": "使命召唤19：现代战争2", "size": 36.1, "image": "images/COD19.webp"},
-        {"code":"COD20","name":"使命召唤20 现代战争3","size":84.9,"image":"images/COD20.webp"},
-        {"code":"F10","name":"凡尔登战役","size":8.07,"image":"images/F10.webp"},
-        {"code": "H1", "name": "毁灭战士", "size": 62.2, "image": "images/H1.webp"},
-        {"code": "H6", "name": "皇牌空战7：未知空域", "size": 61.1, "image": "images/H6.webp"},
-        {"code": "Z1", "name": "战地1", "size": 30.8, "image": "images/Z1.webp"},
-        {"code": "Z2", "name": "战地2", "size": 2.78, "image": "images/Z2.webp"},
-        {"code": "Z4", "name": "战地4", "size": 25.5, "image": "images/Z4.webp"},
-        {"code": "Z5", "name": "战地5", "size": 50.2, "image": "images/Z5.webp"},
-        {"code": "Y5", "name": "严阵以待", "size": 61.8, "image": "images/Y5.webp"},
-        {"code": "Z3", "name": "战地3", "size": 22.8, "image": "images/Z3.webp"},
-        {"code": "Z28", "name": "战锤40K：星际战士2", "size": 71.5, "image": "images/Z28.webp"},
-        {"code": "Q17", "name": "求生之路2", "size": 27.7, "image": "images/Q17.webp"},
-        {"code": "J13", "name": "JOJO的奇妙冒险：群星之战重制版", "size": 5.05, "image": "images/J13.webp"},
-        {"code": "J14", "name": "狙击精英V2", "size": 12.9, "image": "images/J14.webp"},
-        {"code": "J15", "name": "狙击精英3", "size": 28.3, "image": "images/J15.webp"},
-        {"code": "J16", "name": "狙击精英(2005)", "size": 3.06, "image": "images/J16.webp"},
-        {"code": "W10", "name": "无主之地2", "size": 11.9, "image": "images/W10.webp"},
-        {"code": "W11", "name": "无主之地：前传", "size": 31.1, "image": "images/W11.webp"},
-        {"code": "W7", "name": "无主之地3", "size": 137, "image": "images/W7.webp"},
-        {"code": "Z37", "name": "终结者：反抗军", "size": 30, "image": "images/Z37.webp"},
-        {"code": "Z38", "name": "终结者：黑暗命运 - 反抗", "size": 14.6, "image": "images/Z38.webp"},
-        {"code": "T1", "name": "逃离塔科夫", "size": 36.9, "image": "images/T1.webp"},
-        {"code": "T8", "name": "突袭1-4合集", "size": 14, "image": "images/T8.webp"},
-        {"code": "S43", "name": "死亡空间1-3", "size": 29.4, "image": "images/S43.webp"},
-        {"code": "G8", "name": "光环：无限", "size": 46.4, "image": "images/G8.webp"},
-        {"code": "J4", "name": "狙击精英4", "size": 67.2, "image": "images/J4.webp"},
-        {"code": "J7", "name": "僵尸世界大战", "size": 66.6, "image": "images/J7.webp"},
-        {"code": "Q3", "name": "潜行者2切尔诺贝利之心", "size": 152, "image": "images/Q3.webp"},
-        {"code": "S30", "name": "生化奇兵3", "size": 43.3, "image": "images/S30.webp"},
-        {"code": "T4", "name": "泰坦陨落2", "size": 58, "image": "images/T4.webp"},
-        {"code": "Z34", "name": "战争机器5", "size": 98.7, "image": "images/Z34.webp"},
-        {"code": "Z24", "name": "装甲核心6：境界天火", "size": 61.1, "image": "images/Z24.webp"},
-      ],
-      "角色扮演RPG": [
-        { "code": "M21", "name": "明末：渊虚之羽豪华版", "size": 45.1, "image": "images/M21.webp" },
-        {"code": "C3", "name": "刺客信条：奥德赛", "size": 101, "image": "images/C3.webp"},
-        {"code": "W4", "name": "巫师3 次世代版", "size": 61.7, "image": "images/W4.webp"},
-        {"code": "A9", "name": "暗黑破坏神2 重制版", "size": 29.1, "image": "images/A9.webp"},
-        {"code": "X12", "name": "星空", "size": 140, "image": "images/X12.webp"},
-        {"code": "B4", "name": "八方旅人/歧路旅人", "size": 4.88, "image": "images/B4.webp"},
-        {"code": "Z19", "name": "最终幻想16", "size": 151, "image": "images/Z19.webp"},
-        {"code": "C4", "name": "刺客信条：起源", "size": 73.3, "image": "images/C4.webp"},
-        {"code": "L3", "name": "龙之信条2", "size": 70.8, "image": "images/L3.webp"},
-        {"code": "X9", "name": "仙剑奇侠传7", "size": 43.4, "image": "images/X9.webp"},
-        {"code": "D2", "name": "地铁：离去", "size": 100, "image": "images/D2.webp"},
-        {"code": "N4", "name": "尼尔机械纪元 年度版", "size": 41.5, "image": "images/N4.webp"},
-        {"code": "Z6", "name": "最终幻想 VII 重生", "size": 154, "image": "images/Z6.webp"},
-        {"code": "Z7", "name": "最终幻想VII：重制版", "size": 94.2, "image": "images/Z7.webp"},
-        {"code": "Z27", "name": "最终幻想15", "size": 83.8, "image": "images/Z27.webp"},
-        {"code": "A4", "name": "艾尔登法环：黑夜君临", "size": 20.6, "image": "images/A4.webp"},
-        {"code": "S37", "name": "上古卷轴5：天际 周年纪念版", "size": 31.4, "image": "images/S37.webp"},
-        {"code": "X24", "name": "轩辕剑7", "size": 38.8, "image": "images/X24.webp"},
-        {"code": "L1", "name": "龙珠：超宇宙2", "size": 30.2, "image": "images/L1.webp"},
-        {"code": "L2", "name": "龙珠Z：卡卡罗特", "size": 51.2, "image": "images/L2.webp"},
-        {"code": "M1", "name": "漫威复仇者联盟", "size": 131, "image": "images/M1.webp"},
-        {"code": "M3", "name": "漫威蜘蛛侠:重制版", "size": 64, "image": "images/M3.webp"},
-        {"code": "M4", "name": "蜘蛛侠：迈尔斯·莫拉莱斯", "size": 64, "image": "images/M4.webp"},
-        {"code": "G4", "name": "怪物猎人：世界", "size": 98.4, "image": "images/G4.webp"},
-        {"code": "D7", "name": "地平线：西之绝境", "size": 123, "image": "images/D7.webp"},
-        {"code": "R2", "name": "仁王2", "size": 76.4, "image": "images/R2.webp"},
-        {"code": "R3", "name": "仁王", "size": 73.6, "image": "images/R3.webp"},
-        {"code": "W1", "name": "瘟疫传说：安魂曲", "size": 49.4, "image": "images/W1.webp"},
-        {"code": "W3", "name": "卧龙：苍天陨落", "size": 59.7, "image": "images/W3.webp"},
-        {"code": "X7", "name": "星球大战绝地：陨落的武士团", "size": 62.3, "image": "images/X7.webp"},
-        {"code": "Y1", "name": "原子之心", "size": 82.1, "image": "images/Y1.webp"},
-        {"code": "D19", "name": "底特律：化身为人", "size": 58.8, "image": "images/D19.webp"},
-        {"code": "H7", "name": "荒野大镖客：救赎", "size": 9.57, "image": "images/H7.webp"},
-        {"code": "H9", "name": "黑暗之魂3", "size": 24.8, "image": "images/H9.webp"},
-        {"code": "Q21", "name": "歧路旅人 II", "size": 7.23, "image": "images/Q21.webp"},
-        {"code": "T2", "name": "天国：拯救2", "size": 112, "image": "images/T2.webp"},
-        {"code": "X2", "name": "宣誓", "size": 74.1, "image": "images/X2.webp"},
-        {"code": "Z23", "name": "赵云传：云汉腾龙", "size": 14.5, "image": "images/Z23.webp"},
-        {"code": "S40", "name": "上古卷轴4：湮没", "size": 118, "image": "images/S40.webp"},
-        {"code": "W17", "name": "污痕圣杯：阿瓦隆的陨落", "size": 33.9, "image": "images/W17.webp"},
-        {"code": "Y19", "name": "逸剑风云决", "size": 6.19, "image": "images/Y19.webp"},
-        {"code": "Z40", "name": "中国式相亲", "size": 7.12, "image": "images/Z40.webp"},
-        {"code": "Z41", "name": "中国式网游", "size": 4.92, "image": "images/Z41.webp"},
-        { "code": "G19", "name": "鬼谷八荒", "size": 27.1, "image": " Nominimages/G19.webp" },
-        { "code": "G20", "name": "古剑奇谭三", "size": 34.4, "image": "images/G20.webp" },
-        {"code": "F1", "name": "辐射4 年度版", "size": 37.9, "image": "images/F1.webp"},
-        {"code":"W22","name":"无夜国度2：新月的新娘","size":19,"image":"images/W22.webp"},
-      ],
-      "体育竞技": [
-        {"code": "D4", "name": "极限竞速：地平线4", "size": 95.3, "image": "images/D4.webp"},
-        {"code": "C8", "name": "尘埃拉力赛2.0", "size": 109, "image": "images/C8.webp"},
-        {"code": "E1", "name": "EA 运动 FC 25 足球", "size": 48.2, "image": "images/E1.webp"},
-        {"code": "J5", "name": "极限巅峰", "size": 29.6, "image": "images/J5.webp"},
-        {"code": "J9", "name": "极限国度", "size": 26.2, "image": "images/J9.webp"},
-        {"code": "J10", "name": "极速骑行5", "size": 48.7, "image": "images/J10.webp"},
-        {"code": "N1", "name": "NBA 2K23", "size": 137, "image": "images/N1.webp"},
-        {"code": "N3", "name": "NBA18", "size": 66.1, "image": "images/N3.webp"},
-        {"code": "C17", "name": "尘埃4", "size": 32.9, "image": "images/C17.webp"},
-        {"code": "F9", "name": "FIFA 2019", "size": 33.1, "image": "images/F9.webp"},
-        {"code": "N6", "name": "NBA2K17", "size": 77.1, "image": "images/N6.webp"},
-        {"code": "N7", "name": "NBA2K14", "size": 14.3, "image": "images/N7.webp"},
-        {"code": "Z8", "name": "足球经理2018-2023合集", "size": 21.1, "image": "images/Z8.webp"},
-        {"code": "F2", "name": "FIFA 23", "size": 50.1, "image": "images/F2.webp"},
-        {"code": "S39", "name": "实况足球2021", "size": 38.9, "image": "images/S39.webp"},
-        {"code": "W12", "name": "美国职业摔角联盟2K25", "size": 97, "image": "images/W12.webp"},
-        {"code": "J18", "name": "极速骑行4", "size": 34.2, "image": "images/J18.webp"},
-        {"code": "S42", "name": "世界汽车拉力锦标赛10", "size": 36.8, "image": "images/S42.webp"},
-        {"code": "O1", "name": "欧洲卡车模拟2+全DLC", "size": 32.5, "image": "images/O1.webp"},
-        {"code": "Y10", "name": "远征 泥泞奔驰游戏", "size": 18.8, "image": "images/Y10.webp"},
-        { "code": "J23", "name": "极品飞车15：变速2", "size": 7.34, "image": "images/J23.webp" },
-        { "code": "J24", "name": "极品飞车16：亡命狂飙", "size": 15.5, "image": "images/J24.webp" },
-        { "code": "J25", "name": "极品飞车17：最高通缉U", "size": 6.35, "image": "images/J25.webp" },
-        { "code": "J26", "name": "极品飞车18：宿敌", "size": 9.92, "image": "images/J26.webp" },
-        { "code": "J27", "name": "极品飞车20：复仇", "size": 27.3, "image": "images/J27.webp" },
-        { "code": "J28", "name": "极品飞车21：热度", "size": 30.1, "image": "images/J28.webp" },
-      ],
-      "怀旧经典": [
-        {"code": "JD3", "name": "真三国无双5", "size": 3.56, "image": "images/JD3.webp"},
-        {"code": "C16", "name": "尘埃3", "size": 13.7, "image": "images/C16.webp"},
-        {"code": "JD1", "name": "地牢围攻3", "size": 4.21, "image": "images/JD1.webp"},
-        {"code": "JD2", "name": "轴心国和同盟军", "size": 1.04, "image": "images/JD2.webp"},
-        {"code": "X28", "name": "细胞分裂4：双重间谍", "size": 4.62, "image": "images/X28.webp"},
-        {"code":"JD22","name":"三国志9/威力加强版","size":1.15,"image":"images/D22.webp"},
-        {"code":"JD23","name":"三国志10/威力加强版","size":1.47,"image":"images/D23.webp"},
-        {"code":"JD24","name":"三国志11/威力加强版","size":1.6,"image":"images/D24.webp"},
-        {"code":"JD4","name":"反恐精英","size":0.37,"image":"images/JD4.webp"},
-        {"code":"JD5","name":"宝石迷阵3","size":0.15,"image":"images/JD5.webp"},
-        {"code": "JD6", "name": "抗日：血战上海滩", "size": 0.262, "image": "images/JD6.webp"},
-        {"code":"JD7","name":"大富翁4","size":0.43,"image":"images/JD7.webp"},
-        {"code":"JD9","name":"三国志曹操传","size":0.17,"image":"images/JD9.webp"},
-        {"code":"JD10","name":"刀剑封魔录","size":1.2,"image":"images/JD10.webp"},
-        {"code":"JD11","name":"帝国时代1","size":0.42,"image":"images/JD11.webp"},
-        {"code":"JD12","name":"帝国时代2","size":0.46,"image":"images/JD12.webp"},
-        {"code":"JD13","name":"愤怒的小鸟","size":0.41,"image":"images/JD13.webp"},
-        {"code":"JD14","name":"孤胆枪手","size":0.1,"image":"images/JD14.webp"},
-        {"code":"JD15","name":"孤胆枪手2：重装上阵","size":0.67,"image":"images/JD15.webp"},
-        {"code":"JD16","name":"鬼泣4","size":7.28,"image":"images/JD16.webp"},
-        {"code":"JD17","name":"流星蝴蝶剑","size":1.33,"image":"images/JD17.webp"},
-        {"code":"JD18","name":"盟军敢死队1使命召唤","size":0.28,"image":"images/JD18.webp"},
-        {"code":"JD19","name":"新抢滩登陆","size":0.21,"image":"images/JD19.webp"},
-        {"code":"JD20","name":"三国志5","size":0.02,"image":"images/JD20.webp"},
-        {"code":"JD21","name":"三角洲特种部队5：黑鹰坠落","size":0.76,"image":"images/JD21.webp"},
-        {"code":"D24","name":"大航海时代4威力加强版30周年纪念数字版","size":3.31,"image":"images/D24.webp"},
-        {"code":"G22","name":"侠盗猎车手：圣安地列斯 最终版","size":17.9,"image":"images/G22.webp"},
-        {"code":"G23","name":"侠盗猎车手：罪恶都市 最终版","size":8.74,"image":"images/G23.webp"},
-        {"code":"JD25","name":"祖玛豪华版","size":0.02,"image":"images/JD25.webp"},
-        {"code":"JD26","name":"仙剑98柔情","size":0.63,"image":"images/JD26.webp"},
-        {"code":"JD8","name":"大鱼吃小鱼","size":0.02,"image":"images/JD8.webp"},
-      ],
-      "恋爱养成": [ 
-        {"code": "W13", "name": "完蛋！我也能追到美女了", "size": 3.7, "image": "images/W13.webp"},
-        {"code": "Q23", "name": "请做COSER的主人2", "size": 75.7, "image": "images/Q23.webp"},
-        {"code": "M18", "name": "名利的游戏", "size": 21.1, "image": "images/M18.webp"},
-        {"code":"BA2","name":"重生了还要我恋爱？","size":20.3,"image":"images/BA2.webp"},
-        {"code":"BA3","name":"私人订制：我的专属韩国女团","size":8.17,"image":"images/BA3.webp"},
-        {"code":"BA06","name":"爱的传递","size":2.67,"image":"images/BA06.webp"},
-        {"code":"BA07","name":"阿西, 美女室友竟然...？","size":31.4,"image":"images/BA07.webp"},
-        {"code":"BA08","name":"别跑！美女在追你！","size":3.89,"image":"images/BA08.webp"},
-        {"code":"BA09","name":"超级情圣","size":10.7,"image":"images/BA09.webp"},
-        {"code":"BA10","name":"超级情圣2","size":32.4,"image":"images/BA10.webp"},
-        {"code":"BA11","name":"超级情圣3","size":32.1,"image":"images/BA11.webp"},
-        {"code":"BA15","name":"都要!小孩子才做选择!","size":39.2,"image":"images/BA15.webp"},
-        {"code":"BA16","name":"导演模拟器","size":25.4,"image":"images/BA16.webp"},
-        {"code":"BA18","name":"返杀","size":16.6,"image":"images/BA18.webp"},
-        {"code":"BA19","name":"复体","size":10.4,"image":"images/BA19.webp"},
-        {"code":"BA21","name":"飞越13号房","size":20.5,"image":"images/BA21.webp"},
-        {"code":"BA29","name":"完蛋！我被美女包围了！","size":26.4,"image":"images/BA29.webp"},
-        {"code":"BA35","name":"美女，请别影响我学习","size":20.3,"image":"images/BA35.webp"},
-        {"code":"BA52","name":"我和美女有个约会","size":6.98,"image":"images/BA52.webp"},
-        {"code":"BA95","name":"开局五个亿","size":66.3,"image":"images/BA95.webp"},
-        {"code":"BA120","name":"台北仲夏夜之梦","size":25.7,"image":"images/BA120.webp"},
-        {"code":"BA121","name":"甜心帝国","size":52.8,"image":"images/BA121.webp"},
-        {"code":"BA161","name":"我被女神盯上了!","size":12.1,"image":"images/BA161.webp"}
-      ],
-      "策略模拟": [
-        {"code": "Q27", "name": "全面坦克模拟", "size": 7.2, "image": "images/Q27.webp"},
-        {"code": "D8", "name": "动物园之星", "size": 10.9, "image": "images/D8.webp"},
-        {"code": "D12", "name": "帝国时代2决定版", "size": 57.3, "image": "images/D12.webp"},
-        {"code": "D14", "name": "帝国时代4", "size": 54.1, "image": "images/D14.webp"},
-        {"code": "H8", "name": "红色警戒2", "size": 1.83, "image": "images/H8.webp"},
-        {"code": "M7", "name": "魔兽争霸Ⅲ：冰封王座", "size": 14.6, "image": "images/M7.webp"},
-        {"code": "S15", "name": "三国志8重置版", "size": 21.5, "image": "images/S15.webp"},
-        {"code": "W6", "name": "文明6", "size": 27.6, "image": "images/W6.webp"},
-        {"code": "X4", "name": "幸福工厂", "size": 25.3, "image": "images/X4.webp"},
-        {"code": "Z17", "name": "战争号令：地狱之门", "size": 181, "image": "images/Z17.webp"},
-        {"code": "Z18", "name": "战锤40K：行商浪人", "size": 36.6, "image": "images/Z18.webp"},
-        {"code": "Z20", "name": "真三国无双：起源", "size": 51.3, "image": "images/Z20.webp"},
-        {"code": "Z21", "name": "真三国无双8帝国", "size": 41.1, "image": "images/Z21.webp"},
-        {"code": "Z26", "name": "重装前哨", "size": 37.3, "image": "images/Z26.webp"},
-        {"code": "M8", "name": "模拟农场25", "size": 37.1, "image": "images/M8.webp"},
-        {"code": "L11", "name": "罗马2：全面战争", "size": 35.4, "image": "images/L11.webp"},
-        {"code": "L12", "name": "了不起的修仙模拟器", "size": 4.86, "image": "images/L12.webp"},
-        {"code": "Q10", "name": "全面战争 阿提拉", "size": 24.2, "image": "images/Q10.webp"},
-        {"code": "Q11", "name": "全面战争 罗马", "size": 71.6, "image": "images/Q11.webp"},
-        {"code": "Q12", "name": "全面战争 拿破仑", "size": 22.7, "image": "images/Q12.webp"},
-        {"code": "Q13", "name": "全面战争 三国", "size": 33.9, "image": "images/Q13.webp"},
-        {"code": "Q14", "name": "全面战争 战锤2", "size": 64.2, "image": "images/Q14.webp"},
-        {"code": "Q15", "name": "全面战争 战锤", "size": 33.5, "image": "images/Q15.webp"},
-        {"code": "Q16", "name": "全面战争传奇 大不列颠王座", "size": 12.5, "image": "images/Q16.webp"},
-        {"code": "Q18", "name": "全面战争中世纪2", "size": 15, "image": "images/Q18.webp"},
-        {"code": "S31", "name": "双点医院", "size": 8.3, "image": "images/S31.webp"},
-        {"code": "W9", "name": "网吧模拟器", "size": 3.91, "image": "images/W9.webp"},
-        {"code": "C12", "name": "城市天际线", "size": 18.4, "image": "images/C12.webp"},
-        {"code": "M17", "name": "魔法门之英雄无敌7", "size": 14.5, "image": "images/M17.webp"},
-        {"code": "Q19", "name": "全面战争模拟器", "size": 4.49, "image": "images/Q19.webp"},
-        {"code": "Y12", "name": "英雄连2", "size": 32.1, "image": "images/Y12.webp"},
-        {"code": "S38", "name": "苏丹的游戏", "size": 2.36, "image": "images/S38.webp"},
-        {"code": "D21", "name": "帝国时代3", "size": 54.2, "image": "images/D21.webp"},
-        {"code": "G15", "name": "国王的恩赐2", "size": 55.4, "image": "images/G15.webp"},
-        {"code": "M20", "name": "魔法门之英雄无敌1-6合集", "size": 12.7, "image": "images/M20.webp"},
-        {"code": "W15", "name": "文明5", "size": 8.3, "image": "images/W15.webp"},
-        {"code": "Y13", "name": "英雄连", "size": 22.3, "image": "images/Y13.webp"},
-        {"code": "Y15", "name": "英雄连3", "size": 27.8, "image": "images/Y15.webp"},
-        {"code": "S44", "name": "三国群英传1-7", "size": 5.16, "image": "images/S44.webp"},
-        {"code": "Y14", "name": "要塞：十字军东征", "size": 3.11, "image": "images/Y14.webp"},
-        {"code": "Y16", "name": "要塞3", "size": 1.83, "image": "images/Y16.webp"},
-        { "code": "B2", "name": "冰汽时代2", "size": 19.7, "image": "images/B2.webp" },
-        {"code": "D20", "name": "地下城4豪华版", "size": 13.7, "image": "images/D20.webp"},
-        {"code": "J8", "name": "家园3", "size": 34.6, "image": "images/J8.webp"},
-        {"code": "J17", "name": "家园重制版", "size": 8.78, "image": "images/J17.webp"},
-        {"code": "S6", "name": "兽人必须死3", "size": 12.6, "image": "images/S6.webp"},
-        {"code": "X25", "name": "星际争霸：重制版", "size": 10.2, "image": "images/X25.webp"},
-        {"code": "Z26", "name": "重装前哨", "size": 37.3, "image": "images/Z26.webp"},
-        {"code": "J20", "name": "建安外史", "size": 0.66, "image": "images/J20.webp"},
-        {"code": "J21", "name": "缉私警察", "size": 12.4, "image": "images/J21.webp"},
-        {"code": "J22", "name": "监寓", "size": 56.7, "image": "images/J22.webp"},
-        {"code": "Q24", "name": "全面战争传奇：特洛伊", "size": 25.2, "image": "images/Q24.webp"},
-        {"code": "Q25", "name": "全面战争：幕府将军2", "size": 23.8, "image": "images/Q25.webp"},
-        {"code": "W18", "name": "无感染区", "size": 4.22, "image": "images/W18.webp"},
-        { "code": "C14", "name": "拆迁", "size": 4.45, "image": "images/C14.webp" },
-        { "code": "S50", "name": "三国志13/威力加强版", "size": 14.2, "image": "images/S50.webp" },
-        { "code": "S51", "name": "三国志14/威力加强版", "size": 20.9, "image": "images/S51.webp" },
-        {"code":"M22","name":"模拟火车世界4","size":29,"image":"images/M22.webp"},
-        {"code":"M23","name":"模拟火车世界5","size":33.7,"image":"images/M23.webp"},
-        {"code":"M24","name":"模拟火车2022","size":51.6,"image":"images/M24.webp"},
-        {"code":"G21","name":"工人与资源：苏维埃共和国","size":17.6,"image":"images/G21.webp"},
-        {"code": "F7", "name": "犯罪现场清洁工", "size": 32.9, "image": "images/F7.webp"},
-        {"code": "Q26", "name": "七日杀", "size": 15.9, "image": "images/Q26.webp"},
-        {"code": "W16", "name": "我的世界：传奇", "size": 12.6, "image": "images/W16.webp"}
-      ],
-      "格斗/动作": [
-        {"code": "G3", "name": "鬼泣5", "size": 40.1, "image": "images/G3.webp"},
-        {"code": "S46", "name": "生或死6", "size": 58.3, "image": "images/S46.webp"},
-        {"code": "N5", "name": "怒之铁拳4", "size": 6.11, "image": "images/N5.webp"},
-        {"code": "H3", "name": "火影忍者：终极风暴羁绊", "size": 29.7, "image": "images/H3.webp"},
-        {"code": "J6", "name": "街头霸王5", "size": 46.2, "image": "images/J6.webp"},
-        {"code": "P2", "name": "匹诺曹的谎言", "size": 61.3, "image": "images/P2.webp"},
-        {"code": "Q4", "name": "拳皇15", "size": 50.9, "image": "images/Q4.webp"},
-        {"code": "Q5", "name": "七龙珠：电光炸裂 Zero", "size": 28.5, "image": "images/Q5.webp"},
-        {"code": "Q6", "name": "拳皇14", "size": 17.3, "image": "images/Q6.webp"},
-        {"code": "R1", "name": "忍者龙剑传2：黑之章", "size": 81.4, "image": "images/R1.webp"},
-        {"code": "S17", "name": "师父", "size": 20, "image": "images/S17.webp"},
-        {"code": "T3", "name": "铁拳8", "size": 92.9, "image": "images/T3.webp"},
-        {"code": "Z11", "name": "真人快打11", "size": 108, "image": "images/Z11.webp"},
-        {"code": "Z13", "name": "真人快打X", "size": 40.2, "image": "images/Z13.webp"},
-        {"code": "Z14", "name": "只狼", "size": 14.8, "image": "images/Z14.webp"},
-        {"code": "S23", "name": "死神：魂魄觉醒", "size": 71.7, "image": "images/S23.webp"},
-        {"code": "Q20", "name": "拳皇98：终极对决", "size": 2.11, "image": "images/Q20.webp"},
-        {"code": "H25", "name": "海贼无双 4：终极版", "size": 26.6, "image": "images/H25.webp"},
-        {"code": "E3", "name": "饿狼传说：群狼之城", "size": 24.8, "image": "images/E3.webp"},
-        {"code": "J19", "name": "街头霸王30周年纪念合集", "size": 4.95, "image": "images/J19.webp"},
-        {"code": "H26", "name": "海贼无双3", "size": 11.3, "image": "images/H26.webp"},
-      ],
-      "恐怖冒险": [
-        {"code":"J3", "name": "寂静岭2", "size": 34.7, "image": "images/J3.webp"},
-        {"code": "M6", "name": "木卫四协议", "size": 96, "image": "images/M6.webp"},
-        {"code": "S9", "name": "生化危机3", "size": 22.5, "image": "images/S9.webp"},
-        {"code": "S13", "name": "生化危机7", "size": 38.5, "image": "images/S13.webp"},
-        {"code": "S14", "name": "生化危机8", "size": 37.7, "image": "images/S14.webp"},
-        {"code": "X1", "name": "心灵杀手2", "size": 106, "image": "images/X1.webp"},
-        {"code": "X10", "name": "行尸走肉：最终季", "size": 45.4, "image": "images/X10.webp"},
-        {"code": "Z22", "name": "直到黎明：重制版", "size": 59.4, "image": "images/Z22.webp"},
-        {"code": "S11", "name": "生化危机5", "size": 8.48, "image": "images/S11.webp"},
-        {"code": "S12", "name": "生化危机6", "size": 13.8, "image": "images/S12.webp"},
-        {"code": "S26", "name": "生化危机：启示录", "size": 7.94, "image": "images/S26.webp"},
-        {"code": "S27", "name": "生化危机：启示录 2", "size": 18, "image": "images/S27.webp"},
-        {"code": "F5", "name": "奉天白事铺", "size": 6.46, "image": "images/F5.webp"},
-        {"code": "M13", "name": "木筏求生", "size": 7.26, "image": "images/M13.webp"},
-        {"code": "S32", "name": "深海迷航", "size": 5.79, "image": "images/S32.webp"},
-        {"code": "Z32", "name": "纸人：第一章", "size": 2.03, "image": "images/Z32.webp"},
-        {"code": "Z33", "name": "纸人2", "size": 7.41, "image": "images/Z33.webp"},
-        {"code": "Y11", "name": "野狗子", "size": 26, "image": "images/Y11.webp"},
-        {"code": "A5", "name": "艾瑞卡", "size": 36.7, "image": "images/A5.webp"},
-        {"code": "S34", "name": "杀手5：赦免", "size": 23.7, "image": "images/S34.webp"},
-        {"code": "T6", "name": "她看到红色", "size": 2.37, "image": "images/T6.webp"},
-        {"code": "C13", "name": "吃香", "size": 1.38, "image": "images/C13.webp"},
-        {"code": "G16", "name": "港鬼实录", "size": 14.3, "image": "images/G16.webp"},
-        { "code": "G17", "name": "鬼屋魔影", "size": 28.4, "image": "images/G17.webp"},
-        {"code": "G18", "name": "诡墓", "size": 9.06, "image": "images/G18.webp"},
-        {"code": "H11", "name": "黑暗世界因与果", "size": 26.1, "image": "images/H11.webp"},
-        {"code": "S45", "name": "死亡之屋：重制版", "size": 9.25, "image": "images/S45.webp"},
-        {"code": "X27", "name": "小小梦魇", "size": 9.01, "image": "images/X27.webp"},
-        {"code": "Y17", "name": "翌日", "size": 2.4, "image": "images/Y17.webp"},
-        {"code": "Y18", "name": "勇闯死人谷：暗黑之日", "size": 5.76, "image": "images/Y18.webp"},
-      ],
-      "独立游戏": [
-        {"code": "S35", "name": "死亡细胞", "size": 2.58, "image": "images/S35.webp"},
-        {"code": "T5", "name": "泰拉瑞亚", "size": 0.022, "image": "images/T5.webp"},
-        {"code": "P4", "name": "破碎族裔", "size": 9.24, "image": "images/P4.webp"},
-        {"code": "S36", "name": "沙威玛传奇", "size": 0.094, "image": "images/S36.webp"},
-        {"code": "M15", "name": "米塔", "size": 2.88, "image": "images/M15.webp"},
-        {"code": "D1", "name": "迪士尼传奇米奇：重制版", "size": 23.7, "image": "images/D1.webp"},
-        {"code": "L4", "name": "乐高DC超级反派", "size": 19.1, "image": "images/L4.webp"},
-        {"code": "M5", "name": "麻布仔大冒险", "size": 53, "image": "images/M5.webp"},
-        {"code": "S5", "name": "山河旅探", "size": 7.84, "image": "images/S5.webp"},
-        {"code": "S6", "name": "兽人必须死3", "size": 12.6, "image": "images/S6.webp"},
-        {"code": "S21", "name": "沙漠大冒险", "size": 17.6, "image": "images/S21.webp"},
-        {"code": "X20", "name": "兄弟：双子传说 重制版", "size": 25.5, "image": "images/X20.webp"},
-        {"code": "Y4", "name": "遗失的记录：绽放与愤怒", "size": 43.2, "image": "images/Y4.webp"},
-        {"code": "Z25", "name": "植物大战僵尸杂交版", "size": 5.6, "image": "images/Z25.webp"},
-        {"code": "A2", "name": "奥日与鬼火意志", "size": 12, "image": "images/A2.webp"},
-        {"code": "A3", "name": "奥日与黑暗森林", "size": 17.4, "image": "images/A3.webp"},
-        {"code": "C11", "name": "苍翼 混沌效应", "size": 7.15, "image": "images/C11.webp"},
-        {"code": "D18", "name": "东方夜雀食堂", "size": 5.01, "image": "images/D18.webp"},
-        {"code": "S33", "name": "失落城堡", "size": 2.39, "image": "images/S33.webp"},
-        {"code": "Y9", "name": "以撒的结合 重生", "size": 2.09, "image": "images/Y9.webp"},
-        {"code": "Z39", "name": "中国式家长", "size": 0.886, "image": "images/Z39.webp"},
-        {"code": "T7", "name": "土豆兄弟", "size": 0.257, "image": "images/T7.webp"},
-        {"code": "S41", "name": "失落城堡 2", "size": 0.88, "image": "images/S41.webp"},
-        { "code": "K3", "name": "空洞骑士", "size": 10.7, "image": "images/K3.webp" },
-      ],
-      "任天堂游戏": [
-        {"code": "SWT1", "name": "Switch全家桶", "size": 449, "image": "images/SWT1.webp"},
-        {"code": "SWT2", "name": "塞尔达传说：旷野之息", "size": 15.7, "image": "images/SWT2.webp"},
-        {"code": "SWT3", "name": "塞尔达传说：王国之泪", "size": 16.6, "image": "images/SWT3.webp"},
-        {"code": "SWT4", "name": "马里奥赛车8", "size": 16.8, "image": "images/SWT4.webp"},
-        {"code": "SWT5", "name": "马里奥奥德赛", "size": 5.59, "image": "images/SWT5.webp"},
-        {"code": "SWT6", "name": "全明星大乱斗", "size": 17.3, "image": "images/SWT6.webp"},
-        {"code": "SWT7", "name": "路易吉鬼屋3", "size": 7.7, "image": "images/SWT7.webp"},
-        {"code": "SWT8", "name": "超级马里奥：惊奇", "size": 3.5, "image": "images/SWT8.webp"},
-        {"code": "SWT9", "name": "马里奥高尔夫：超级冲冲冲", "size": 4.16, "image": "images/SWT9.webp"},
-        {"code": "SWT10", "name": "马里奥派对", "size": 2.89, "image": "images/SWT10.webp"},
-        {"code": "SWT11", "name": "马里奥3D合集", "size": 4.72, "image": "images/SWT11.webp"},
-        {"code": "SWT12", "name": "马里奥疯狂兔子", "size": 4.94, "image": "images/SWT12.webp"},
-        {"code": "SWT13", "name": "宝可梦：探险寻宝", "size": 0.264, "image": "images/SWT13.webp"},
-        {"code": "SWT14", "name": "宝可梦传说：阿尔宙斯", "size": 6.1, "image": "images/SWT14.webp"},
-        {"code": "SWT15", "name": "超回转寿司先锋：寿司之道", "size": 2.82, "image": "images/SWT15.webp"},
-        {"code": "SWT16", "name": "大家1-2-Switch", "size": 3.7, "image": "images/SWT16.webp"},
-        {"code": "SWT17", "name": "疯狂伐木匠 VS Timberman VS", "size": 0.208, "image": "images/SWT17.webp"},
-        {"code": "SWT18", "name": "健身环大冒险", "size": 3.3, "image": "images/SWT18.webp"},
-        {"code": "SWT19", "name": "九龙妖魔学园纪", "size": 4.29, "image": "images/SWT19.webp"},
-        {"code": "SWT20", "name": "卡比斗士2", "size": 1.1, "image": "images/SWT20.webp"},
-        {"code": "SWT21", "name": "猎天使魔女3", "size": 15.7, "image": "images/SWT21.webp"},
-        {"code": "SWT22", "name": "马里奥3D世界+狂怒世界", "size": 2.95, "image": "images/SWT22.webp"},
-        {"code": "SWT23", "name": "马里奥网球", "size": 2.51, "image": "images/SWT23.webp"},
-        {"code": "SWT24", "name": "马里奥兄弟U豪华版", "size": 3.71, "image": "images/SWT24.webp"},
-        {"code": "SWT25", "name": "你裁我剪！斯尼帕", "size": 1.82, "image": "images/SWT25.webp"},
-        {"code": "SWT26", "name": "喷射战士3", "size": 9.02, "image": "images/SWT26.webp"},
-        {"code": "SWT27", "name": "三角战略", "size": 8.05, "image": "images/SWT27.webp"},
-        {"code": "SWT28", "name": "神臂斗士", "size": 3.23, "image": "images/SWT28.webp"},
-        {"code": "SWT29", "name": "太鼓之达人 咚咚雷音祭", "size": 7.07, "image": "images/SWT29.webp"},
-        {"code": "SWT30", "name": "星之卡比：探索发现", "size": 5.74, "image": "images/SWT30.webp"},
-        {"code": "SWT31", "name": "星之卡比：新星同盟", "size": 3.94, "image": "images/SWT31.webp"},
-        {"code": "SWT32", "name": "星之卡比Wii豪华版", "size": 7.43, "image": "images/SWT32.webp"},
-        {"code": "SWT33", "name": "耀西的手工世界", "size": 5.89, "image": "images/SWT33.webp"},
-        {"code": "SWT34", "name": "异度神剑3", "size": 19.4, "image": "images/SWT34.webp"},
-        {"code": "SWT35", "name": "游戏王", "size": 1.74, "image": "images/SWT35.webp"},
-        {"code": "SWT36", "name": "有氧拳击2", "size": 3.59, "image": "images/SWT36.webp"}
-      ]
+"热门游戏": [
+    {"code":"X29","name":"消逝的光芒：困兽 [预购奖励+全DLC]","size":62.3,"image":"images/X29.webp"},
+    { "code": "W19", "name": "黑神话悟空豪华版", "size": 134, "image": "images/W19.webp" },
+    {"code":"H28","name":"合金装备：食蛇者 重制版+预购特典+全DLC","size":93.8,"image":"images/H28.webp"},
+    {"code":"K4","name":"空洞骑士：丝之歌 预购特典+全DLC","size":7.57,"image":"images/K4.webp"},
+    {"code":"J1","name":"禁闭求生2 预购特典+全DLC","size":27.7,"image":"images/J1.webp"},
+    {"code": "L13", "name": "情感反诈模拟器", "size": 21.7, "image": "images/L13.webp"},
+    {"code": "B1", "name": "博德之门3", "size": 147, "image": "images/B1.webp"},
+    {"code": "Z10", "name": "战神5：诸神黄昏", "size": 178, "image": "images/Z10.webp"},
+    {"code": "S1", "name": "赛博朋克2077", "size": 92.5, "image": "images/S1.webp"},
+    {"code": "H5", "name": "荒野大镖客2", "size": 119, "image": "images/H5.webp"},
+    {"code": "A1", "name": "艾尔登法环", "size": 66.2, "image": "images/A1.webp"},
+    {"code": "G2", "name": "GTA5/侠盗猎车手5增强版", "size": 98.3, "image": "images/G2.webp"},
+    {"code": "Z16", "name": "最后的生还者2", "size": 115, "image": "images/Z16.webp"},
+    {"code": "Z9", "name": "战神4", "size": 64.6, "image": "images/Z9.webp"},
+    {"code": "D5", "name": "极限竞速：地平线5", "size": 175, "image": "images/D5.webp"},
+    {"code": "M2", "name": "漫威蜘蛛侠2", "size": 111, "image": "images/M2.webp"},
+    {"code": "X11", "name": "消逝的光芒", "size": 39.4, "image": "images/X11.webp"},
+    {"code":"COD21","name":"使命召唤21：黑色行动 6","size":53.5,"image":"images/COD21.webp"},
+    {"code": "SWT2", "name": "塞尔达传说：旷野之息", "size": 15.7, "image": "images/SWT2.webp"},
+    {"code": "SWT3", "name": "塞尔达传说：王国之泪", "size": 16.6, "image": "images/SWT3.webp"},
+    {"code": "S8", "name": "双影奇境", "size": 87.7, "image": "images/S8.webp"},
+    {"code": "S16", "name": "双人成行", "size": 44.6, "image": "images/S16.webp"},
+    {"code": "D22", "name": "多重人生", "size": 48.1, "image": "images/D22.webp"},
+    {"code": "C7", "name": "城市天际线2", "size": 62.6, "image": "images/C7.webp"},
+    {"code": "C5", "name": "刺客信条：英灵殿", "size": 130, "image": "images/C5.webp"},
+    {"code": "S10", "name": "生化危机4重制版", "size": 59.1, "image": "images/S10.webp"},
+  ],
+
+  "休闲/多人游戏": [
+  {"code": "AW4", "name": "王国：两位君主", "size": 4.73, "image": "images/AW4.webp"},
+  {"code": "AB1", "name": "避风港", "size": 5.55, "image": "images/AB1.webp"},
+  {"code": "AC1", "name": "铲子骑士：口袋地牢", "size": 0.347, "image": "images/AC1.webp"},
+  {"code": "AC2", "name": "茶杯头", "size": 5.4, "image": "images/AC2.webp"},
+  {"code": "AC3", "name": "超级兔子人", "size": 1.63, "image": "images/AC3.webp"},
+  {"code": "AD1", "name": "哆啦A梦：自然王国与和乐家人", "size": 1.99, "image": "images/AD1.webp"},
+  {"code": "AD2", "name": "堆叠逐箱", "size": 2.6, "image": "images/AD2.webp"},
+  {"code": "AD3", "name": "洞穴探险2", "size": 0.699, "image": "images/AD3.webp"},
+  {"code": "AD4", "name": "捣蛋鹅", "size": 0.833, "image": "images/AD4.webp"},
+  {"code": "AE1", "name": "恶棍英雄", "size": 1.12, "image": "images/AE1.webp"},
+  {"code": "AF1", "name": "负鼠闹翻天", "size": 0.875, "image": "images/AF1.webp"},
+  {"code": "AF2", "name": "伐木工大冒险", "size": 0.506, "image": "images/AF2.webp"},
+  {"code": "AF3", "name": "非常英雄", "size": 2.87, "image": "images/AF3.webp"},
+  {"code": "AG1", "name": "狗狗", "size": 5.11, "image": "images/AG1.webp"},
+  {"code": "AG2", "name": "公路救赎", "size": 6.48, "image": "images/AG2.webp"},
+  {"code": "AH1", "name": "魂斗罗：加鲁加行动", "size": 9.33, "image": "images/AH1.webp"},
+  {"code": "AH2", "name": "魂斗罗：暴走军团", "size": 12.3, "image": "images/AH2.webp"},
+  {"code": "AH3", "name": "胡闹修车", "size": 2.06, "image": "images/AH3.webp"},
+  {"code": "AH4", "name": "混乱斗士", "size": 1.27, "image": "images/AH4.webp"},
+  {"code": "AH5", "name": "胡闹厨房：全都好吃", "size": 8.65, "image": "images/AH5.webp"},
+  {"code": "AH6", "name": "胡闹厨房2", "size": 8.01, "image": "images/AH6.webp"},
+  {"code": "AH7", "name": "胡闹搬家", "size": 1.33, "image": "images/AH7.webp"},
+  {"code": "AH8", "name": "海绵宝宝：争霸比基尼海滩", "size": 7.67, "image": "images/AH8.webp"},
+  {"code": "AH9", "name": "海绵宝宝：宇宙摇摆", "size": 7.95, "image": "images/AH9.webp"},
+  {"code": "AH10", "name": "胡闹装修", "size": 2.72, "image": "images/AH10.webp"},
+  {"code": "AJ1", "name": "加菲猫卡丁车：激情竞速", "size": 1.78, "image": "images/AJ1.webp"},
+  {"code": "AJ2", "name": "极速骑行：涡轮", "size": 1.22, "image": "images/AJ2.webp"},
+  {"code": "AJ3", "name": "九张羊皮纸", "size": 5.78, "image": "images/AJ3.webp"},
+  {"code": "AP2", "name": "破门而入2：北方特遣队", "size": 2.97, "image": "images/AP2.webp"},
+  {"code": "AL1", "name": "龙珠战士Z", "size": 8.16, "image": "images/AL1.webp"},
+  {"code": "AL2", "name": "洛克人Zero/ZX遗产合集", "size": 4.02, "image": "images/AL2.webp"},
+  {"code": "AL3", "name": "蜡笔小新：煤炭镇的小白", "size": 4.45, "image": "images/AL3.webp"},
+  {"code": "AL4", "name": "蜡笔小新 我与博士的暑假 ～没有终点的七日之旅～", "size": 2.42, "image": "images/AL4.webp"},
+  {"code": "AL5", "name": "蓝精灵卡丁车", "size": 2.22, "image": "images/AL5.webp"},
+  {"code": "AL6", "name": "蓝精灵：毒叶大作战", "size": 5.0, "image": "images/AL6.webp"},
+  {"code": "AM1", "name": "面包和年糕", "size": 0.98, "image": "images/AM1.webp"},
+  {"code": "AM2", "name": "猫咪斗恶龙2", "size": 0.413, "image": "images/AM2.webp"},
+  {"code": "AM3", "name": "模拟山羊3", "size": 11.8, "image": "images/AM3.webp"},
+  {"code": "AM4", "name": "魔法旅馆", "size": 0.95, "image": "images/AM4.webp"},
+  {"code": "AM5", "name": "魔法气泡™ 特趣思™ 俄罗斯方块™ 2", "size": 3.2, "image": "images/AM5.webp"},
+  {"code": "AM6", "name": "毛线小精灵2", "size": 7.05, "image": "images/AM6.webp"},
+  {"code": "AQ1", "name": "潜水员戴夫", "size": 3.31, "image": "images/AQ1.webp"},
+  {"code": "AQ2", "name": "枪、血与黑手党2", "size": 2.7, "image": "images/AQ2.webp"},
+  {"code": "AR1", "name": "人类：一败涂地", "size": 4.84, "image": "images/AR1.webp"},
+  {"code": "AR2", "name": "忍者神龟：施莱德的复仇 终极版", "size": 2.0, "image": "images/AR2.webp"},
+  {"code": "AS1", "name": "生死大乱斗", "size": 3.54, "image": "images/AS1.webp"},
+  {"code": "AS2", "name": "随动回旋镖", "size": 0.59, "image": "images/AS2.webp"},
+  {"code": "AS3", "name": "沙发怪兽", "size": 1.58, "image": "images/AS3.webp"},
+  {"code": "AF4", "name": "守护坚果", "size": 1.73, "image": "images/AF4.webp"},
+  {"code": "AS5", "name": "三位一体5", "size": 16.9, "image": "images/AS5.webp"},
+  {"code": "AT1", "name": "太空猴子", "size": 1.01, "image": "images/AT1.webp"},
+  {"code": "AT2", "name": "同舟共济", "size": 2.65, "image": "images/AT2.webp"},
+  {"code": "AW1", "name": "我的世界：地下城", "size": 5.43, "image": "images/AW1.webp"},
+  {"code": "AX1", "name": "携手并进", "size": 1.41, "image": "images/AX1.webp"},
+  {"code": "AX2", "name": "小小梦魇2", "size": 22.1, "image": "images/AX2.webp"},
+  {"code": "AX3", "name": "星露谷物语", "size": 0.661, "image": "images/AX3.webp"},
+  {"code": "AX4", "name": "橡胶强盗", "size": 1.22, "image": "images/AX4.webp"},
+  {"code": "AY1", "name": "一起玩农场2", "size": 0.616, "image": "images/AY1.webp"},
+  {"code": "AY2", "name": "外星原始人：入侵", "size": 1.36, "image": "images/AY2.webp"},
+  {"code": "AY3", "name": "野餐大冒险", "size": 0.292, "image": "images/AY3.webp"},
+  {"code": "AY4", "name": "伊苏9：怪人之夜", "size": 14.9, "image": "images/AY4.webp"},
+  {"code": "AZ1", "name": "只只大冒险", "size": 5.91, "image": "images/AZ1.webp"},
+  {"code": "AZ2", "name": "纸人：传递冒险", "size": 1.43, "image": "images/AZ2.webp"},
+  {"code": "AZ3", "name": "终极鸡马", "size": 2.03, "image": "images/AZ3.webp"},
+  {"code": "AZ4", "name": "战锤40K：格拉迪乌斯-战争遗迹", "size": 4.66, "image": "images/AZ4.webp"},
+  {"code": "AC4", "name": "传说法师2", "size": 3.15, "image": "images/AC4.webp"},
+  {"code": "AH11", "name": "胡闹加油站", "size": 1.95, "image": "images/AH11.webp"},
+  {"code": "AS6", "name": "速速上菜", "size": 1.03, "image": "images/AS6.webp"},
+  {"code": "AW2", "name": "武装原型", "size": 0.548, "image": "images/AW2.webp"},
+  {"code": "AX5", "name": "星界战士", "size": 1.6, "image": "images/AX5.webp"},
+  {"code": "AC5", "name": " 超级炸弹人R2", "size": 14.6, "image": "images/AC5.webp" },  
+  {"code": "AW3", "name": "维度分割", "size": 0.431, "image": "images/AW3.webp"},  
+  { "code": "L14", "name": "链在一起", "size": 7.42, "image": "images/L14.webp" },
+  {"code": "AP1", "name": "破门而入：行动小队", "size": 0.065, "image": "images/AP1.webp"},
+  {"code":"M28","name":"喵咪斗恶龙3","size":1.03,"image":"images/M28.webp"},
+  {"code":"X30","name":"蟹蟹寻宝奇遇","size":7.75,"image":"images/X30.webp"},
+  ],
+
+  "开放世界": [
+    {"code": "F6", "name": "法外枭雄：滚石城", "size": 87.8, "image": "images/F6.webp"},
+    {"code": "Z36", "name": "庄园领主", "size": 11.7, "image": "images/Z36.webp"},
+    {"code": "G10", "name": "GTA4/侠盗猎车手4", "size": 45.2, "image": "images/G10.webp"},
+    {"code": "H4", "name": "幻兽帕鲁", "size": 26.1, "image": "images/H4.webp"},
+    {"code": "K1", "name": "看门狗", "size": 16.8, "image": "images/K1.webp"},
+    {"code": "K2", "name": "看门狗2", "size": 45.4, "image": "images/K2.webp"},
+    {"code": "L5", "name": "猎人：野性的呼唤", "size": 94.1, "image": "images/L5.webp"},
+    {"code": "N2", "name": "虐杀原形1+2", "size": 20.8, "image": "images/N2.webp"},
+    {"code": "Q7", "name": "骑马与砍杀2", "size": 49.8, "image": "images/Q7.webp"},
+    {"code": "W5", "name": "无人深空", "size": 12.6, "image": "images/W5.webp"},
+    {"code": "Y6", "name": "遗迹2", "size": 86.5, "image": "images/Y6.webp"},
+    {"code": "Y7", "name": "幽灵行动：荒野完全版", "size": 86.3, "image": "images/Y7.webp"},
+    {"code": "Z12", "name": "正当防卫4", "size": 71.6, "image": "images/Z12.webp"},
+    {"code":"Z29","name":"正当防卫3","size":60.2,"image":"images/Z29.webp"},
+    {"code": "Y8", "name": "云族裔inZOI", "size": 22.2, "image": "images/Y8.webp"},
+    {"code":"K5","name":"看门狗：军团 终极版+全DLC","size":60.1,"image":"images/K5.webp"},
+    {"code": "S22", "name": "方舟：生存飞升", "size": 211, "image": "images/S22.webp"},
+  ],
+
+  "动作冒险": [
+    {"code": "H2", "name": "霍格沃茨之遗", "size": 73.9, "image": "images/H2.webp"},
+    {"code":"D26","name":"地狱即我们","size":20.3,"image":"images/D26.webp"},
+    {"code": "L6", "name": "浪人崛起", "size": 149, "image": "images/L6.webp"},
+    {"code": "R10", "name": "如龙：极2", "size": 41.2, "image": "images/R10.webp"},
+    {"code": "H27", "name": "合金装备5：幻痛", "size": 28.6, "image": "images/H27.webp"},
+    {"code": "C1", "name": "刺客信条4：黑旗", "size": 28.5, "image": "images/C1.webp"},
+    {"code": "C2", "name": "刺客信条：幻景", "size": 41.2, "image": "images/C2.webp"},
+    {"code": "C6", "name": "刺客信条：大革命", "size": 51.3, "image": "images/C6.webp"},
+    {"code": "D6", "name": "地平线：零之曙光", "size": 120, "image": "images/D6.webp"},
+    {"code": "D10", "name": "对马岛之魂导演剪辑版", "size": 52.1, "image": "images/D10.webp"},
+    {"code": "G1", "name": "孤岛惊魂6", "size": 77.4, "image": "images/G1.webp"},
+    {"code": "G5", "name": "古墓丽影：暗影", "size": 37.4, "image": "images/G5.webp"},
+    {"code": "G6", "name": "古墓丽影9", "size": 21.6, "image": "images/G6.webp"},
+    {"code": "G7", "name": "古墓丽影10：崛起", "size": 27.2, "image": "images/G7.webp"},
+    {"code": "S7", "name": "神秘海域：盗贼遗产合集", "size": 99.5, "image": "images/S7.webp"},
+    {"code": "Z15", "name": "最后的生还者", "size": 79.7, "image": "images/Z15.webp"},
+    {"code": "G11", "name": "孤岛惊魂 5", "size": 72.5, "image": "images/G11.webp"},
+    {"code": "G12", "name": "光与影：33号远征队", "size": 40.6, "image": "images/G12.webp"},
+    {"code": "H10", "name": "合金装备崛起：复仇", "size": 25, "image": "images/H10.webp"},
+    {"code": "S24", "name": "森林之子", "size": 14.8, "image": "images/S24.webp"},
+    {"code": "S25", "name": "沙石镇时光", "size": 27.8, "image": "images/S25.webp"},
+    {"code": "H23", "name": "哈迪斯 杀出地狱", "size": 11, "image": "images/H23.webp"},
+    {"code": "H24", "name": "黑道圣徒4", "size": 28.3, "image": "images/H24.webp"},
+    {"code": "H25", "name": "海贼无双4：终极版", "size": 26.6, "image": "images/H25.webp"},
+    {"code": "M14", "name": "马克思佩恩3", "size": 32.6, "image": "images/M14.webp"},
+    {"code": "M16", "name": "盟军敢死队3高清重制版", "size": 3.66, "image": "images/M16.webp"},
+    {"code": "Z35", "name": "灾后修复师", "size": 48.4, "image": "images/Z35.webp"},
+    {"code": "Q22", "name": "骑马与砍杀：战团", "size": 5.31, "image": "images/Q22.webp"},
+    {"code": "M19", "name": "盟军敢死队2高清重制版", "size": 3.38, "image": "images/M19.webp"},
+    {"code": "W14", "name": "长安：石之舞", "size": 1.84, "image": "images/W14.webp"},
+    { "code": "A6", "name": "暗黑血统：创世纪", "size": 10, "image": "images/A6.webp" },
+    { "code": "A7", "name": "暗黑血统3", "size": 20.6, "image": "images/A7.webp" },
+    { "code": "D9", "name": "地狱之刃 2：塞娜的传说", "size": 49.4, "image": "images/D9.webp" },
+    {"code": "F8", "name": "风暴崛起", "size": 42.4, "image": "images/F8.webp"},
+    {"code": "J2", "name": "禁闭求生", "size": 10.3, "image": "images/J2.webp"},
+    {"code": "Q2", "name": "夺宝奇兵：古老之圈", "size": 113, "image": "images/Q2.webp"},
+    {"code": "R6", "name": "如龙6：生命诗篇", "size": 39, "image": "images/R6.webp"},
+    {"code": "R8", "name": "瑞奇与叮当 时空跳转", "size": 40.3, "image": "images/R8.webp"},
+    {"code": "S2", "name": "四海兄弟2：最终版", "size": 44, "image": "images/S2.webp"},
+    {"code": "S3", "name": "四海兄弟3:最终版", "size": 55, "image": "images/S3.webp"},
+    {"code": "S4", "name": "四海兄弟：最终版", "size": 37.5, "image": "images/S4.webp"},
+    {"code": "S18", "name": "杀手3", "size": 76.5, "image": "images/S18.webp"},
+    {"code": "S19", "name": "杀手6", "size": 70.8, "image": "images/S19.webp"},
+    {"code": "S20", "name": "死亡搁浅：导演剪辑版", "size": 69.1, "image": "images/S20.webp"},
+    {"code": "W2", "name": "往日不再", "size": 44.6, "image": "images/W2.webp"},
+    {"code": "X3", "name": "消逝的光芒2：人与仁之战", "size": 69.7, "image": "images/X3.webp"},
+    {"code": "X5", "name": "细胞分裂6：黑名单", "size": 19.3, "image": "images/X5.webp"},
+    {"code": "X8", "name": "星球大战绝地：幸存者", "size": 129, "image": "images/X8.webp"},
+    {"code": "Y2", "name": "幽灵行者2", "size": 69.7, "image": "images/Y2.webp"},
+    {"code": "Y3", "name": "幽灵线：东京", "size": 23.4, "image": "images/Y3.webp"},
+    {"code": "R4", "name": "热血无赖", "size": 16.6, "image": "images/R4.webp"},
+    { "code": "C15", "name": "刺客信条：枭雄", "size": 68.3, "image": "images/C15.webp" },
+    { "code": "D23", "name": "盗贼遗产2", "size": 0.83, "image": "images/D23.webp" },
+    { "code": "Z42", "name": "咒术回战：双华乱舞", "size": 18.1, "image": "images/Z42.webp" },
+    {"code": "X26", "name": "心之眼豪华版", "size": 49.4, "image": "images/X26.webp"},    
+    {"code": "W21", "name": "午夜以南", "size": 84.6, "image": "images/W21.webp"},
+    {"code":"M26","name":"疯狂的麦克斯","size":32.2,"image":"images/M26.webp"},
+  ],
+
+  "射击游戏": [
+    {"code": "COD4CZ", "name": "使命召唤4：现代战争重制版", "size": 62.3, "image": "images/COD4CZ.webp"},
+    {"code": "COD6CZ", "name": "使命召唤6：现代战争2重制版", "size": 63.8, "image": "images/COD6CZ.webp"},
+    {"code": "COD7", "name": "使命召唤7：黑色行动", "size": 7.84, "image": "images/COD7.webp"},
+    {"code": "COD8", "name": "使命召唤8：现代战争3", "size": 13.7, "image": "images/COD8.webp"},
+    {"code": "COD9", "name": "使命召唤9：黑色行动2", "size": 15, "image": "images/COD9.webp"},
+    {"code": "COD10", "name": "使命召唤10：幽灵", "size": 28.9, "image": "images/COD10.webp"},
+    {"code": "COD11", "name": "使命召唤11：高级战争", "size": 36.6, "image": "images/COD11.webp"},
+    {"code": "COD12", "name": "使命召唤12：黑色行动3", "size": 125, "image": "images/COD12.webp"},
+    {"code": "COD13", "name": "使命召唤13：无限战争", "size": 72.3, "image": "images/COD13.webp"},
+    {"code": "COD14", "name": "使命召唤14：二战", "size": 156, "image": "images/COD14.webp"},
+    {"code": "COD15", "name": "使命召唤15：黑色行动4", "size": 142, "image": "images/COD15.webp"},
+    {"code": "COD16", "name": "使命召唤16：现代战争", "size": 194, "image": "images/COD16.webp"},
+    {"code":"COD17","name":"使命召唤17 黑色行动冷战","size":227,"image":"images/COD17.webp"},
+    {"code": "COD18", "name": "使命召唤18 先锋", "size": 81.4, "image": "images/COD18.webp"},
+    {"code": "COD19", "name": "使命召唤19：现代战争2", "size": 36.1, "image": "images/COD19.webp"},
+    {"code":"COD20","name":"使命召唤20 现代战争3","size":84.9,"image":"images/COD20.webp"},
+    {"code":"F10","name":"凡尔登战役","size":8.07,"image":"images/F10.webp"},
+    {"code": "H1", "name": "毁灭战士", "size": 62.2, "image": "images/H1.webp"},
+    {"code": "H6", "name": "皇牌空战7：未知空域", "size": 61.1, "image": "images/H6.webp"},
+    {"code": "Z1", "name": "战地1", "size": 30.8, "image": "images/Z1.webp"},
+    {"code": "Z2", "name": "战地2", "size": 2.78, "image": "images/Z2.webp"},
+    {"code": "Z4", "name": "战地4", "size": 25.5, "image": "images/Z4.webp"},
+    {"code": "Z5", "name": "战地5", "size": 50.2, "image": "images/Z5.webp"},
+    {"code": "Y5", "name": "严阵以待", "size": 61.8, "image": "images/Y5.webp"},
+    {"code": "Z3", "name": "战地3", "size": 22.8, "image": "images/Z3.webp"},
+    {"code": "Z28", "name": "战锤40K：星际战士2", "size": 71.5, "image": "images/Z28.webp"},
+    {"code": "Q17", "name": "求生之路2", "size": 27.7, "image": "images/Q17.webp"},
+    {"code": "J13", "name": "JOJO的奇妙冒险：群星之战重制版", "size": 5.05, "image": "images/J13.webp"},
+    {"code": "J14", "name": "狙击精英V2", "size": 12.9, "image": "images/J14.webp"},
+    {"code": "J15", "name": "狙击精英3", "size": 28.3, "image": "images/J15.webp"},
+    {"code": "J16", "name": "狙击精英(2005)", "size": 3.06, "image": "images/J16.webp"},
+    {"code": "W10", "name": "无主之地2", "size": 11.9, "image": "images/W10.webp"},
+    {"code": "W11", "name": "无主之地：前传", "size": 31.1, "image": "images/W11.webp"},
+    {"code": "W7", "name": "无主之地3", "size": 137, "image": "images/W7.webp"},
+    {"code": "Z37", "name": "终结者：反抗军", "size": 30, "image": "images/Z37.webp"},
+    {"code": "Z38", "name": "终结者：黑暗命运 - 反抗", "size": 14.6, "image": "images/Z38.webp"},
+    {"code": "T1", "name": "逃离塔科夫", "size": 36.9, "image": "images/T1.webp"},
+    {"code": "T8", "name": "突袭1-4合集", "size": 14, "image": "images/T8.webp"},
+    {"code": "S43", "name": "死亡空间1-3", "size": 29.4, "image": "images/S43.webp"},
+    {"code": "G8", "name": "光环：无限", "size": 46.4, "image": "images/G8.webp"},
+    {"code": "J4", "name": "狙击精英4", "size": 67.2, "image": "images/J4.webp"},
+    {"code": "J7", "name": "僵尸世界大战", "size": 66.6, "image": "images/J7.webp"},
+    {"code": "Q3", "name": "潜行者2切尔诺贝利之心", "size": 152, "image": "images/Q3.webp"},
+    {"code": "S30", "name": "生化奇兵3", "size": 43.3, "image": "images/S30.webp"},
+    {"code": "T4", "name": "泰坦陨落2", "size": 58, "image": "images/T4.webp"},
+    {"code": "Z34", "name": "战争机器5", "size": 98.7, "image": "images/Z34.webp"},
+    {"code": "Z24", "name": "装甲核心6：境界天火", "size": 61.1, "image": "images/Z24.webp"},
+    {"code":"R11","name":"前线任务2重制版","size":9.08,"image":"images/R11.webp"},
+
+  ],
+  "角色扮演RPG": [
+    { "code": "M21", "name": "明末：渊虚之羽豪华版", "size": 45.1, "image": "images/M21.webp" },
+    {"code": "C3", "name": "刺客信条：奥德赛", "size": 101, "image": "images/C3.webp"},
+    {"code": "W4", "name": "巫师3 次世代版", "size": 61.7, "image": "images/W4.webp"},
+    {"code": "A9", "name": "暗黑破坏神2 重制版", "size": 29.1, "image": "images/A9.webp"},
+    {"code": "X12", "name": "星空", "size": 140, "image": "images/X12.webp"},
+    {"code": "B4", "name": "八方旅人/歧路旅人", "size": 4.88, "image": "images/B4.webp"},
+    {"code": "Z19", "name": "最终幻想16", "size": 151, "image": "images/Z19.webp"},
+    {"code": "C4", "name": "刺客信条：起源", "size": 73.3, "image": "images/C4.webp"},
+    {"code": "L3", "name": "龙之信条2", "size": 70.8, "image": "images/L3.webp"},
+    {"code": "X9", "name": "仙剑奇侠传7", "size": 43.4, "image": "images/X9.webp"},
+    {"code": "D2", "name": "地铁：离去", "size": 100, "image": "images/D2.webp"},
+    {"code": "N4", "name": "尼尔机械纪元 年度版", "size": 41.5, "image": "images/N4.webp"},
+    {"code": "Z6", "name": "最终幻想 VII 重生", "size": 154, "image": "images/Z6.webp"},
+    {"code": "Z7", "name": "最终幻想VII：重制版", "size": 94.2, "image": "images/Z7.webp"},
+    {"code": "Z27", "name": "最终幻想15", "size": 83.8, "image": "images/Z27.webp"},
+    {"code": "A4", "name": "艾尔登法环：黑夜君临", "size": 20.6, "image": "images/A4.webp"},
+    {"code": "S37", "name": "上古卷轴5：天际 周年纪念版", "size": 31.4, "image": "images/S37.webp"},
+    {"code": "X24", "name": "轩辕剑7", "size": 38.8, "image": "images/X24.webp"},
+    {"code": "L1", "name": "龙珠：超宇宙2", "size": 30.2, "image": "images/L1.webp"},
+    {"code": "L2", "name": "龙珠Z：卡卡罗特", "size": 51.2, "image": "images/L2.webp"},
+    {"code": "M1", "name": "漫威复仇者联盟", "size": 131, "image": "images/M1.webp"},
+    {"code": "M3", "name": "漫威蜘蛛侠:重制版", "size": 64, "image": "images/M3.webp"},
+    {"code": "M4", "name": "蜘蛛侠：迈尔斯·莫拉莱斯", "size": 45, "image": "images/M4.webp"},
+    {"code": "G4", "name": "怪物猎人：世界", "size": 98.4, "image": "images/G4.webp"},
+    {"code": "D7", "name": "地平线：西之绝境", "size": 123, "image": "images/D7.webp"},
+    {"code": "R2", "name": "仁王2", "size": 76.4, "image": "images/R2.webp"},
+    {"code": "R3", "name": "仁王", "size": 73.6, "image": "images/R3.webp"},
+    {"code": "W1", "name": "瘟疫传说：安魂曲", "size": 49.4, "image": "images/W1.webp"},
+    {"code": "W3", "name": "卧龙：苍天陨落", "size": 59.7, "image": "images/W3.webp"},
+    {"code": "X7", "name": "星球大战绝地：陨落的武士团", "size": 62.3, "image": "images/X7.webp"},
+    {"code": "Y1", "name": "原子之心", "size": 82.1, "image": "images/Y1.webp"},
+    {"code": "D19", "name": "底特律：化身为人", "size": 58.8, "image": "images/D19.webp"},
+    {"code": "H7", "name": "荒野大镖客：救赎", "size": 9.57, "image": "images/H7.webp"},
+    {"code": "H9", "name": "黑暗之魂3", "size": 24.8, "image": "images/H9.webp"},
+    {"code": "Q21", "name": "歧路旅人 II", "size": 7.23, "image": "images/Q21.webp"},
+    {"code": "T2", "name": "天国：拯救2", "size": 112, "image": "images/T2.webp"},
+    {"code": "X2", "name": "宣誓", "size": 74.1, "image": "images/X2.webp"},
+    {"code": "Z23", "name": "赵云传：云汉腾龙", "size": 14.5, "image": "images/Z23.webp"},
+    {"code": "S40", "name": "上古卷轴4：湮没", "size": 118, "image": "images/S40.webp"},
+    {"code": "W17", "name": "污痕圣杯：阿瓦隆的陨落", "size": 33.9, "image": "images/W17.webp"},
+    {"code": "Y19", "name": "逸剑风云决", "size": 6.19, "image": "images/Y19.webp"},
+    {"code": "Z40", "name": "中国式相亲", "size": 7.12, "image": "images/Z40.webp"},
+    {"code": "Z41", "name": "中国式网游", "size": 4.92, "image": "images/Z41.webp"},
+    { "code": "G19", "name": "鬼谷八荒", "size": 27.1, "image": "images/G19.webp" },
+    { "code": "G20", "name": "古剑奇谭三", "size": 34.4, "image": "images/G20.webp" },
+    {"code": "F1", "name": "辐射4 年度版", "size": 37.9, "image": "images/F1.webp"},
+    {"code":"W22","name":"无夜国度2：新月的新娘","size":19,"image":"images/W22.webp"},
+    {"code":"M25","name":"魔咒之地 豪华版","size":130,"image":"images/M25.webp"},
+    {"code":"M27","name":"牧场物语：安托斯之风","size":2.83,"image":"images/M27.webp"},
+    
+  ],
+  "体育竞技": [
+    {"code": "D4", "name": "极限竞速：地平线4", "size": 95.3, "image": "images/D4.webp"},
+    {"code": "C8", "name": "尘埃拉力赛2.0", "size": 109, "image": "images/C8.webp"},
+    {"code": "E1", "name": "EA 运动 FC 25 足球", "size": 48.2, "image": "images/E1.webp"},
+    {"code": "J5", "name": "极限巅峰", "size": 29.6, "image": "images/J5.webp"},
+    {"code": "J9", "name": "极限国度", "size": 26.2, "image": "images/J9.webp"},
+    {"code": "J10", "name": "极速骑行5", "size": 48.7, "image": "images/J10.webp"},
+    {"code": "N1", "name": "NBA 2K23", "size": 137, "image": "images/N1.webp"},
+    {"code": "N3", "name": "NBA18", "size": 66.1, "image": "images/N3.webp"},
+    {"code": "C17", "name": "尘埃4", "size": 32.9, "image": "images/C17.webp"},
+    {"code": "F9", "name": "FIFA 2019", "size": 33.1, "image": "images/F9.webp"},
+    {"code": "N6", "name": "NBA2K17", "size": 77.1, "image": "images/N6.webp"},
+    {"code": "N7", "name": "NBA2K14", "size": 14.3, "image": "images/N7.webp"},
+    {"code": "Z8", "name": "足球经理2018-2023合集", "size": 21.1, "image": "images/Z8.webp"},
+    {"code": "F2", "name": "FIFA 23", "size": 50.1, "image": "images/F2.webp"},
+    {"code":"F11","name":"FIFA 2015","size":13.3,"image":"images/F11.webp"},
+    {"code":"F12","name":"FIFA 2017","size":41.6,"image":"images/F12.webp"},
+    {"code":"F13","name":"FIFA 2018","size":45.7,"image":"images/F13.webp"},
+    {"code": "S39", "name": "实况足球2021", "size": 38.9, "image": "images/S39.webp"},
+    {"code":"S48","name":"实况足球2019","size":35.3,"image":"images/S48.webp"},
+    {"code":"S49","name":"实况足球2018","size":22,"image":"images/S49.webp"},
+    {"code": "W12", "name": "美国职业摔角联盟2K25", "size": 97, "image": "images/W12.webp"},
+    {"code": "J18", "name": "极速骑行4", "size": 34.2, "image": "images/J18.webp"},
+    {"code": "S42", "name": "世界汽车拉力锦标赛10", "size": 36.8, "image": "images/S42.webp"},
+    {"code": "O1", "name": "欧洲卡车模拟2+全DLC", "size": 32.5, "image": "images/O1.webp"},
+    {"code": "Y10", "name": "远征 泥泞奔驰游戏", "size": 18.8, "image": "images/Y10.webp"},
+    { "code": "J23", "name": "极品飞车15：变速2", "size": 7.34, "image": "images/J23.webp" },
+    { "code": "J24", "name": "极品飞车16：亡命狂飙", "size": 15.5, "image": "images/J24.webp" },
+    { "code": "J25", "name": "极品飞车17：最高通缉U", "size": 6.35, "image": "images/J25.webp" },
+    { "code": "J26", "name": "极品飞车18：宿敌", "size": 9.92, "image": "images/J26.webp" },
+    { "code": "J27", "name": "极品飞车20：复仇", "size": 27.3, "image": "images/J27.webp" },
+    { "code": "J28", "name": "极品飞车21：热度", "size": 30.1, "image": "images/J28.webp" },
+  ],
+  "怀旧经典": [
+      {"code": "JD3", "name": "真三国无双5", "size": 3.56, "image": "images/JD3.webp"},
+      {"code": "C16", "name": "尘埃3", "size": 13.7, "image": "images/C16.webp"},
+      {"code": "JD1", "name": "地牢围攻3", "size": 4.21, "image": "images/JD1.webp"},
+      {"code": "JD2", "name": "轴心国和同盟军", "size": 1.04, "image": "images/JD2.webp"},
+      {"code": "X28", "name": "细胞分裂4：双重间谍", "size": 4.62, "image": "images/X28.webp"},
+      {"code":"JD22","name":"三国志9/威力加强版","size":1.15,"image":"images/D22.webp"},
+      {"code":"JD23","name":"三国志10/威力加强版","size":1.47,"image":"images/D23.webp"},
+      {"code":"JD24","name":"三国志11/威力加强版","size":1.6,"image":"images/D24.webp"},
+      {"code":"JD4","name":"反恐精英","size":0.37,"image":"images/JD4.webp"},
+      {"code":"JD5","name":"宝石迷阵3","size":0.15,"image":"images/JD5.webp"},
+      {"code":"JD7","name":"大富翁4","size":0.43,"image":"images/JD7.webp"},
+      {"code":"JD9","name":"三国志曹操传","size":0.17,"image":"images/JD9.webp"},
+      {"code":"JD10","name":"刀剑封魔录","size":1.2,"image":"images/JD10.webp"},
+      {"code":"JD11","name":"帝国时代1","size":0.42,"image":"images/JD11.webp"},
+      {"code":"JD12","name":"帝国时代2","size":0.46,"image":"images/JD12.webp"},
+      {"code":"JD13","name":"愤怒的小鸟","size":0.41,"image":"images/JD13.webp"},
+      {"code":"JD14","name":"孤胆枪手","size":0.1,"image":"images/JD14.webp"},
+      {"code":"JD15","name":"孤胆枪手2：重装上阵","size":0.67,"image":"images/JD15.webp"},
+      {"code":"JD16","name":"鬼泣4","size":7.28,"image":"images/JD16.webp"},
+      {"code":"JD17","name":"流星蝴蝶剑","size":1.33,"image":"images/JD17.webp"},
+      {"code":"JD18","name":"盟军敢死队1使命召唤","size":0.28,"image":"images/JD18.webp"},
+      {"code":"JD19","name":"新抢滩登陆","size":0.21,"image":"images/JD19.webp"},
+      {"code":"JD20","name":"三国志5","size":0.02,"image":"images/JD20.webp"},
+      {"code":"JD21","name":"三角洲特种部队5：黑鹰坠落","size":0.76,"image":"images/JD21.webp"},
+      {"code":"D24","name":"大航海时代4威力加强版30周年纪念数字版","size":3.31,"image":"images/D24.webp"},
+      {"code":"G22","name":"侠盗猎车手：圣安地列斯 最终版","size":17.9,"image":"images/G22.webp"},
+      {"code":"G23","name":"侠盗猎车手：罪恶都市 最终版","size":8.74,"image":"images/G23.webp"},
+      {"code":"JD25","name":"祖玛豪华版","size":0.02,"image":"images/JD25.webp"},
+      {"code":"JD26","name":"仙剑98柔情","size":0.63,"image":"images/JD26.webp"},
+      {"code":"JD8","name":"大鱼吃小鱼","size":0.02,"image":"images/JD8.webp"},
+      {"code":"JD27","name":"魔法门之英雄无敌5","size":1.72,"image":"images/JD27.webp"},
+      {"code":"JD28","name":"魔法门之英雄无敌1","size":0.47,"image":"images/JD28.webp"},
+      {"code":"JD29","name":"正当防卫2","size":4,"image":"images/JD29.webp"},
+      {"code":"JD30","name":"星际争霸Ⅱ","size":26.6,"image":"images/JD30.webp"},
+      {"code":"JD31","name":"打造世界","size":1.05,"image":"images/JD31.webp"},
+        ],
+  "恋爱养成": [ 
+    {"code": "W13", "name": "完蛋！我也能追到美女了", "size": 3.7, "image": "images/W13.webp"},
+    {"code": "Q23", "name": "请做COSER的主人2", "size": 75.7, "image": "images/Q23.webp"},
+    {"code": "M18", "name": "名利的游戏", "size": 21.1, "image": "images/M18.webp"},
+    {"code":"BA2","name":"重生了还要我恋爱？","size":20.3,"image":"images/BA2.webp"},
+    {"code":"BA3","name":"私人订制：我的专属韩国女团","size":8.17,"image":"images/BA3.webp"},
+    {"code":"BA06","name":"爱的传递","size":2.67,"image":"images/BA6.webp"},
+    {"code":"BA07","name":"阿西, 美女室友竟然...？","size":31.4,"image":"images/BA7.webp"},
+    {"code":"BA08","name":"别跑！美女在追你！","size":3.89,"image":"images/BA8.webp"},
+    {"code":"BA09","name":"超级情圣","size":10.7,"image":"images/BA9.webp"},
+    {"code":"BA10","name":"超级情圣2","size":32.4,"image":"images/BA10.webp"},
+    {"code":"BA11","name":"超级情圣3","size":32.1,"image":"images/BA11.webp"},
+    {"code":"BA15","name":"都要!小孩子才做选择!","size":39.2,"image":"images/BA15.webp"},
+    {"code":"BA16","name":"导演模拟器","size":25.4,"image":"images/BA16.webp"},
+    {"code":"BA18","name":"返杀","size":16.6,"image":"images/BA18.webp"},
+    {"code":"BA19","name":"复体","size":10.4,"image":"images/BA19.webp"},
+    {"code":"BA21","name":"飞越13号房","size":20.5,"image":"images/BA21.webp"},
+    {"code":"BA29","name":"完蛋！我被美女包围了！","size":26.4,"image":"images/BA29.webp"},
+    {"code":"BA35","name":"美女，请别影响我学习","size":20.3,"image":"images/BA35.webp"},
+    {"code":"BA52","name":"我和美女有个约会","size":6.98,"image":"images/BA52.webp"},
+    {"code":"BA95","name":"开局五个亿","size":66.3,"image":"images/BA95.webp"},
+    {"code":"BA120","name":"台北仲夏夜之梦","size":25.7,"image":"images/BA120.webp"},
+    {"code":"BA121","name":"甜心帝国","size":52.8,"image":"images/BA121.webp"},
+    {"code":"BA161","name":"我被女神盯上了!","size":12.1,"image":"images/BA161.webp"}
+  ],
+
+  "策略模拟": [
+    {"code": "Q27", "name": "全面坦克模拟", "size": 7.2, "image": "images/Q27.webp"},
+    {"code": "D8", "name": "动物园之星", "size": 10.9, "image": "images/D8.webp"},
+    {"code":"D25","name":"大富翁 11 可联机","size":4.28,"image":"images/D25.webp"},
+    {"code": "D12", "name": "帝国时代2决定版", "size": 57.3, "image": "images/D12.webp"},
+    {"code": "D14", "name": "帝国时代4", "size": 54.1, "image": "images/D14.webp"},
+    {"code": "H8", "name": "红色警戒2", "size": 1.83, "image": "images/H8.webp"},
+    {"code": "M7", "name": "魔兽争霸Ⅲ：冰封王座/混乱之治", "size": 14.6, "image": "images/M7.webp"},
+    {"code": "S15", "name": "三国志8重置版", "size": 21.5, "image": "images/S15.webp"},
+    {"code": "W6", "name": "文明6", "size": 27.6, "image": "images/W6.webp"},
+    {"code": "X4", "name": "幸福工厂", "size": 25.3, "image": "images/X4.webp"},
+    {"code": "Z17", "name": "战争号令：地狱之门", "size": 181, "image": "images/Z17.webp"},
+    {"code": "Z18", "name": "战锤40K：行商浪人", "size": 36.6, "image": "images/Z18.webp"},
+    {"code": "Z20", "name": "真三国无双：起源", "size": 51.3, "image": "images/Z20.webp"},
+    {"code": "Z21", "name": "真三国无双8帝国", "size": 41.1, "image": "images/Z21.webp"},
+    {"code": "M8", "name": "模拟农场25", "size": 37.1, "image": "images/M8.webp"},
+    {"code": "L11", "name": "罗马2：全面战争", "size": 35.4, "image": "images/L11.webp"},
+    {"code": "L12", "name": "了不起的修仙模拟器", "size": 4.86, "image": "images/L12.webp"},
+    {"code": "Q10", "name": "全面战争 阿提拉", "size": 24.2, "image": "images/Q10.webp"},
+    {"code": "Q11", "name": "全面战争 罗马", "size": 71.6, "image": "images/Q11.webp"},
+    {"code": "Q12", "name": "全面战争 拿破仑", "size": 22.7, "image": "images/Q12.webp"},
+    {"code": "Q13", "name": "全面战争 三国", "size": 33.9, "image": "images/Q13.webp"},
+    {"code": "Q14", "name": "全面战争 战锤2", "size": 64.2, "image": "images/Q14.webp"},
+    {"code": "Q15", "name": "全面战争 战锤", "size": 33.5, "image": "images/Q15.webp"},
+    {"code": "Q16", "name": "全面战争传奇 大不列颠王座", "size": 12.5, "image": "images/Q16.webp"},
+    {"code": "Q18", "name": "全面战争中世纪2", "size": 15, "image": "images/Q18.webp"},
+    {"code": "S31", "name": "双点医院", "size": 8.3, "image": "images/S31.webp"},
+    {"code": "W9", "name": "网吧模拟器", "size": 3.91, "image": "images/W9.webp"},
+    {"code": "C12", "name": "城市天际线", "size": 18.4, "image": "images/C12.webp"},
+    {"code": "M17", "name": "魔法门之英雄无敌7", "size": 14.5, "image": "images/M17.webp"},
+    {"code": "Q19", "name": "全面战争模拟器", "size": 4.49, "image": "images/Q19.webp"},
+    {"code": "Y12", "name": "英雄连2", "size": 32.1, "image": "images/Y12.webp"},
+    {"code": "S38", "name": "苏丹的游戏", "size": 2.36, "image": "images/S38.webp"},
+    {"code": "D21", "name": "帝国时代3", "size": 54.2, "image": "images/D21.webp"},
+    {"code": "G15", "name": "国王的恩赐2", "size": 55.4, "image": "images/G15.webp"},
+    {"code": "W15", "name": "文明5", "size": 8.3, "image": "images/W15.webp"},
+    {"code": "Y13", "name": "英雄连", "size": 22.3, "image": "images/Y13.webp"},
+    {"code": "Y15", "name": "英雄连3", "size": 27.8, "image": "images/Y15.webp"},
+    {"code": "S44", "name": "三国群英传1-7", "size": 5.16, "image": "images/S44.webp"},
+    {"code": "Y14", "name": "要塞：十字军东征", "size": 3.11, "image": "images/Y14.webp"},
+    {"code": "Y16", "name": "要塞3", "size": 1.83, "image": "images/Y16.webp"},
+    { "code": "B2", "name": "冰汽时代2", "size": 19.7, "image": "images/B2.webp" },
+    {"code": "D20", "name": "地下城4豪华版", "size": 13.7, "image": "images/D20.webp"},
+    {"code": "J8", "name": "家园3", "size": 34.6, "image": "images/J8.webp"},
+    {"code": "J17", "name": "家园重制版", "size": 8.78, "image": "images/J17.webp"},
+    {"code": "S6", "name": "兽人必须死3", "size": 12.6, "image": "images/S6.webp"},
+    {"code": "X25", "name": "星际争霸：重制版", "size": 10.2, "image": "images/X25.webp"},
+    {"code": "Z26", "name": "重装前哨", "size": 37.3, "image": "images/Z26.webp"},
+    {"code": "J20", "name": "建安外史", "size": 0.66, "image": "images/J20.webp"}, // 673MB ≈ 0.66GB
+    {"code": "J21", "name": "缉私警察", "size": 12.4, "image": "images/J21.webp"},
+    {"code": "J22", "name": "监寓", "size": 56.7, "image": "images/J22.webp"},
+    {"code": "Q24", "name": "全面战争传奇：特洛伊", "size": 25.2, "image": "images/Q24.webp"},
+    {"code": "Q25", "name": "全面战争：幕府将军2", "size": 23.8, "image": "images/Q25.webp"},
+    {"code": "W18", "name": "无感染区", "size": 4.22, "image": "images/W18.webp"},
+    {"code": "Y20", "name": "狂热运输2", "size": 37.9, "image": "images/Y20.webp"},
+    { "code": "C14", "name": "拆迁", "size": 4.45, "image": "images/C14.webp" },
+    { "code": "S50", "name": "三国志13/威力加强版", "size": 14.2, "image": "images/S50.webp" },
+    { "code": "S51", "name": "三国志14/威力加强版", "size": 20.9, "image": "images/S51.webp" },
+    {"code":"M22","name":"模拟火车世界4","size":29,"image":"images/M22.webp"},
+    {"code":"M23","name":"模拟火车世界5","size":33.7,"image":"images/M23.webp"},
+    {"code":"M24","name":"模拟火车2022","size":51.6,"image":"images/M24.webp"},
+    {"code":"G21","name":"工人与资源：苏维埃共和国","size":17.6,"image":"images/G21.webp"},
+    {"code": "F7", "name": "犯罪现场清洁工", "size": 32.9, "image": "images/F7.webp"},
+    {"code": "Q26", "name": "七日杀", "size": 15.9, "image": "images/Q26.webp"},
+    {"code": "W16", "name": "我的世界：传奇", "size": 12.6, "image": "images/W16.webp"}
+  ],
+
+  "格斗/动作": [
+    {"code": "G3", "name": "鬼泣5", "size": 40.1, "image": "images/G3.webp"},
+    {"code":"K6","name":"卡普空街机合集","size":1.77,"image":"images/K6.webp"},
+    {"code": "S46", "name": "生或死6", "size": 58.3, "image": "images/S46.webp"},
+    {"code": "N5", "name": "怒之铁拳4", "size": 6.11, "image": "images/N5.webp"},
+    {"code": "H3", "name": "火影忍者：终极风暴羁绊", "size": 29.7, "image": "images/H3.webp"},
+    {"code": "J6", "name": "街头霸王5", "size": 46.2, "image": "images/J6.webp"},
+    {"code": "P2", "name": "匹诺曹的谎言", "size": 61.3, "image": "images/P2.webp"},
+    {"code": "Q4", "name": "拳皇15", "size": 50.9, "image": "images/Q4.webp"},
+    {"code": "Q5", "name": "七龙珠：电光炸裂 Zero", "size": 28.5, "image": "images/Q5.webp"},
+    {"code": "Q6", "name": "拳皇14", "size": 17.3, "image": "images/Q6.webp"},
+    {"code": "R1", "name": "忍者龙剑传2：黑之章", "size": 81.4, "image": "images/R1.webp"},
+    {"code": "S17", "name": "师父", "size": 20, "image": "images/S17.webp"},
+    {"code": "T3", "name": "铁拳8", "size": 92.9, "image": "images/T3.webp"},
+    {"code": "Z11", "name": "真人快打11", "size": 108, "image": "images/Z11.webp"},
+    {"code": "Z13", "name": "真人快打X", "size": 40.2, "image": "images/Z13.webp"},
+    {"code": "Z14", "name": "只狼", "size": 14.8, "image": "images/Z14.webp"},
+    {"code": "S23", "name": "死神：魂魄觉醒", "size": 71.7, "image": "images/S23.webp"},
+    {"code": "Q20", "name": "拳皇98：终极对决", "size": 2.11, "image": "images/Q20.webp"},
+    {"code": "H25", "name": "海贼无双 4：终极版", "size": 26.6, "image": "images/H25.webp"},
+    {"code": "E3", "name": "饿狼传说：群狼之城", "size": 24.8, "image": "images/E3.webp"},
+    {"code": "J19", "name": "街头霸王30周年纪念合集", "size": 4.95, "image": "images/J19.webp"},
+    {"code": "H26", "name": "海贼无双3", "size": 11.3, "image": "images/H26.webp"},
+
+  ],
+
+  
+
+  "恐怖冒险": [
+    {"code": "J3", "name": "寂静岭2", "size": 34.7, "image": "images/J3.webp"},
+    {"code": "M6", "name": "木卫四协议", "size": 96, "image": "images/M6.webp"},
+    {"code": "S9", "name": "生化危机3", "size": 22.5, "image": "images/S9.webp"},
+    {"code": "S13", "name": "生化危机7", "size": 38.5, "image": "images/S13.webp"},
+    {"code": "S14", "name": "生化危机8", "size": 37.7, "image": "images/S14.webp"},
+    {"code": "X1", "name": "心灵杀手2", "size": 106, "image": "images/X1.webp"},
+    {"code": "X10", "name": "行尸走肉：最终季", "size": 45.4, "image": "images/X10.webp"},
+    {"code": "Z22", "name": "直到黎明：重制版", "size": 59.4, "image": "images/Z22.webp"},
+    {"code": "S11", "name": "生化危机5", "size": 8.48, "image": "images/S11.webp"},
+    {"code": "S12", "name": "生化危机6", "size": 13.8, "image": "images/S12.webp"},
+    {"code": "S26", "name": "生化危机：启示录", "size": 7.94, "image": "images/S26.webp"},
+    {"code": "S27", "name": "生化危机：启示录 2", "size": 18, "image": "images/S27.webp"},
+    {"code": "F5", "name": "奉天白事铺", "size": 6.46, "image": "images/F5.webp"},
+    {"code": "M13", "name": "木筏求生", "size": 7.26, "image": "images/M13.webp"},
+    {"code": "S32", "name": "深海迷航", "size": 5.79, "image": "images/S32.webp"},
+    {"code": "Z32", "name": "纸人：第一章", "size": 2.03, "image": "images/Z32.webp"},
+    {"code": "Z33", "name": "纸人2", "size": 7.41, "image": "images/Z33.webp"},
+    {"code": "Y11", "name": "野狗子", "size": 26, "image": "images/Y11.webp"},
+    {"code": "A5", "name": "艾瑞卡", "size": 36.7, "image": "images/A5.webp"},
+    {"code": "S34", "name": "杀手5：赦免", "size": 23.7, "image": "images/S34.webp"},
+    {"code": "T6", "name": "她看到红色", "size": 2.37, "image": "images/T6.webp"},
+    {"code": "C13", "name": "吃香", "size": 1.38, "image": "images/C13.webp"},
+    {"code": "G16", "name": "港鬼实录", "size": 14.3, "image": "images/G16.webp"},
+    { "code": "G17", "name": "鬼屋魔影", "size": 28.4, "image": "images/G18.webp"},
+    {"code": "G18", "name": "诡墓", "size": 9.06, "image": "images/G18.webp"},
+    {"code": "H11", "name": "黑暗世界因与果", "size": 26.1, "image": "images/H11.webp"},
+    {"code": "S45", "name": "死亡之屋：重制版", "size": 9.25, "image": "images/S45.webp"},
+    {"code": "X27", "name": "小小梦魇", "size": 9.01, "image": "images/X27.webp"},
+    {"code": "Y17", "name": "翌日", "size": 2.4, "image": "images/Y17.webp"},
+    {"code": "Y18", "name": "勇闯死人谷：暗黑之日", "size": 5.76, "image": "images/Y18.webp"},
+    { "code": "H11", "name": "黑暗世界因与果", "size": 26.1, "image": "images/H11.webp" },
+    
+  ],
+
+  "独立游戏": [
+    {"code": "S35", "name": "死亡细胞", "size": 2.58, "image": "images/S35.webp"},
+    {"code": "T5", "name": "泰拉瑞亚", "size": 0.022, "image": "images/T5.webp"},
+    {"code": "P4", "name": "破碎族裔", "size": 9.24, "image": "images/P4.webp"},
+    {"code": "S36", "name": "沙威玛传奇", "size": 0.094, "image": "images/S36.webp"},
+    {"code": "M15", "name": "米塔", "size": 2.88, "image": "images/M15.webp"},
+    {"code": "D1", "name": "迪士尼传奇米奇：重制版", "size": 23.7, "image": "images/D1.webp"},
+    {"code": "L4", "name": "乐高DC超级反派", "size": 19.1, "image": "images/L4.webp"},
+    {"code": "M5", "name": "麻布仔大冒险", "size": 53, "image": "images/M5.webp"},
+    {"code": "S5", "name": "山河旅探", "size": 7.84, "image": "images/S5.webp"},
+    {"code": "S6", "name": "兽人必须死3", "size": 12.6, "image": "images/S6.webp"},
+    {"code": "S21", "name": "沙漠大冒险", "size": 17.6, "image": "images/S21.webp"},
+    {"code": "X20", "name": "兄弟：双子传说 重制版", "size": 25.5, "image": "images/X20.webp"},
+    {"code": "Y4", "name": "遗失的记录：绽放与愤怒", "size": 43.2, "image": "images/Y4.webp"},
+    {"code": "Z25", "name": "植物大战僵尸杂交版", "size": 5.6, "image": "images/Z25.webp"},
+    {"code": "A2", "name": "奥日与鬼火意志", "size": 12, "image": "images/A2.webp"},
+    {"code": "A3", "name": "奥日与黑暗森林", "size": 17.4, "image": "images/A3.webp"},
+    {"code": "C11", "name": "苍翼 混沌效应", "size": 7.15, "image": "images/C11.webp"},
+    {"code": "D18", "name": "东方夜雀食堂", "size": 5.01, "image": "images/D18.webp"},
+    {"code": "S33", "name": "失落城堡", "size": 2.39, "image": "images/S33.webp"},
+    {"code": "Y9", "name": "以撒的结合 重生", "size": 2.09, "image": "images/Y9.webp"},
+    {"code": "Z39", "name": "中国式家长", "size": 0.886, "image": "images/Z39.webp"},
+    {"code": "T7", "name": "土豆兄弟", "size": 0.257, "image": "images/T7.webp"},
+    {"code": "S41", "name": "失落城堡 2", "size": 0.88, "image": "images/S41.webp"},
+    { "code": "K3", "name": "空洞骑士", "size": 10.7, "image": "images/K3.webp" },
+    {"code":"P3","name":"偏差者","size":7.48,"image":"images/P3.webp"},
+    {"code":"L15","name":"乐高漫威超级英雄","size":6.07,"image":"images/L15.webp"},
+    {"code":"L16","name":"乐高星球大战：天行者传奇","size":38,"image":"images/L16.webp"},
+  ],
+
+  "任天堂游戏": [
+    {"code": "SWT1", "name": "Switch全家桶", "size": 449, "image": "images/SWT1.webp"},
+    {"code": "SWT4", "name": "马里奥赛车8", "size": 16.8, "image": "images/SWT4.webp"},
+    {"code": "SWT5", "name": "马里奥奥德赛", "size": 5.59, "image": "images/SWT5.webp"},
+    {"code": "SWT6", "name": "全明星大乱斗", "size": 17.3, "image": "images/SWT6.webp"},
+    {"code": "SWT7", "name": "路易吉鬼屋3", "size": 7.7, "image": "images/SWT7.webp"},
+    {"code": "SWT8", "name": "超级马里奥：惊奇", "size": 3.5, "image": "images/SWT8.webp"},
+    {"code": "SWT9", "name": "马里奥高尔夫：超级冲冲冲", "size": 4.16, "image": "images/SWT9.webp"},
+    {"code": "SWT10", "name": "马里奥派对", "size": 2.89, "image": "images/SWT10.webp"},
+    {"code": "SWT11", "name": "马里奥3D合集", "size": 4.72, "image": "images/SWT11.webp"},
+    {"code": "SWT12", "name": "马里奥疯狂兔子", "size": 4.94, "image": "images/SWT12.webp"},
+    {"code": "SWT13", "name": "宝可梦：探险寻宝", "size": 0.264, "image": "images/SWT13.webp"},
+    {"code": "SWT14", "name": "宝可梦传说：阿尔宙斯", "size": 6.1, "image": "images/SWT14.webp"},
+    {"code": "SWT15", "name": "超回转寿司先锋：寿司之道", "size": 2.82, "image": "images/SWT15.webp"},
+    {"code": "SWT16", "name": "大家1-2-Switch", "size": 3.7, "image": "images/SWT16.webp"},
+    {"code": "SWT17", "name": "疯狂伐木匠 VS Timberman VS", "size": 0.208, "image": "images/SWT17.webp"},
+    {"code": "SWT18", "name": "健身环大冒险", "size": 3.3, "image": "images/SWT18.webp"},
+    {"code": "SWT19", "name": "九龙妖魔学园纪", "size": 4.29, "image": "images/SWT19.webp"},
+    {"code": "SWT20", "name": "卡比斗士2", "size": 1.1, "image": "images/SWT20.webp"},
+    {"code": "SWT21", "name": "猎天使魔女3", "size": 15.7, "image": "images/SWT21.webp"},
+    {"code": "SWT22", "name": "马里奥3D世界+狂怒世界", "size": 2.95, "image": "images/SWT22.webp"},
+    {"code": "SWT23", "name": "马里奥网球", "size": 2.51, "image": "images/SWT23.webp"},
+    {"code": "SWT24", "name": "马里奥兄弟U豪华版", "size": 3.71, "image": "images/SWT24.webp"},
+    {"code": "SWT26", "name": "喷射战士3", "size": 9.02, "image": "images/SWT26.webp"},
+    {"code": "SWT28", "name": "神臂斗士", "size": 3.23, "image": "images/SWT28.webp"},
+    {"code": "SWT29", "name": "太鼓之达人 咚咚雷音祭", "size": 7.07, "image": "images/SWT29.webp"},
+    {"code": "SWT30", "name": "星之卡比：探索发现", "size": 5.74, "image": "images/SWT30.webp"},
+    {"code": "SWT31", "name": "星之卡比：新星同盟", "size": 3.94, "image": "images/SWT31.webp"},
+    {"code": "SWT32", "name": "星之卡比Wii豪华版", "size": 7.43, "image": "images/SWT32.webp"},
+    {"code": "SWT33", "name": "耀西的手工世界", "size": 5.89, "image": "images/SWT33.webp"},
+    {"code": "SWT34", "name": "异度神剑3", "size": 19.4, "image": "images/SWT34.webp"},
+    {"code": "SWT35", "name": "游戏王", "size": 1.74, "image": "images/SWT35.webp"},
+    {"code": "SWT36", "name": "有氧拳击2", "size": 3.59, "image": "images/SWT36.webp"}
+  ],
+
+  
+
+  
+  
     };
 
     // 硬盘容量配置
     const storageOptions = [
-      { label: "500G硬盘", actual: 460, recommendedMax: 450 }, 
+      { label: "500G硬盘", actual: 460, recommendedMax: 450 },
       { label: "1T硬盘", actual: 931, recommendedMax: 921 },
       { label: "3T硬盘", actual: 2850, recommendedMax: 2830 },
       { label: "2T硬盘", actual: 1830, recommendedMax: 1810 },
@@ -1411,28 +1443,46 @@ header {
     ];
 
     // 从localStorage加载数据
-    let selectedGames = JSON.parse(localStorage.getItem('selectedGames')) || {};
-    let totalSize = parseFloat(localStorage.getItem('totalSize')) || 0;
+    let selectedGames = {};
+    let totalSize = 0;
+    try {
+      const savedGames = JSON.parse(localStorage.getItem('selectedGames'));
+      const savedSize = parseFloat(localStorage.getItem('totalSize'));
+      if (savedGames && !isNaN(savedSize)) {
+        selectedGames = savedGames;
+        totalSize = savedSize;
+      }
+    } catch (err) {
+      console.error('加载本地存储数据失败:', err);
+      localStorage.removeItem('selectedGames');
+      localStorage.removeItem('totalSize');
+    }
 
     // 初始化页面
-    window.onload = function() {
-      generateSidebar();
-      displayCategories();
-      updateTotal();
-      initScrollSpy(); // 添加滚动监听初始化
+    window.onload = function () {
+      try {
+        generateSidebar();
+        displayCategories();
+        updateTotal();
+        initScrollSpy();
+      } catch (err) {
+        console.error('页面初始化失败:', err);
+        alert('页面加载失败，请刷新重试');
+      }
     };
 
     // 生成侧边栏分类
     function generateSidebar() {
       const sidebar = document.getElementById('sidebar');
+      if (!sidebar) throw new Error('Sidebar element not found');
       sidebar.innerHTML = '';
       let firstLink = null;
-      
+
       for (const category in gameData) {
         const link = document.createElement('a');
         link.href = `#${category}`;
         link.textContent = category;
-        link.onclick = function(e) {
+        link.onclick = function (e) {
           e.preventDefault();
           document.querySelectorAll('#sidebar a').forEach(a => a.classList.remove('active'));
           link.classList.add('active');
@@ -1441,18 +1491,18 @@ header {
           });
         };
         sidebar.appendChild(link);
-        
+
         if (!firstLink) firstLink = link;
       }
-      
+
       if (firstLink) firstLink.classList.add('active');
     }
 
-    // 初始化滚动监听 - 自动高亮当前可见分类
+    // 初始化滚动监听
     function initScrollSpy() {
       const observerOptions = {
         root: null,
-        rootMargin: '-20% 0px -80% 0px', // 调整阈值以优化高亮效果
+        rootMargin: '-20% 0px -80% 0px',
         threshold: 0
       };
 
@@ -1470,30 +1520,30 @@ header {
         });
       }, observerOptions);
 
-      // 观察所有分类元素
       setTimeout(() => {
         document.querySelectorAll('.category').forEach(category => {
           observer.observe(category);
         });
-      }, 100); // 延迟以确保DOM已渲染
+      }, 100);
     }
 
     // 显示游戏列表
     function displayCategories(filteredData = null) {
       const container = document.getElementById('gameCategories');
+      if (!container) throw new Error('Game categories container not found');
       container.innerHTML = '';
-      
+
       const data = filteredData || gameData;
-      
+
       for (const category in data) {
         const categoryDiv = document.createElement('div');
         categoryDiv.className = 'category';
         categoryDiv.id = category;
-        
+
         const title = document.createElement('h2');
         title.textContent = category;
         categoryDiv.appendChild(title);
-        
+
         data[category].forEach(game => createGameItem(categoryDiv, game));
         container.appendChild(categoryDiv);
       }
@@ -1503,16 +1553,16 @@ header {
     function createGameItem(container, game) {
       const gameItem = document.createElement('div');
       gameItem.className = 'game-item';
-      
+
       const coverDiv = document.createElement('div');
       coverDiv.className = 'game-cover-container';
-      
+
       if (game.image) {
         const img = document.createElement('img');
         img.className = 'game-cover';
         img.src = game.image;
         img.alt = game.name;
-        img.onerror = function() {
+        img.onerror = function () {
           const span = document.createElement('span');
           span.className = 'cover-error';
           span.textContent = game.name.substring(0, 2);
@@ -1525,9 +1575,9 @@ header {
         span.textContent = '无图';
         coverDiv.appendChild(span);
       }
-      
+
       gameItem.appendChild(coverDiv);
-      
+
       const gameInfo = document.createElement('div');
       gameInfo.className = 'game-info';
       gameInfo.innerHTML = `
@@ -1535,7 +1585,7 @@ header {
         <div class="game-size">${game.size} GB</div>
       `;
       gameItem.appendChild(gameInfo);
-      
+
       const quantityControl = document.createElement('div');
       quantityControl.className = 'quantity-control';
       quantityControl.innerHTML = `
@@ -1544,7 +1594,7 @@ header {
         <button ${selectedGames[game.code] ? 'disabled' : ''} onclick="increaseQuantity('${game.code}', ${game.size})">+</button>
       `;
       gameItem.appendChild(quantityControl);
-      
+
       container.appendChild(gameItem);
     }
 
@@ -1553,7 +1603,7 @@ header {
       if (!selectedGames[code]) {
         selectedGames[code] = 1;
         totalSize += size;
-        updateQuantityDisplay(code);
+        updateAllGameDisplays(code);
         saveToLocalStorage();
       }
     }
@@ -1563,59 +1613,70 @@ header {
       if (selectedGames[code]) {
         selectedGames[code] = 0;
         totalSize -= size;
-        updateQuantityDisplay(code);
+        updateAllGameDisplays(code);
         saveToLocalStorage();
       }
     }
 
-    // 更新数量显示
-    function updateQuantityDisplay(code) {
-      const qtyElement = document.getElementById(`qty-${code}`);
-      const buttons = qtyElement.parentElement.getElementsByTagName('button');
-      
-      qtyElement.textContent = selectedGames[code] || 0;
-      buttons[0].disabled = !selectedGames[code];
-      buttons[1].disabled = selectedGames[code];
+    // 更新所有相同 code 的游戏显示
+    function updateAllGameDisplays(code) {
+      document.querySelectorAll(`[id="qty-${code}"]`).forEach(qtyElement => {
+        const buttons = qtyElement.parentElement.getElementsByTagName('button');
+        qtyElement.textContent = selectedGames[code] || 0;
+        buttons[0].disabled = !selectedGames[code];
+        buttons[1].disabled = !!selectedGames[code];
+      });
       updateTotal();
     }
 
     // 更新总容量
     function updateTotal() {
-      document.getElementById('totalSize').textContent = `总容量：${totalSize.toFixed(1)} GB`;
+      const totalSizeElement = document.getElementById('totalSize');
+      if (totalSizeElement) {
+        totalSizeElement.textContent = `总容量：${totalSize.toFixed(1)} GB`;
+      }
     }
 
     // 保存到本地存储
     function saveToLocalStorage() {
-      localStorage.setItem('selectedGames', JSON.stringify(selectedGames));
-      localStorage.setItem('totalSize', totalSize.toString());
+      try {
+        localStorage.setItem('selectedGames', JSON.stringify(selectedGames));
+        localStorage.setItem('totalSize', totalSize.toString());
+      } catch (err) {
+        console.error('保存到本地存储失败:', err);
+      }
     }
 
     // 生成订单
     function generateOrder() {
       const orderBody = document.getElementById('orderListContainer');
+      if (!orderBody) throw new Error('Order list container not found');
       orderBody.innerHTML = '';
-      
-      document.getElementById('orderTotal').textContent = totalSize.toFixed(1);
-      
+
+      const orderTotal = document.getElementById('orderTotal');
+      if (orderTotal) orderTotal.textContent = totalSize.toFixed(1);
+
       const selectedCount = Object.values(selectedGames).filter(val => val > 0).length;
-      
+
       if (selectedCount === 0) {
         orderBody.innerHTML = `<div class="empty-order">
           <div>您还没有选择任何游戏</div>
           <p>请返回商店页面选择游戏</p>
         </div>`;
       } else {
+        const displayedCodes = new Set();
         for (const category in gameData) {
           gameData[category].forEach(game => {
-            if (selectedGames[game.code]) {
+            if (selectedGames[game.code] && !displayedCodes.has(game.code)) {
+              displayedCodes.add(game.code);
               const gameCard = document.createElement('div');
               gameCard.className = 'game-card';
               gameCard.innerHTML = `
                 <div class="order-game-cover-container">
                   ${
-                    game.image ? 
-                    `<img src="${game.image}" alt="${game.name}" class="order-game-cover" onerror="handleOrderImageError(this)" loading="lazy">` : 
-                    `<div class="order-cover-error">${game.name.substring(0,2)}</div>`
+                    game.image ?
+                    `<img src="${game.image}" alt="${game.name}" class="order-game-cover" onerror="handleOrderImageError(this)" loading="lazy">` :
+                    `<div class="order-cover-error">${game.name.substring(0, 2)}</div>`
                   }
                 </div>
                 <div class="order-game-details">
@@ -1629,13 +1690,12 @@ header {
           });
         }
       }
-      
+
       document.getElementById('content').style.display = 'none';
       document.getElementById('sidebar').style.display = 'none';
       document.querySelector('.footer').style.display = 'none';
       document.getElementById('orderPage').style.display = 'block';
-      
-      // 在移动端滚动到顶部
+
       if (window.innerWidth <= 768) {
         window.scrollTo({
           top: 0,
@@ -1662,7 +1722,7 @@ header {
       saveToLocalStorage();
       generateOrder();
       updateTotal();
-      updateQuantityDisplay(code);
+      updateAllGameDisplays(code);
     }
 
     // 确认订单 - 显示硬盘容量建议弹窗
@@ -1670,15 +1730,15 @@ header {
       const selectedCodes = Object.keys(selectedGames)
         .filter(code => selectedGames[code])
         .sort();
-      
+
       const selectedCount = selectedCodes.length;
       const totalGB = totalSize.toFixed(1);
-      
+
       if (selectedCount === 0) {
         alert('您还没有选择任何游戏');
         return;
       }
-      
+
       let storageHTML = '';
       storageOptions.forEach(option => {
         const remaining = option.recommendedMax - totalGB;
@@ -1689,17 +1749,21 @@ header {
           </div>
         `;
       });
-      
-      document.getElementById('modalStorageList').innerHTML = storageHTML;
-      document.getElementById('modalCopyTextArea').value = `${selectedCodes.join(', ')}\n总容量: ${totalGB} GB`;
-      
+
+      const modalStorageList = document.getElementById('modalStorageList');
+      const modalCopyTextArea = document.getElementById('modalCopyTextArea');
+      if (modalStorageList && modalCopyTextArea) {
+        modalStorageList.innerHTML = storageHTML;
+        modalCopyTextArea.value = `${selectedCodes.join(', ')}\n总容量: ${totalGB} GB`;
+      }
+
       document.getElementById('storageModal').classList.add('active');
-      
+
       try {
         const textarea = document.getElementById('modalCopyTextArea');
         textarea.select();
         document.execCommand('copy');
-        
+
         const notification = document.getElementById('copyNotification');
         notification.textContent = `已复制 ${selectedCount} 个游戏编号和总容量`;
         notification.style.display = 'block';
@@ -1707,37 +1771,40 @@ header {
           notification.style.display = 'none';
         }, 2500);
       } catch (err) {
-        console.log('自动复制失败');
+        console.error('自动复制失败:', err);
       }
     }
-    
+
     // 关闭弹窗
     function closeStorageModal() {
-      document.getElementById('storageModal').classList.remove('active');
+      const modal = document.getElementById('storageModal');
+      if (modal) modal.classList.remove('active');
     }
-    
+
     // 从弹窗复制
     function copyFromModal() {
       try {
         const textarea = document.getElementById('modalCopyTextArea');
         textarea.select();
         document.execCommand('copy');
-        
+
         const selectedCount = Object.values(selectedGames).filter(val => val > 0).length;
         showCopyNotification(selectedCount);
       } catch (err) {
         alert('复制失败，请手动选择并复制文本');
       }
     }
-    
+
     // 显示复制通知
     function showCopyNotification(count) {
       const notification = document.getElementById('copyNotification');
-      notification.textContent = `已复制 ${count} 个游戏编号和总容量`;
-      notification.style.display = 'block';
-      setTimeout(() => {
-        notification.style.display = 'none';
-      }, 2500);
+      if (notification) {
+        notification.textContent = `已复制 ${count} 个游戏编号和总容量`;
+        notification.style.display = 'block';
+        setTimeout(() => {
+          notification.style.display = 'none';
+        }, 2500);
+      }
     }
 
     // 返回商店
@@ -1752,35 +1819,35 @@ header {
     function filterGames() {
       const keyword = document.getElementById('searchInput').value.toLowerCase();
       const filtered = {};
-      
+
       if (!keyword) {
         displayCategories();
         return;
       }
-      
+
       for (const category in gameData) {
-        filtered[category] = gameData[category].filter(game => 
-          game.name.toLowerCase().includes(keyword) || 
+        filtered[category] = gameData[category].filter(game =>
+          game.name.toLowerCase().includes(keyword) ||
           game.code.toLowerCase().includes(keyword)
         );
-        
+
         if (filtered[category].length === 0) {
           delete filtered[category];
         }
       }
-      
+
       displayCategories(filtered);
     }
-    
+
     // 点击弹窗外部关闭
-    document.getElementById('storageModal').addEventListener('click', function(e) {
+    document.getElementById('storageModal').addEventListener('click', function (e) {
       if (e.target === this) {
         closeStorageModal();
       }
     });
-    
+
     // 按ESC键关闭弹窗
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && document.getElementById('storageModal').classList.contains('active')) {
         closeStorageModal();
       }
