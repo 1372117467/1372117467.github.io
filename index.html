@@ -15,7 +15,7 @@
       width: 100%;
       max-width: 100%;
       overflow-x: hidden;
-      touch-action: none; /* 禁用所有缩放手势 */
+      touch-action: manipulation; /* 允许点击和滚动，禁用缩放 */
       -webkit-user-drag: none;
       -webkit-tap-highlight-color: transparent;
     }
@@ -94,7 +94,7 @@
       scrollbar-color: #4b6cb7 #f0f0f0;
       z-index: 98;
       transition: width 0.3s ease;
-      touch-action: auto; /* 允许侧边栏滚动 */
+      touch-action: pan-y; /* 允许垂直滚动 */
     }
 
     #sidebar::-webkit-scrollbar {
@@ -129,6 +129,8 @@
       margin-left: 120px;
       padding: 120px 20px 100px;
       min-height: calc(100vh - 220px);
+      overflow-y: auto; /* 允许内容区域滚动 */
+      touch-action: pan-y; /* 允许垂直滚动 */
     }
 
     .category {
@@ -284,6 +286,8 @@
       margin: 30px auto;
       width: 100%;
       max-width: 800px;
+      overflow-y: auto; /* 允许订单页面滚动 */
+      touch-action: pan-y; /* 允许垂直滚动 */
     }
 
     .order-header {
@@ -310,7 +314,7 @@
       scrollbar-width: thin;
       scrollbar-color: #4b6cb7 #f0f0f0;
       padding: 5px;
-      touch-action: auto; /* 允许滚动 */
+      touch-action: pan-y; /* 允许垂直滚动 */
     }
 
     .order-game-list::-webkit-scrollbar {
@@ -521,7 +525,7 @@
       box-shadow: 0 15px 30px rgba(0,0,0,0.15);
       transform: translateY(20px);
       transition: transform 0.3s;
-      touch-action: auto; /* 允许弹窗滚动 */
+      touch-action: pan-y; /* 允许弹窗滚动 */
     }
 
     .modal-overlay.active .storage-modal {
@@ -817,7 +821,7 @@
   </div>
   
   <script>
-     // 游戏数据
+   // 游戏数据
     const gameData = {
     // 游戏数据
       "游戏前端": [
