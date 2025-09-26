@@ -2,7 +2,7 @@
 <html lang="zh-CN" oncontextmenu="return false;">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>DH游戏目录</title>
   <style>
     * {
@@ -15,7 +15,9 @@
       width: 100%;
       max-width: 100%;
       overflow-x: hidden;
-      touch-action: manipulation; /* 禁用缩放手势 */
+      touch-action: none; /* 禁用所有缩放手势 */
+      -webkit-user-drag: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -70,7 +72,7 @@
       border: 1px solid #ddd;
       border-radius: 4px;
       font-size: 14px;
-      transition: all 0.3s;
+      touch-action: auto; /* 允许输入框交互 */
     }
 
     #searchBox input:focus {
@@ -92,6 +94,7 @@
       scrollbar-color: #4b6cb7 #f0f0f0;
       z-index: 98;
       transition: width 0.3s ease;
+      touch-action: auto; /* 允许侧边栏滚动 */
     }
 
     #sidebar::-webkit-scrollbar {
@@ -216,7 +219,7 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
-      transition: all 0.2s;
+      touch-action: auto; /* 允许按钮交互 */
     }
 
     .quantity-control button:not(:disabled):hover {
@@ -265,7 +268,7 @@
       cursor: pointer;
       font-weight: bold;
       font-size: 15px;
-      transition: all 0.3s;
+      touch-action: auto; /* 允许按钮交互 */
     }
 
     .footer button:hover {
@@ -307,6 +310,7 @@
       scrollbar-width: thin;
       scrollbar-color: #4b6cb7 #f0f0f0;
       padding: 5px;
+      touch-action: auto; /* 允许滚动 */
     }
 
     .order-game-list::-webkit-scrollbar {
@@ -389,9 +393,9 @@
       padding: 6px 12px;
       border-radius: 4px;
       cursor: pointer;
-      transition: all 0.2s;
       font-size: 13px;
       margin-left: 10px;
+      touch-action: auto; /* 允许按钮交互 */
     }
 
     .remove-btn:hover {
@@ -438,6 +442,7 @@
       justify-content: center;
       gap: 8px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      touch-action: auto; /* 允许按钮交互 */
     }
 
     .back-btn {
@@ -497,6 +502,7 @@
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s;
+      touch-action: auto; /* 允许弹窗交互 */
     }
 
     .modal-overlay.active {
@@ -515,6 +521,7 @@
       box-shadow: 0 15px 30px rgba(0,0,0,0.15);
       transform: translateY(20px);
       transition: transform 0.3s;
+      touch-action: auto; /* 允许弹窗滚动 */
     }
 
     .modal-overlay.active .storage-modal {
@@ -542,6 +549,7 @@
       font-size: 24px;
       cursor: pointer;
       color: #666;
+      touch-action: auto; /* 允许按钮交互 */
     }
 
     .storage-list {
@@ -582,6 +590,7 @@
       font-family: 'Microsoft YaHei', sans-serif;
       resize: none;
       font-size: 14px;
+      touch-action: auto; /* 允许文本框交互 */
     }
 
     .copy-btn {
@@ -593,7 +602,7 @@
       cursor: pointer;
       font-size: 14px;
       font-weight: bold;
-      transition: all 0.3s;
+      touch-action: auto; /* 允许按钮交互 */
     }
 
     .copy-btn:hover {
@@ -808,7 +817,7 @@
   </div>
   
   <script>
-    // 游戏数据
+     // 游戏数据
     const gameData = {
     // 游戏数据
       "游戏前端": [
@@ -1488,7 +1497,7 @@
     };
 
 
-    // 禁用双指缩放
+    // 禁用双指缩放和双击放大
     document.addEventListener('touchstart', function (event) {
       if (event.touches.length > 1) {
         event.preventDefault();
@@ -1499,6 +1508,14 @@
       if (event.touches.length > 1) {
         event.preventDefault();
       }
+    }, { passive: false });
+
+    document.addEventListener('gesturestart', function (event) {
+      event.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('dblclick', function (event) {
+      event.preventDefault();
     }, { passive: false });
 
     // 硬盘容量配置
