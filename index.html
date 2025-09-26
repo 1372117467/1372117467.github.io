@@ -15,7 +15,7 @@
       width: 100%;
       max-width: 100%;
       overflow-x: hidden;
-      touch-action: manipulation; /* 允许点击和滚动，禁用缩放 */
+      touch-action: manipulation;
       -webkit-user-drag: none;
       -webkit-tap-highlight-color: transparent;
     }
@@ -68,17 +68,44 @@
     #searchBox input {
       width: 80%;
       height: 30px;
-      padding: 5px 10px;
+      padding: 5px 30px 5px 10px; /* 右边留空间给清空按钮 */
       border: 1px solid #ddd;
       border-radius: 4px;
       font-size: 14px;
-      touch-action: auto; /* 允许输入框交互 */
+      touch-action: auto;
+      position: relative;
     }
 
     #searchBox input:focus {
       border-color: #4b6cb7;
       box-shadow: 0 0 0 2px rgba(75, 108, 183, 0.2);
       outline: none;
+    }
+
+    .clear-search {
+      position: absolute;
+      right: 10px; /* 相对于输入框 */
+      top: 50%;
+      transform: translateY(-50%);
+      background: #4b6cb7;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      width: 20px;
+      height: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      display: none;
+      touch-action: auto;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      line-height: 20px;
+      text-align: center;
+      transition: opacity 0.2s ease;
+    }
+
+    .clear-search:hover {
+      background: #3a5a97;
     }
 
     #sidebar {
@@ -94,7 +121,7 @@
       scrollbar-color: #4b6cb7 #f0f0f0;
       z-index: 98;
       transition: width 0.3s ease;
-      touch-action: pan-y; /* 允许垂直滚动 */
+      touch-action: pan-y;
     }
 
     #sidebar::-webkit-scrollbar {
@@ -129,8 +156,8 @@
       margin-left: 120px;
       padding: 120px 20px 100px;
       min-height: calc(100vh - 220px);
-      overflow-y: auto; /* 允许内容区域滚动 */
-      touch-action: pan-y; /* 允许垂直滚动 */
+      overflow-y: auto;
+      touch-action: pan-y;
     }
 
     .category {
@@ -221,7 +248,7 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
-      touch-action: auto; /* 允许按钮交互 */
+      touch-action: auto;
     }
 
     .quantity-control button:not(:disabled):hover {
@@ -270,7 +297,7 @@
       cursor: pointer;
       font-weight: bold;
       font-size: 15px;
-      touch-action: auto; /* 允许按钮交互 */
+      touch-action: auto;
     }
 
     .footer button:hover {
@@ -286,8 +313,8 @@
       margin: 30px auto;
       width: 100%;
       max-width: 800px;
-      overflow-y: auto; /* 允许订单页面滚动 */
-      touch-action: pan-y; /* 允许垂直滚动 */
+      overflow-y: auto;
+      touch-action: pan-y;
     }
 
     .order-header {
@@ -314,7 +341,7 @@
       scrollbar-width: thin;
       scrollbar-color: #4b6cb7 #f0f0f0;
       padding: 5px;
-      touch-action: pan-y; /* 允许垂直滚动 */
+      touch-action: pan-y;
     }
 
     .order-game-list::-webkit-scrollbar {
@@ -399,7 +426,7 @@
       cursor: pointer;
       font-size: 13px;
       margin-left: 10px;
-      touch-action: auto; /* 允许按钮交互 */
+      touch-action: auto;
     }
 
     .remove-btn:hover {
@@ -446,7 +473,7 @@
       justify-content: center;
       gap: 8px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      touch-action: auto; /* 允许按钮交互 */
+      touch-action: auto;
     }
 
     .back-btn {
@@ -506,7 +533,7 @@
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s;
-      touch-action: auto; /* 允许弹窗交互 */
+      touch-action: auto;
     }
 
     .modal-overlay.active {
@@ -525,7 +552,7 @@
       box-shadow: 0 15px 30px rgba(0,0,0,0.15);
       transform: translateY(20px);
       transition: transform 0.3s;
-      touch-action: pan-y; /* 允许弹窗滚动 */
+      touch-action: pan-y;
     }
 
     .modal-overlay.active .storage-modal {
@@ -553,7 +580,7 @@
       font-size: 24px;
       cursor: pointer;
       color: #666;
-      touch-action: auto; /* 允许按钮交互 */
+      touch-action: auto;
     }
 
     .storage-list {
@@ -586,7 +613,7 @@
 
     .copy-text-area {
       width: 100%;
-      height: 100px;
+      height: 150px;
       margin-bottom: 12px;
       padding: 12px;
       border: 2px solid #4b6cb7;
@@ -594,7 +621,8 @@
       font-family: 'Microsoft YaHei', sans-serif;
       resize: none;
       font-size: 14px;
-      touch-action: auto; /* 允许文本框交互 */
+      touch-action: auto;
+      white-space: pre-wrap;
     }
 
     .copy-btn {
@@ -606,11 +634,18 @@
       cursor: pointer;
       font-size: 14px;
       font-weight: bold;
-      touch-action: auto; /* 允许按钮交互 */
+      touch-action: auto;
     }
 
     .copy-btn:hover {
       background: #3a5a97;
+    }
+
+    .copy-error {
+      color: #ff5252;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
     }
 
     @media (max-width: 768px) {
@@ -694,6 +729,15 @@
       #searchBox input {
         width: 90%;
         font-size: 12px;
+        padding-right: 26px; /* 适配清空按钮 */
+      }
+      .clear-search {
+        right: 6px;
+        width: 18px;
+        height: 18px;
+        font-size: 12px;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
       }
       .footer {
         width: 100%;
@@ -750,12 +794,20 @@
         padding: 8px 10px;
       }
       .copy-text-area {
-        height: 90px;
+        height: 120px;
         font-size: 13px;
       }
       .copy-btn {
         padding: 8px 12px;
         font-size: 13px;
+      }
+      .clear-search {
+        right: 5px;
+        width: 16px;
+        height: 16px;
+        font-size: 10px;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
       }
       #orderPage {
         width: 320px;
@@ -769,7 +821,8 @@
   <header>DH游戏选择系统</header>
   
   <div id="searchBox">
-    <input type="text" id="searchInput" placeholder="搜索游戏..." oninput="filterGames()">
+    <input type="text" id="searchInput" placeholder="搜索游戏...">
+    <button class="clear-search" onclick="clearSearch()">×</button>
   </div>
   
   <div id="sidebar"></div>
@@ -815,13 +868,15 @@
       <div class="storage-list" id="modalStorageList"></div>
       <div class="copy-container">
         <textarea class="copy-text-area" id="modalCopyTextArea" readonly></textarea>
+        <p class="copy-error" id="copyError">复制失败，请手动选中并复制</p>
         <button class="copy-btn" onclick="copyFromModal()">复制游戏编号和总容量</button>
       </div>
     </div>
   </div>
   
   <script>
-    // 游戏数据
+    // 请自行添加 gameData 数据
+     // 游戏数据
     const gameData = {
     // 游戏数据
       "游戏前端": [
@@ -1534,6 +1589,7 @@
     // 从localStorage加载数据
     let selectedGames = {};
     let totalSize = 0;
+    let isOrderConfirmed = false;
     try {
       const savedGames = JSON.parse(localStorage.getItem('selectedGames'));
       const savedSize = parseFloat(localStorage.getItem('totalSize'));
@@ -1554,6 +1610,14 @@
         displayCategories();
         updateTotal();
         initScrollSpy();
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+          searchInput.addEventListener('input', () => {
+            filterGames();
+            toggleClearButton();
+          });
+          toggleClearButton();
+        }
       } catch (err) {
         console.error('页面初始化失败:', err);
         alert('页面加载失败，请刷新重试');
@@ -1651,7 +1715,7 @@
         img.className = 'game-cover';
         img.src = game.image;
         img.alt = game.name;
-        img.loading = 'lazy';  // 添加懒加载
+        img.loading = 'lazy';
         img.onerror = function () {
           const span = document.createElement('span');
           span.className = 'cover-error';
@@ -1693,6 +1757,7 @@
       if (!selectedGames[code]) {
         selectedGames[code] = 1;
         totalSize += size;
+        if (totalSize < 0) totalSize = 0;
         updateAllGameDisplays(code);
         saveToLocalStorage();
       }
@@ -1703,6 +1768,7 @@
       if (selectedGames[code]) {
         selectedGames[code] = 0;
         totalSize -= size;
+        if (totalSize < 0) totalSize = 0;
         updateAllGameDisplays(code);
         saveToLocalStorage();
       }
@@ -1785,6 +1851,8 @@
       document.getElementById('sidebar').style.display = 'none';
       document.querySelector('.footer').style.display = 'none';
       document.getElementById('orderPage').style.display = 'block';
+      const searchBox = document.getElementById('searchBox');
+      if (searchBox) searchBox.style.display = 'none';
 
       if (window.innerWidth <= 768) {
         window.scrollTo({
@@ -1809,17 +1877,42 @@
     function removeFromOrder(code, size) {
       selectedGames[code] = 0;
       totalSize -= size;
+      if (totalSize < 0) totalSize = 0;
       saveToLocalStorage();
       generateOrder();
       updateTotal();
       updateAllGameDisplays(code);
     }
 
+    // 自定义排序函数：字母 (A-Z) 优先，然后数字 (1-999999)
+    function sortGameCodes(codes) {
+      return codes.sort((a, b) => {
+        // 分离字母和数字部分
+        const getParts = (code) => {
+          const match = code.match(/^([A-Za-z]*)(\d*)$/);
+          return {
+            letters: match[1] || '',
+            numbers: match[2] ? parseInt(match[2], 10) : 0
+          };
+        };
+        const aParts = getParts(a);
+        const bParts = getParts(b);
+
+        // 按字母排序
+        if (aParts.letters !== bParts.letters) {
+          return aParts.letters.localeCompare(bParts.letters);
+        }
+        // 字母相同，按数字排序
+        return aParts.numbers - bParts.numbers;
+      });
+    }
+
     // 确认订单 - 显示硬盘容量建议弹窗
     function confirmOrder() {
-      const selectedCodes = Object.keys(selectedGames)
-        .filter(code => selectedGames[code])
-        .sort();
+      isOrderConfirmed = true;
+      const selectedCodes = sortGameCodes(
+        Object.keys(selectedGames).filter(code => selectedGames[code])
+      );
 
       const selectedCount = selectedCodes.length;
       const totalGB = totalSize.toFixed(1);
@@ -1844,65 +1937,85 @@
       const modalCopyTextArea = document.getElementById('modalCopyTextArea');
       if (modalStorageList && modalCopyTextArea) {
         modalStorageList.innerHTML = storageHTML;
-        modalCopyTextArea.value = `${selectedCodes.join(', ')}\n总容量: ${totalGB} GB`;
+        modalCopyTextArea.value = `已选游戏编号: ${selectedCodes.join(',')}  总容量: ${totalGB} GB`;
       }
 
+      const searchBox = document.getElementById('searchBox');
+      if (searchBox) searchBox.style.display = 'none';
       document.getElementById('storageModal').classList.add('active');
 
-      // 使用 Clipboard API 复制长文本
-      navigator.clipboard.writeText(modalCopyTextArea.value)
-        .then(() => {
-          const notification = document.getElementById('copyNotification');
-          notification.textContent = `已复制 ${selectedCount} 个游戏编号和总容量`;
-          notification.style.display = 'block';
-          setTimeout(() => {
-            notification.style.display = 'none';
-          }, 2500);
-        })
-        .catch((err) => {
-          console.error('复制失败:', err);
-          alert('复制失败，请手动复制文本');
-        });
+      copyTextToClipboard(selectedCodes, totalGB, selectedCount);
     }
 
     // 关闭弹窗
     function closeStorageModal() {
       const modal = document.getElementById('storageModal');
+      const copyError = document.getElementById('copyError');
       if (modal) modal.classList.remove('active');
+      if (copyError) copyError.style.display = 'none';
+      isOrderConfirmed = false;
+      backToShop();
+    }
+
+    // 使用 Clipboard API 复制文本
+    function copyTextToClipboard(selectedCodes, totalGB, selectedCount) {
+      const textToCopy = `已选游戏编号: ${selectedCodes.join(',')}  总容量: ${totalGB} GB`;
+      const notification = document.getElementById('copyNotification');
+      const copyError = document.getElementById('copyError');
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          if (notification) {
+            notification.textContent = `已复制 ${selectedCount} 个游戏编号和总容量`;
+            notification.style.display = 'block';
+            setTimeout(() => {
+              notification.style.display = 'none';
+            }, 2500);
+          }
+          if (copyError) copyError.style.display = 'none';
+        }).catch(err => {
+          console.error('Clipboard API 复制失败:', err);
+          fallbackCopy(textToCopy, selectedCount);
+        });
+      } else {
+        fallbackCopy(textToCopy, selectedCount);
+      }
+    }
+
+    // 回退到 document.execCommand 复制
+    function fallbackCopy(text, selectedCount) {
+      const textarea = document.getElementById('modalCopyTextArea');
+      const notification = document.getElementById('copyNotification');
+      const copyError = document.getElementById('copyError');
+
+      try {
+        textarea.select();
+        document.execCommand('copy');
+        if (notification) {
+          notification.textContent = `已复制 ${selectedCount} 个游戏编号和总容量`;
+          notification.style.display = 'block';
+          setTimeout(() => {
+            notification.style.display = 'none';
+          }, 2500);
+        }
+        if (copyError) copyError.style.display = 'none';
+      } catch (err) {
+        console.error('回退复制失败:', err);
+        if (copyError) {
+          copyError.style.display = 'block';
+        }
+      }
     }
 
     // 从弹窗复制
     function copyFromModal() {
-      const modalCopyTextArea = document.getElementById('modalCopyTextArea');
-      navigator.clipboard.writeText(modalCopyTextArea.value)
-        .then(() => {
-          const selectedCount = Object.values(selectedGames).filter(val => val > 0).length;
-          showCopyNotification(selectedCount);
-        })
-        .catch((err) => {
-          console.error('复制失败:', err);
-          alert('复制失败，请手动复制文本');
-        });
-    }
+      const selectedCodes = sortGameCodes(
+        Object.keys(selectedGames).filter(code => selectedGames[code])
+      );
+      const selectedCount = selectedCodes.length;
+      const totalGB = totalSize.toFixed(1);
 
-    // 显示复制通知
-    function showCopyNotification(count) {
-      const notification = document.getElementById('copyNotification');
-      if (notification) {
-        notification.textContent = `已复制 ${count} 个游戏编号和总容量`;
-        notification.style.display = 'block';
-        setTimeout(() => {
-          notification.style.display = 'none';
-        }, 2500);
-      }
-    }
-
-    // 返回商店
-    function backToShop() {
-      document.getElementById('content').style.display = 'block';
-      document.getElementById('sidebar').style.display = 'block';
-      document.querySelector('.footer').style.display = 'flex';
-      document.getElementById('orderPage').style.display = 'none';
+      copyTextToClipboard(selectedCodes, totalGB, selectedCount);
     }
 
     // 搜索功能
@@ -1912,6 +2025,7 @@
 
       if (!keyword) {
         displayCategories();
+        toggleClearButton();
         return;
       }
 
@@ -1927,6 +2041,37 @@
       }
 
       displayCategories(filtered);
+      toggleClearButton();
+    }
+
+    // 控制清空按钮显示/隐藏
+    function toggleClearButton() {
+      const searchInput = document.getElementById('searchInput');
+      const clearButton = document.querySelector('.clear-search');
+      if (searchInput && clearButton) {
+        clearButton.style.display = searchInput.value ? 'block' : 'none';
+        clearButton.style.opacity = searchInput.value ? '1' : '0';
+      }
+    }
+
+    // 清空搜索输入
+    function clearSearch() {
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.value = '';
+        toggleClearButton();
+        displayCategories();
+      }
+    }
+
+    // 返回商店
+    function backToShop() {
+      document.getElementById('content').style.display = 'block';
+      document.getElementById('sidebar').style.display = 'block';
+      document.querySelector('.footer').style.display = 'flex';
+      document.getElementById('orderPage').style.display = 'none';
+      const searchBox = document.getElementById('searchBox');
+      if (searchBox) searchBox.style.display = 'flex';
     }
 
     // 点击弹窗外部关闭
