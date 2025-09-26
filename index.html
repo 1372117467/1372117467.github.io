@@ -432,7 +432,6 @@
       font-weight: bold;
       font-size: 16px;
       cursor: pointer;
-      transition: all 0.3s;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -458,11 +457,6 @@
 
     .confirm-btn:hover {
       background: linear-gradient(to right, #5a7ac9, #20315c);
-    }
-
-    .order-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 7px 15px rgba(0,0,0,0.15);
     }
 
     .copy-notification {
@@ -813,7 +807,7 @@
   </div>
   
   <script>
-    // 游戏数据
+   // 游戏数据
     const gameData = {
     // 游戏数据
       "游戏前端": [
@@ -1293,7 +1287,7 @@
 
   "策略模拟": [
     {"code": "Q27", "name": "全面坦克模拟", "size": 7.2, "image": "images/Q27.webp"},
-    {"code": "D8", "name": "帝国时代动物园之星", "size": 10.9, "image": "images/D8.webp"},
+    {"code": "D8", "name": "动物园之星", "size": 10.9, "image": "images/D8.webp"},
     {"code":"D25","name":"大富翁 11 可联机","size":4.28,"image":"images/D25.webp"},
     {"code": "D12", "name": "帝国时代2决定版", "size": 57.3, "image": "images/D12.webp"},
     {"code": "D14", "name": "帝国时代4", "size": 54.1, "image": "images/D14.webp"},
@@ -1378,7 +1372,7 @@
     {"code": "S23", "name": "死神：魂魄觉醒", "size": 71.7, "image": "images/S23.webp"},
     {"code": "Q20", "name": "拳皇98：终极对决", "size": 2.11, "image": "images/Q20.webp"},
     {"code": "H25", "name": "海贼无双 4：终极版", "size": 26.6, "image": "images/H25.webp"},
-    {"code": "E3", "name": "风暴崛起饿狼传说：群狼之城", "size": 24.8, "image": "images/E3.webp"},
+    {"code": "E3", "name": "饿狼传说：群狼之城", "size": 24.8, "image": "images/E3.webp"},
     {"code": "J19", "name": "街头霸王30周年纪念合集", "size": 4.95, "image": "images/J19.webp"},
     {"code": "H26", "name": "海贼无双3", "size": 11.3, "image": "images/H26.webp"},
 
@@ -1491,6 +1485,7 @@
   
   
     };
+
 
     // 硬盘容量配置
     const storageOptions = [
@@ -1621,6 +1616,7 @@
         img.className = 'game-cover';
         img.src = game.image;
         img.alt = game.name;
+        img.loading = 'lazy';  // 添加懒加载
         img.onerror = function () {
           const span = document.createElement('span');
           span.className = 'cover-error';
