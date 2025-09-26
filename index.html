@@ -821,7 +821,7 @@
   </div>
   
   <script>
-   // 游戏数据
+    // 游戏数据
     const gameData = {
     // 游戏数据
       "游戏前端": [
@@ -1849,20 +1849,20 @@
 
       document.getElementById('storageModal').classList.add('active');
 
-      try {
-        const textarea = document.getElementById('modalCopyTextArea');
-        textarea.select();
-        document.execCommand('copy');
-
-        const notification = document.getElementById('copyNotification');
-        notification.textContent = `已复制 ${selectedCount} 个游戏编号和总容量`;
-        notification.style.display = 'block';
-        setTimeout(() => {
-          notification.style.display = 'none';
-        }, 2500);
-      } catch (err) {
-        console.error('自动复制失败:', err);
-      }
+      // 使用 Clipboard API 复制长文本
+      navigator.clipboard.writeText(modalCopyTextArea.value)
+        .then(() => {
+          const notification = document.getElementById('copyNotification');
+          notification.textContent = `已复制 ${selectedCount} 个游戏编号和总容量`;
+          notification.style.display = 'block';
+          setTimeout(() => {
+            notification.style.display = 'none';
+          }, 2500);
+        })
+        .catch((err) => {
+          console.error('复制失败:', err);
+          alert('复制失败，请手动复制文本');
+        });
     }
 
     // 关闭弹窗
@@ -1873,16 +1873,16 @@
 
     // 从弹窗复制
     function copyFromModal() {
-      try {
-        const textarea = document.getElementById('modalCopyTextArea');
-        textarea.select();
-        document.execCommand('copy');
-
-        const selectedCount = Object.values(selectedGames).filter(val => val > 0).length;
-        showCopyNotification(selectedCount);
-      } catch (err) {
-        alert('复制失败，请手动选择并复制文本');
-      }
+      const modalCopyTextArea = document.getElementById('modalCopyTextArea');
+      navigator.clipboard.writeText(modalCopyTextArea.value)
+        .then(() => {
+          const selectedCount = Object.values(selectedGames).filter(val => val > 0).length;
+          showCopyNotification(selectedCount);
+        })
+        .catch((err) => {
+          console.error('复制失败:', err);
+          alert('复制失败，请手动复制文本');
+        });
     }
 
     // 显示复制通知
