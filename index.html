@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" oncontextmenu="return false;">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -15,6 +15,7 @@
       width: 100%;
       max-width: 100%;
       overflow-x: hidden;
+      touch-action: manipulation; /* 禁用缩放手势 */
     }
 
     body {
@@ -751,7 +752,7 @@
     }
   </style>
 </head>
-<body>
+<body ondblclick="return false;">
   <header>DH游戏选择系统</header>
   
   <div id="searchBox">
@@ -807,7 +808,7 @@
   </div>
   
   <script>
-   // 游戏数据
+    // 游戏数据
     const gameData = {
     // 游戏数据
       "游戏前端": [
@@ -1486,6 +1487,19 @@
   
     };
 
+
+    // 禁用双指缩放
+    document.addEventListener('touchstart', function (event) {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+    }, { passive: false });
+
+    document.addEventListener('touchend', function (event) {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+    }, { passive: false });
 
     // 硬盘容量配置
     const storageOptions = [
