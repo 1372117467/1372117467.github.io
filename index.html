@@ -67,7 +67,6 @@
 
     #searchBox input {
       width: 90%;
-      max-width: 360px;
       height: 36px;
       padding: 8px 36px 8px 12px;
       border: 1px solid rgba(203, 213, 225, 0.3);
@@ -761,9 +760,6 @@
         max-width: 320px;
       }
       #searchBox {
-        width: 100%;
-        max-width: 360px;
-        margin: 0 auto;
         padding: 8px;
       }
       #searchBox input {
@@ -841,6 +837,13 @@
         padding: 8px 12px;
         font-size: 13px;
       }
+      #searchBox {
+        padding: 5px;
+      }
+      #searchBox input {
+        width: 90%;
+        padding-right: 24px;
+      }
       .clear-search {
         right: 5px;
         width: 14px;
@@ -875,10 +878,13 @@
     }
 
     @media (max-width: 360px) {
+      #searchBox {
+        padding: 5px;
+      }
       #searchBox input {
-        width: 85%;
+        width: 90%;
         font-size: 12px;
-        padding-right: 24px;
+        padding-right: 20px;
       }
       .clear-search {
         right: 4px;
@@ -899,10 +905,13 @@
     }
 
     @media (max-width: 320px) {
+      #searchBox {
+        padding: 3px;
+      }
       #searchBox input {
-        width: 80%;
+        width: 90%;
         font-size: 11px;
-        padding-right: 20px;
+        padding-right: 18px;
       }
       .clear-search {
         right: 3px;
