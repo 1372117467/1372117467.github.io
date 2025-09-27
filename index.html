@@ -66,7 +66,8 @@
     }
 
     #searchBox input {
-      width: 80%;
+      width: 90%;
+      max-width: 360px;
       height: 36px;
       padding: 8px 36px 8px 12px;
       border: 1px solid rgba(203, 213, 225, 0.3);
@@ -299,6 +300,8 @@
       border-top: 1px solid rgba(203, 213, 225, 0.3);
       z-index: 98;
       box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+      max-width: 360px;
+      margin: 0 auto;
     }
 
     .footer span {
@@ -872,6 +875,54 @@
         margin-top: 10px;
       }
     }
+
+    @media (max-width: 360px) {
+      #searchBox input {
+        width: 85%;
+        font-size: 12px;
+        padding-right: 24px;
+      }
+      .clear-search {
+        right: 4px;
+        width: 14px;
+        height: 14px;
+        font-size: 9px;
+      }
+      .footer {
+        padding: 0 5px;
+      }
+      .footer span {
+        font-size: 14px;
+      }
+      .footer button {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 320px) {
+      #searchBox input {
+        width: 80%;
+        font-size: 11px;
+        padding-right: 20px;
+      }
+      .clear-search {
+        right: 3px;
+        width: 12px;
+        height: 12px;
+        font-size: 8px;
+      }
+      .footer {
+        padding: 0 5px;
+      }
+      .footer span {
+        font-size: 12px;
+      }
+      .footer button {
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+    }
   </style>
 </head>
 <body ondblclick="return false;">
@@ -933,7 +984,7 @@
   
   <script>
     // 请自行添加 gameData 数据
- // 游戏数据
+     // 游戏数据
     const gameData = {
     // 游戏数据
       "游戏前端": [
