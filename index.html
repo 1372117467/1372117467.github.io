@@ -68,7 +68,7 @@
     #searchBox input {
       width: 90%;
       height: 36px;
-      padding: 8px 36px 8px 12px;
+      padding: 8px 80px 8px 8px;
       border: 1px solid rgba(203, 213, 225, 0.3);
       border-radius: 10px;
       font-size: 14px;
@@ -87,22 +87,22 @@
 
     .clear-search {
       position: absolute;
-      right: 8px;
+      right: 35px;
       top: 50%;
       transform: translateY(-50%);
       background: #6d28d9;
       color: white;
       border: none;
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      font-size: 12px;
+      border-radius: 5px;
+      width: 40px;
+      height: 28px;
+      font-size: 14px;
       font-weight: bold;
       cursor: pointer;
       display: none;
       touch-action: auto;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      line-height: 18px;
+      line-height: 28px;
       text-align: center;
       transition: background 0.3s ease, transform 0.3s ease;
     }
@@ -765,14 +765,14 @@
       #searchBox input {
         width: 90%;
         font-size: 12px;
-        padding-right: 28px;
+        padding-right: 90px;
       }
       .clear-search {
-        right: 6px;
-        width: 16px;
-        height: 16px;
-        font-size: 10px;
-        border-radius: 50%;
+        right: 38px;
+        width: 40px;
+        height: 28px;
+        font-size: 12px;
+        border-radius: 5px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.15);
       }
       .footer {
@@ -842,14 +842,14 @@
       }
       #searchBox input {
         width: 90%;
-        padding-right: 24px;
+        padding-right: 80px;
       }
       .clear-search {
-        right: 5px;
-        width: 14px;
-        height: 14px;
-        font-size: 9px;
-        border-radius: 50%;
+        right: 35px;
+        width: 36px;
+        height: 26px;
+        font-size: 11px;
+        border-radius: 5px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.15);
       }
       #orderPage {
@@ -884,13 +884,13 @@
       #searchBox input {
         width: 90%;
         font-size: 12px;
-        padding-right: 20px;
+        padding-right: 75px;
       }
       .clear-search {
-        right: 4px;
-        width: 14px;
-        height: 14px;
-        font-size: 9px;
+        right: 33px;
+        width: 34px;
+        height: 24px;
+        font-size: 10px;
       }
       .footer {
         padding: 0 5px;
@@ -911,13 +911,13 @@
       #searchBox input {
         width: 90%;
         font-size: 11px;
-        padding-right: 18px;
+        padding-right: 70px;
       }
       .clear-search {
-        right: 3px;
-        width: 12px;
-        height: 12px;
-        font-size: 8px;
+        right: 32px;
+        width: 32px;
+        height: 22px;
+        font-size: 9px;
       }
       .footer {
         padding: 0 5px;
@@ -937,7 +937,7 @@
   
   <div id="searchBox">
     <input type="text" id="searchInput" placeholder="搜索游戏...">
-    <button class="clear-search" onclick="clearSearch()">×</button>
+    <button class="clear-search" onclick="clearSearch()">清空</button>
   </div>
   
   <div id="sidebar"></div>
@@ -1663,11 +1663,7 @@
     {"code": "SWT35", "name": "游戏王", "size": 1.74, "image": "images/SWT35.webp"},
     {"code": "SWT36", "name": "有氧拳击2", "size": 3.59, "image": "images/SWT36.webp"}
   ],
-
-  
-
-  
-  
+ 
     };
 
 
@@ -2130,9 +2126,9 @@
       copyTextToClipboard(selectedCodes, totalGB, selectedCount);
     }
 
-    // 搜索功能
+    // 搜索功能（仅汉字模糊搜索）
     function filterGames() {
-      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      const keyword = document.getElementById('searchInput').value;
       const filtered = {};
 
       if (!keyword) {
@@ -2141,10 +2137,19 @@
         return;
       }
 
+      // 仅匹配汉字（\u4e00-\u9fa5）
+      const chineseKeyword = keyword.match(/[\u4e00-\u9fa5]/g);
+      if (!chineseKeyword || chineseKeyword.length === 0) {
+        displayCategories();
+        toggleClearButton();
+        return;
+      }
+
+      const searchTerm = chineseKeyword.join('');
       for (const category in gameData) {
         filtered[category] = gameData[category].filter(game =>
-          game.name.toLowerCase().includes(keyword) ||
-          game.code.toLowerCase().includes(keyword)
+          game.name.includes(searchTerm) ||
+          game.code.includes(searchTerm)
         );
 
         if (filtered[category].length === 0) {
