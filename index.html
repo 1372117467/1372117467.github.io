@@ -192,6 +192,7 @@
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       transition: transform 0.3s ease;
+      cursor: pointer;
     }
 
     .game-item:hover {
@@ -573,7 +574,7 @@
       visibility: visible;
     }
 
-    .storage-modal {
+    .storage-modal, .game-detail-modal {
       background: rgba(255, 255, 255, 0.2);
       width: 90%;
       max-width: 400px;
@@ -588,7 +589,8 @@
       touch-action: pan-y;
     }
 
-    .modal-overlay.active .storage-modal {
+    .modal-overlay.active .storage-modal,
+    .modal-overlay.active .game-detail-modal {
       transform: translateY(0);
     }
 
@@ -662,6 +664,8 @@
       background: rgba(255, 255, 255, 0.95);
       touch-action: auto;
       white-space: pre-wrap;
+      user-select: text;
+      -webkit-user-select: text;
     }
 
     .copy-btn {
@@ -687,6 +691,232 @@
       font-size: 12px;
       margin-top: 5px;
       display: none;
+    }
+
+    .game-detail-content {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .game-detail-image-container {
+      width: 100%;
+      max-width: 200px;
+      height: 150px;
+      margin: 0 auto;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .game-detail-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .game-detail-error {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #6d28d9, #1e3a8a);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .game-detail-info {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 10px;
+      border-radius: 10px;
+      border-left: 3px solid #6d28d9;
+    }
+
+    .game-detail-info p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #1e3a8a;
+    }
+
+    .game-detail-info p strong {
+      color: #6d28d9;
+    }
+
+    .game-detail-carousel {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 10px;
+    }
+
+    .carousel-container {
+      display: flex;
+      transition: transform 0.3s ease;
+    }
+
+    .carousel-image {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      flex-shrink: 0;
+      border-radius: 5px;
+    }
+
+    .carousel-error {
+      width: 100%;
+      height: 150px;
+      background: linear-gradient(135deg, #6d28d9, #1e3a8a);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+      flex-shrink: 0;
+      border-radius: 5px;
+    }
+
+    .carousel-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(109, 40, 217, 0.7);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .carousel-button:hover {
+      background: rgba(91, 33, 182, 0.9);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .carousel-button:disabled {
+      background: rgba(209, 213, 219, 0.7);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .carousel-button.prev {
+      left: 10px;
+    }
+
+    .carousel-button.next {
+      right: 10px;
+    }
+
+    .carousel-placeholder {
+      text-align: center;
+      color: #475569;
+      font-size: 14px;
+      padding: 20px;
+    }
+
+    .order-preview {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 280px;
+      max-height: 50vh;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 99;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .order-preview.collapsed {
+      height: 40px;
+      overflow: hidden;
+    }
+
+    .order-preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      background: linear-gradient(to right, #6d28d9, #1e3a8a);
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .order-preview-header:hover {
+      background: linear-gradient(to right, #5b21b6, #1e3a8a);
+    }
+
+    .order-preview-toggle {
+      font-size: 16px;
+    }
+
+    .order-preview-content {
+      padding: 10px;
+      max-height: calc(50vh - 40px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #6d28d9 #e2e8f0;
+    }
+
+    .order-preview-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .order-preview-content::-webkit-scrollbar-track {
+      background: #e2e8f0;
+    }
+
+    .order-preview-content::-webkit-scrollbar-thumb {
+      background-color: #6d28d9;
+      border-radius: 3px;
+    }
+
+    .order-preview-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      font-size: 13px;
+      color: #1e3a8a;
+      border-bottom: 1px solid rgba(203, 213, 225, 0.3);
+    }
+
+    .order-preview-item:last-child {
+      border-bottom: none;
+    }
+
+    .order-preview-name {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .order-preview-size {
+      color: #475569;
+      margin-left: 10px;
+    }
+
+    .order-preview-empty {
+      text-align: center;
+      color: #475569;
+      font-size: 13px;
+      padding: 10px;
     }
 
     @media (max-width: 768px) {
@@ -755,7 +985,7 @@
         width: 100%;
         padding: 12px;
       }
-      .storage-modal {
+      .storage-modal, .game-detail-modal {
         width: 90%;
         max-width: 320px;
       }
@@ -788,6 +1018,30 @@
       #sidebar::-webkit-scrollbar, .order-game-list::-webkit-scrollbar {
         display: none;
       }
+      .game-detail-image-container {
+        max-width: 150px;
+        height: 120px;
+      }
+      .game-detail-info p {
+        font-size: 13px;
+      }
+      .game-detail-carousel {
+        max-width: 240px;
+      }
+      .carousel-image, .carousel-error {
+        height: 120px;
+      }
+      .carousel-button {
+        width: 25px;
+        height: 25px;
+        font-size: 16px;
+      }
+      .order-preview {
+        width: 90%;
+        max-width: 300px;
+        right: 5px;
+        bottom: 70px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -817,7 +1071,7 @@
         padding: 10px 20px;
         font-size: 14px;
       }
-      .storage-modal {
+      .storage-modal, .game-detail-modal {
         max-width: 300px;
         width: 90%;
         padding: 12px;
@@ -875,6 +1129,36 @@
         margin-left: 0;
         margin-top: 10px;
       }
+      .game-detail-image-container {
+        max-width: 120px;
+        height: 100px;
+      }
+      .game-detail-info p {
+        font-size: 12px;
+      }
+      .game-detail-carousel {
+        max-width: 200px;
+      }
+      .carousel-image, .carousel-error {
+        height: 100px;
+      }
+      .carousel-button {
+        width: 22px;
+        height: 22px;
+        font-size: 14px;
+      }
+      .order-preview {
+        width: 90%;
+        max-width: 280px;
+        right: 5px;
+        bottom: 70px;
+      }
+      .order-preview-header {
+        font-size: 13px;
+      }
+      .order-preview-item {
+        font-size: 12px;
+      }
     }
 
     @media (max-width: 360px) {
@@ -902,6 +1186,10 @@
         padding: 8px 12px;
         font-size: 12px;
       }
+      .order-preview {
+        width: 90%;
+        max-width: 260px;
+      }
     }
 
     @media (max-width: 320px) {
@@ -928,6 +1216,10 @@
       .footer button {
         padding: 6px 10px;
         font-size: 11px;
+      }
+      .order-preview {
+        width: 90%;
+        max-width: 240px;
       }
     }
   </style>
@@ -983,28 +1275,72 @@
       <div class="storage-list" id="modalStorageList"></div>
       <div class="copy-container">
         <textarea class="copy-text-area" id="modalCopyTextArea" readonly></textarea>
-        <p class="copy-error" id="copyError">复制失败，请手动选中并复制</p>
+        <p class="copy-error" id="copyError">复制失败，请手动长按或选中文本框内容并复制（Ctrl+C），然后发给客服</p>
         <button class="copy-btn" onclick="copyFromModal()">复制游戏编号和总容量</button>
       </div>
     </div>
   </div>
+
+  <div class="modal-overlay" id="gameDetailModal">
+    <div class="game-detail-modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="gameDetailTitle"></h3>
+        <button class="close-modal" onclick="closeGameDetailModal()">&times;</button>
+      </div>
+      <div class="game-detail-content" id="gameDetailContent"></div>
+    </div>
+  </div>
+
+  <div class="order-preview" id="orderPreview">
+    <div class="order-preview-header" onclick="toggleOrderPreview()">
+      <span id="orderPreviewSummary">已选游戏：0 总容量：0 GB</span>
+      <span class="order-preview-toggle" id="orderPreviewToggle">−</span>
+    </div>
+    <div class="order-preview-content" id="orderPreviewContent"></div>
+  </div>
   
   <script>
-    // 请自行添加 gameData 数据
-     // 游戏数据
-    const gameData = {
     // 游戏数据
+    const gameData = {
       "游戏前端": [
-        { "code": "0", "name": "游戏前端（必选）", "size": 5,  "image": "images/游戏前端.webp"}
+        { 
+          "code": "0", 
+          "name": "游戏前端（必选）", 
+          "size": 5, 
+          "image": "images/游戏前端.webp",
+          "description": "游戏前端是运行游戏套餐的核心组件，提供流畅的游戏加载和用户界面支持。必须选择此项以确保所有游戏正常运行，适合所有游戏爱好者。",
+          "additionalImages": [
+            "images/placeholder1.webp",
+            "images/placeholder2.webp"
+          ]
+        }
       ],
-"游戏套餐": [ 
-     { "code": "PG", "name": "天马怀旧包6500款经典游戏", "size": 458,  "image": "images/天马怀旧包.webp"},
-     { "code": "63", "name": "双人游戏亲子73款合集（休闲多人游戏总和）", "size": 304,  "image": "images/双人游戏亲子合集.webp"},
-      ],     
-
- 
+      "游戏套餐": [
+        { 
+          "code": "PG", 
+          "name": "天马怀旧包6500款经典游戏", 
+          "size": 458, 
+          "image": "images/天马怀旧包.webp",
+          "description": "天马怀旧包包含6500款经典复古游戏，涵盖街机、红白机、掌机等多种平台，重温80年代至2000年代的游戏经典，适合怀旧玩家和收藏爱好者。",
+          "additionalImages": [
+            "images/placeholder3.webp",
+            "images/placeholder4.webp",
+            "images/placeholder5.webp"
+          ]
+        },
+        { 
+          "code": "63", 
+          "name": "双人游戏亲子73款合集（休闲多人游戏总和）", 
+          "size": 304, 
+          "image": "images/双人游戏亲子合集.webp",
+          "description": "双人游戏亲子73款合集包含73款精心挑选的休闲多人游戏，适合家庭娱乐和亲子互动。游戏类型涵盖益智、竞技、合作等，适合各个年龄段玩家。无论是朋友聚会还是家庭时光，都能带来欢乐体验。",
+          "additionalImages": [
+            "images/placeholder6.webp",
+            "images/placeholder7.webp"
+          ]
+        }
+      ],
     };
-
 
     // 禁用双指缩放和双击放大
     document.addEventListener('touchstart', function (event) {
@@ -1056,9 +1392,15 @@
     // 初始化页面
     window.onload = function () {
       try {
+        if (isNaN(totalSize)) {
+          localStorage.clear();
+          selectedGames = {};
+          totalSize = 0;
+        }
         generateSidebar();
         displayCategories();
         updateTotal();
+        updateOrderPreview();
         initScrollSpy();
         const searchInput = document.getElementById('searchInput');
         if (searchInput) {
@@ -1156,6 +1498,11 @@
     function createGameItem(container, game) {
       const gameItem = document.createElement('div');
       gameItem.className = 'game-item';
+      gameItem.onclick = function(e) {
+        if (!e.target.closest('.quantity-control')) {
+          showGameDetail(game);
+        }
+      };
 
       const coverDiv = document.createElement('div');
       coverDiv.className = 'game-cover-container';
@@ -1192,14 +1539,93 @@
 
       const quantityControl = document.createElement('div');
       quantityControl.className = 'quantity-control';
+      const isCoreComponent = game.code === '0';
       quantityControl.innerHTML = `
-        <button ${selectedGames[game.code] ? '' : 'disabled'} onclick="decreaseQuantity('${game.code}', ${game.size})">-</button>
+        <button ${isCoreComponent || selectedGames[game.code] ? '' : 'disabled'} ${isCoreComponent ? 'disabled' : ''} onclick="decreaseQuantity('${game.code}', ${game.size})">-</button>
         <span id="qty-${game.code}">${selectedGames[game.code] || 0}</span>
         <button ${selectedGames[game.code] ? 'disabled' : ''} onclick="increaseQuantity('${game.code}', ${game.size})">+</button>
       `;
       gameItem.appendChild(quantityControl);
 
       container.appendChild(gameItem);
+    }
+
+    // 显示游戏详情弹窗
+    function showGameDetail(game) {
+      const modal = document.getElementById('gameDetailModal');
+      const title = document.getElementById('gameDetailTitle');
+      const content = document.getElementById('gameDetailContent');
+
+      if (modal && title && content) {
+        title.textContent = game.name;
+        let carouselHTML = '';
+        if (game.additionalImages && game.additionalImages.length > 0) {
+          carouselHTML = `
+            <div class="game-detail-carousel" id="carousel-${game.code}">
+              <button class="carousel-button prev" onclick="moveCarousel('${game.code}', -1)" disabled>&larr;</button>
+              <div class="carousel-container" id="carousel-container-${game.code}">
+                ${game.additionalImages.map(img => `
+                  <img src="${img}" alt="${game.name} 截图" class="carousel-image" onerror="this.outerHTML='<div class=&quot;carousel-error&quot;>截图加载失败</div>'" loading="lazy">
+                `).join('')}
+              </div>
+              <button class="carousel-button next" onclick="moveCarousel('${game.code}', 1)"${game.additionalImages.length <= 1 ? ' disabled' : ''}>&rarr;</button>
+            </div>
+          `;
+        } else {
+          carouselHTML = `<div class="carousel-placeholder">暂无更多图片</div>`;
+        }
+
+        content.innerHTML = `
+          <div class="game-detail-image-container">
+            ${
+              game.image ?
+              `<img src="${game.image}" alt="${game.name}" class="game-detail-image" onerror="this.parentNode.innerHTML='<div class=&quot;game-detail-error&quot;>${game.name.substring(0, 2)}</div>'" loading="lazy">` :
+              `<div class="game-detail-error">${game.name.substring(0, 2)}</div>`
+            }
+          </div>
+          <div class="game-detail-info">
+            <p><strong>大小:</strong> ${game.size} GB</p>
+            <p><strong>介绍:</strong> ${game.description || '暂无详细介绍'}</p>
+          </div>
+          ${carouselHTML}
+        `;
+        modal.classList.add('active');
+
+        // 初始化轮播
+        if (game.additionalImages && game.additionalImages.length > 0) {
+          updateCarouselButtons(game.code, 0);
+        }
+      }
+    }
+
+    // 轮播图片切换
+    let currentIndexes = {};
+    function moveCarousel(code, direction) {
+      const container = document.getElementById(`carousel-container-${code}`);
+      const images = container.querySelectorAll('.carousel-image, .carousel-error');
+      if (!currentIndexes[code]) currentIndexes[code] = 0;
+
+      currentIndexes[code] = Math.max(0, Math.min(currentIndexes[code] + direction, images.length - 1));
+      container.style.transform = `translateX(-${currentIndexes[code] * 100}%)`;
+      updateCarouselButtons(code, currentIndexes[code]);
+    }
+
+    // 更新轮播按钮状态
+    function updateCarouselButtons(code, index) {
+      const prevButton = document.querySelector(`#carousel-${code} .prev`);
+      const nextButton = document.querySelector(`#carousel-${code} .next`);
+      const images = document.querySelectorAll(`#carousel-container-${code} .carousel-image, #carousel-container-${code} .carousel-error`);
+
+      prevButton.disabled = index === 0;
+      nextButton.disabled = index === images.length - 1;
+    }
+
+    // 关闭游戏详情弹窗
+    function closeGameDetailModal() {
+      const modal = document.getElementById('gameDetailModal');
+      if (modal) modal.classList.remove('active');
+      // 重置轮播索引
+      currentIndexes = {};
     }
 
     // 增加数量
@@ -1209,17 +1635,23 @@
         totalSize += size;
         if (totalSize < 0) totalSize = 0;
         updateAllGameDisplays(code);
+        updateOrderPreview();
         saveToLocalStorage();
       }
     }
 
     // 减少数量
     function decreaseQuantity(code, size) {
+      if (code === '0') {
+        // 禁止移除“游戏前端（必选）”
+        return;
+      }
       if (selectedGames[code]) {
         selectedGames[code] = 0;
         totalSize -= size;
         if (totalSize < 0) totalSize = 0;
         updateAllGameDisplays(code);
+        updateOrderPreview();
         saveToLocalStorage();
       }
     }
@@ -1229,7 +1661,7 @@
       document.querySelectorAll(`[id="qty-${code}"]`).forEach(qtyElement => {
         const buttons = qtyElement.parentElement.getElementsByTagName('button');
         qtyElement.textContent = selectedGames[code] || 0;
-        buttons[0].disabled = !selectedGames[code];
+        buttons[0].disabled = !selectedGames[code] || code === '0'; // 禁用“游戏前端”的减号按钮
         buttons[1].disabled = !!selectedGames[code];
       });
       updateTotal();
@@ -1240,6 +1672,47 @@
       const totalSizeElement = document.getElementById('totalSize');
       if (totalSizeElement) {
         totalSizeElement.textContent = `总容量：${totalSize.toFixed(1)} GB`;
+      }
+    }
+
+    // 更新订单预览浮窗
+    function updateOrderPreview() {
+      const previewContent = document.getElementById('orderPreviewContent');
+      const previewSummary = document.getElementById('orderPreviewSummary');
+      if (!previewContent || !previewSummary) return;
+
+      const selectedCount = Object.values(selectedGames).filter(val => val > 0).length;
+      previewSummary.textContent = `已选游戏：${selectedCount} 总容量：${totalSize.toFixed(1)} GB`;
+
+      if (selectedCount === 0) {
+        previewContent.innerHTML = `<div class="order-preview-empty">暂无已选游戏</div>`;
+      } else {
+        previewContent.innerHTML = '';
+        const displayedCodes = new Set();
+        for (const category in gameData) {
+          gameData[category].forEach(game => {
+            if (selectedGames[game.code] && !displayedCodes.has(game.code)) {
+              displayedCodes.add(game.code);
+              const item = document.createElement('div');
+              item.className = 'order-preview-item';
+              item.innerHTML = `
+                <span class="order-preview-name">${game.name}</span>
+                <span class="order-preview-size">${game.size} GB</span>
+              `;
+              previewContent.appendChild(item);
+            }
+          });
+        }
+      }
+    }
+
+    // 切换订单预览浮窗的折叠状态
+    function toggleOrderPreview() {
+      const preview = document.getElementById('orderPreview');
+      const toggleIcon = document.getElementById('orderPreviewToggle');
+      if (preview && toggleIcon) {
+        preview.classList.toggle('collapsed');
+        toggleIcon.textContent = preview.classList.contains('collapsed') ? '+' : '−';
       }
     }
 
@@ -1255,6 +1728,23 @@
 
     // 生成订单
     function generateOrder() {
+      // 自动添加“游戏前端（必选）”
+      if (!selectedGames['0']) {
+        selectedGames['0'] = 1;
+        totalSize += 5; // 游戏前端大小为 5GB
+        updateAllGameDisplays('0');
+        updateOrderPreview();
+        saveToLocalStorage();
+        const notification = document.getElementById('copyNotification');
+        if (notification) {
+          notification.textContent = '已自动添加必选游戏前端';
+          notification.style.display = 'block';
+          setTimeout(() => {
+            notification.style.display = 'none';
+          }, 2500);
+        }
+      }
+
       const orderBody = document.getElementById('orderListContainer');
       if (!orderBody) throw new Error('Order list container not found');
       orderBody.innerHTML = '';
@@ -1289,7 +1779,7 @@
                   <div class="order-game-title">${game.name}</div>
                   <div class="order-game-size">${game.size} GB</div>
                 </div>
-                <button class="remove-btn" onclick="removeFromOrder('${game.code}', ${game.size})">删除</button>
+                <button class="remove-btn" ${game.code === '0' ? 'disabled' : ''} onclick="removeFromOrder('${game.code}', ${game.size})">删除</button>
               `;
               orderBody.appendChild(gameCard);
             }
@@ -1301,6 +1791,7 @@
       document.getElementById('sidebar').style.display = 'none';
       document.querySelector('.footer').style.display = 'none';
       document.getElementById('orderPage').style.display = 'block';
+      document.getElementById('orderPreview').style.display = 'none';
       const searchBox = document.getElementById('searchBox');
       if (searchBox) searchBox.style.display = 'none';
 
@@ -1325,12 +1816,17 @@
 
     // 删除订单项
     function removeFromOrder(code, size) {
+      if (code === '0') {
+        // 禁止移除“游戏前端（必选）”
+        return;
+      }
       selectedGames[code] = 0;
       totalSize -= size;
       if (totalSize < 0) totalSize = 0;
       saveToLocalStorage();
       generateOrder();
       updateTotal();
+      updateOrderPreview();
       updateAllGameDisplays(code);
     }
 
@@ -1356,7 +1852,6 @@
 
     // 确认订单 - 显示硬盘容量建议弹窗
     function confirmOrder() {
-      isOrderConfirmed = true;
       const selectedCodes = sortGameCodes(
         Object.keys(selectedGames).filter(code => selectedGames[code])
       );
@@ -1368,6 +1863,8 @@
         alert('您还没有选择任何游戏');
         return;
       }
+
+      isOrderConfirmed = true;
 
       let storageHTML = '';
       storageOptions.forEach(option => {
@@ -1389,12 +1886,15 @@
 
       const searchBox = document.getElementById('searchBox');
       if (searchBox) searchBox.style.display = 'none';
-      document.getElementById('storageModal').classList.add('active');
+      const modal = document.getElementById('storageModal');
+      setTimeout(() => {
+        modal.classList.add('active');
+      }, 0);
 
       copyTextToClipboard(selectedCodes, totalGB, selectedCount);
     }
 
-    // 关闭弹窗
+    // 关闭硬盘容量建议弹窗
     function closeStorageModal() {
       const modal = document.getElementById('storageModal');
       const copyError = document.getElementById('copyError');
@@ -1404,14 +1904,25 @@
       backToShop();
     }
 
-    // 使用 Clipboard API 复制文本
+    // 使用 document.execCommand 复制文本
     function copyTextToClipboard(selectedCodes, totalGB, selectedCount) {
-      const textToCopy = `  ${selectedCodes.join(',')}  总容量: ${totalGB} GB`;
+      const textToCopy = `${selectedCodes.join(',')}  总容量: ${totalGB} GB`;
       const notification = document.getElementById('copyNotification');
       const copyError = document.getElementById('copyError');
+      const textarea = document.getElementById('modalCopyTextArea');
 
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(textToCopy).then(() => {
+      // 确保textarea选中
+      textarea.focus();
+      textarea.select();
+      try {
+        textarea.setSelectionRange(0, 99999); // 移动端兼容
+      } catch (e) {
+        console.warn('setSelectionRange failed:', e);
+      }
+
+      try {
+        const success = document.execCommand('copy');
+        if (success) {
           if (notification) {
             notification.textContent = `已复制 ${selectedCount} 个游戏编号和总容量`;
             notification.style.display = 'block';
@@ -1420,37 +1931,15 @@
             }, 2500);
           }
           if (copyError) copyError.style.display = 'none';
-        }).catch(err => {
-          console.error('Clipboard API 复制失败:', err);
-          fallbackCopy(textToCopy, selectedCount);
-        });
-      } else {
-        fallbackCopy(textToCopy, selectedCount);
-      }
-    }
-
-    // 回退到 document.execCommand 复制
-    function fallbackCopy(text, selectedCount) {
-      const textarea = document.getElementById('modalCopyTextArea');
-      const notification = document.getElementById('copyNotification');
-      const copyError = document.getElementById('copyError');
-
-      try {
-        textarea.select();
-        document.execCommand('copy');
-        if (notification) {
-          notification.textContent = `已复制 ${selectedCount} 个游戏编号和总容量`;
-          notification.style.display = 'block';
-          setTimeout(() => {
-            notification.style.display = 'none';
-          }, 2500);
+        } else {
+          throw new Error('Copy command failed');
         }
-        if (copyError) copyError.style.display = 'none';
       } catch (err) {
-        console.error('回退复制失败:', err);
+        console.error('复制失败:', err);
         if (copyError) {
           copyError.style.display = 'block';
         }
+        alert('自动复制失败！请手动长按或选中文本框内容并复制（Ctrl+C），然后发给客服。');
       }
     }
 
@@ -1461,13 +1950,12 @@
       );
       const selectedCount = selectedCodes.length;
       const totalGB = totalSize.toFixed(1);
-
       copyTextToClipboard(selectedCodes, totalGB, selectedCount);
     }
 
-    // 搜索功能（仅汉字模糊搜索）
+    // 搜索功能（支持游戏名中的字母和数字，不包括编号）
     function filterGames() {
-      const keyword = document.getElementById('searchInput').value;
+      const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
       const filtered = {};
 
       if (!keyword) {
@@ -1476,20 +1964,11 @@
         return;
       }
 
-      // 仅匹配汉字（\u4e00-\u9fa5）
-      const chineseKeyword = keyword.match(/[\u4e00-\u9fa5]/g);
-      if (!chineseKeyword || chineseKeyword.length === 0) {
-        displayCategories();
-        toggleClearButton();
-        return;
-      }
-
-      const searchTerm = chineseKeyword.join('');
       for (const category in gameData) {
-        filtered[category] = gameData[category].filter(game =>
-          game.name.includes(searchTerm) ||
-          game.code.includes(searchTerm)
-        );
+        filtered[category] = gameData[category].filter(game => {
+          const nameLower = game.name.toLowerCase();
+          return nameLower.includes(keyword);
+        });
 
         if (filtered[category].length === 0) {
           delete filtered[category];
@@ -1525,6 +2004,7 @@
       document.getElementById('sidebar').style.display = 'block';
       document.querySelector('.footer').style.display = 'flex';
       document.getElementById('orderPage').style.display = 'none';
+      document.getElementById('orderPreview').style.display = 'block';
       const searchBox = document.getElementById('searchBox');
       if (searchBox) searchBox.style.display = 'flex';
     }
@@ -1536,14 +2016,23 @@
       }
     });
 
+    document.getElementById('gameDetailModal').addEventListener('click', function (e) {
+      if (e.target === this) {
+        closeGameDetailModal();
+      }
+    });
+
     // 按ESC键关闭弹窗
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && document.getElementById('storageModal').classList.contains('active')) {
-        closeStorageModal();
+      if (e.key === 'Escape') {
+        if (document.getElementById('storageModal').classList.contains('active')) {
+          closeStorageModal();
+        }
+        if (document.getElementById('gameDetailModal').classList.contains('active')) {
+          closeGameDetailModal();
+        }
       }
     });
   </script>
 </body>
 </html>
-
-
