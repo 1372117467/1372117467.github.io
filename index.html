@@ -1,14 +1,84 @@
 <!DOCTYPE html>
-<html lang="zh-CN" oncontextmenu="return false;">
+<html lang="zh-CN" oncontextmenu="return false;" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>DH游戏目录</title>
   <style>
+    :root {
+            /* 浅色主题 */
+      --background-color: #f1f5f9;
+      --text-color: #1e3a8a;
+      --header-bg: linear-gradient(to right, #6d28d9, #1e3a8a);
+      --header-text: white;
+      --sidebar-bg: rgba(255, 255, 255, 0.15);
+      --sidebar-text: #1e3a8a;
+      --sidebar-active-bg: rgba(109, 40, 217, 0.1);
+      --sidebar-active-border: #6d28d9;
+      --category-bg: rgba(255, 255, 255, 0.95);
+      --game-item-bg: rgba(255, 255, 255, 0.95);
+      --button-bg: #6d28d9;
+      --button-hover-bg: #5b21b6;
+      --button-text: white;
+      --modal-bg: rgba(255, 255, 255, 0.2);
+      --modal-content-bg: rgba(255, 255, 255, 0.95);
+      --order-preview-bg: rgba(255, 255, 255, 0.95);
+      --scrollbar-track: #e2e8f0;
+      --scrollbar-thumb: #6d28d9;
+      --error-bg: linear-gradient(135deg, #6d28d9, #1e3a8a);
+      --error-text: white;
+      --warning-text: #ef4444;
+      --input-bg: rgba(255, 255, 255, 0.95);
+      --input-border: rgba(109, 40, 217, 0.3);
+      --footer-bg: rgba(255, 255, 255, 0.15);
+      --toggle-bg: #d1d5db;
+      --toggle-slider: #ffffff;
+      --toggle-border: #6d28d9;
+    }
+
+    [data-theme="dark"] {
+      /* 深色主题 */
+      --background-color: #1a202c;
+      --text-color: #e2e8f0;
+      --header-bg: linear-gradient(to right, #4c1d95, #1e3a8a);
+      --header-text: #e2e8f0;
+      --sidebar-bg: rgba(45, 55, 72, 0.95);
+      --sidebar-text: #e2e8f0;
+      --sidebar-active-bg: rgba(109, 40, 217, 0.2);
+      --sidebar-active-border: #7c3aed;
+      --category-bg: rgba(45, 55, 72, 0.95);
+      --game-item-bg: rgba(45, 55, 72, 0.95);
+      --button-bg: #7c3aed;
+      --button-hover-bg: #6d28d9;
+      --button-text: #e2e8f0;
+      --modal-bg: rgba(45, 55, 72, 0.95);
+      --modal-content-bg: rgba(45, 55, 72, 0.95);
+      --order-preview-bg: rgba(45, 55, 72, 0.95);
+      --scrollbar-track: #2d3748;
+      --scrollbar-thumb: #7c3aed;
+      --error-bg: linear-gradient(135deg, #4c1d95, #1e3a8a);
+      --error-text: #e2e8f0;
+      --warning-text: #f87171;
+      --input-bg: rgba(45, 55, 72, 0.95);
+      --input-border: rgba(124, 58, 237, 0.3);
+      --footer-bg: rgba(45, 55, 72, 0.95);
+      --toggle-bg: #4b5563;
+      --toggle-slider: #e2e8f0;
+      --toggle-border: #7c3aed;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
     html, body {
@@ -22,13 +92,14 @@
 
     body {
       font-family: 'Microsoft YaHei', sans-serif;
-      background-color: #f1f5f9;
+      background-color: var(--background-color);
       -webkit-user-select: none;
       user-select: none;
       padding-bottom: env(safe-area-inset-bottom);
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      color: var(--text-color);
     }
 
     header {
@@ -37,8 +108,8 @@
       left: 0;
       width: 100%;
       height: 60px;
-      background: linear-gradient(to right, #6d28d9, #1e3a8a);
-      color: white;
+      background: var(--header-bg);
+      color: var(--header-text);
       text-align: center;
       line-height: 60px;
       font-size: 22px;
@@ -47,6 +118,23 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       padding-top: env(safe-area-inset-top);
       backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 15px;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      color: var(--header-text);
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
     }
 
     #searchBox {
@@ -55,7 +143,7 @@
       left: 0;
       width: 100%;
       height: 50px;
-      background: rgba(255, 255, 255, 0.15);
+      background: var(--footer-bg);
       padding: 10px;
       display: flex;
       justify-content: center;
@@ -69,19 +157,19 @@
       width: 90%;
       height: 36px;
       padding: 8px 80px 8px 8px;
-      border: 1px solid rgba(203, 213, 225, 0.3);
+      border: 1px solid var(--input-border);
       border-radius: 10px;
       font-size: 14px;
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--input-bg);
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
       position: relative;
       touch-action: auto;
-      transition: border-color 0.3s ease;
+      color: var(--text-color);
     }
 
     #searchBox input:focus {
-      border-color: #6d28d9;
-      box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.3);
+      border-color: var(--button-bg);
+      box-shadow: 0 0 0 2px var(--input-border);
       outline: none;
     }
 
@@ -90,8 +178,8 @@
       right: 35px;
       top: 50%;
       transform: translateY(-50%);
-      background: #6d28d9;
-      color: white;
+      background: var(--button-bg);
+      color: var(--button-text);
       border: none;
       border-radius: 5px;
       width: 40px;
@@ -108,7 +196,7 @@
     }
 
     .clear-search:hover {
-      background: #5b21b6;
+      background: var(--button-hover-bg);
       transform: translateY(-50%) scale(1.03);
     }
 
@@ -118,12 +206,12 @@
       left: 0;
       width: 120px;
       height: calc(100vh - 170px);
-      background: rgba(255, 255, 255, 0.15);
+      background: var(--sidebar-bg);
       backdrop-filter: blur(12px);
       overflow-y: auto;
       border-right: 1px solid rgba(203, 213, 225, 0.3);
       scrollbar-width: thin;
-      scrollbar-color: #6d28d9 #e2e8f0;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
       z-index: 98;
       transition: width 0.3s ease;
       touch-action: pan-y;
@@ -134,27 +222,27 @@
     }
 
     #sidebar::-webkit-scrollbar-track {
-      background: #e2e8f0;
+      background: var(--scrollbar-track);
     }
 
     #sidebar::-webkit-scrollbar-thumb {
-      background-color: #6d28d9;
+      background-color: var(--scrollbar-thumb);
       border-radius: 3px;
     }
 
     #sidebar a {
       display: block;
       padding: 12px 15px;
-      color: #1e3a8a;
+      color: var(--sidebar-text);
       text-decoration: none;
       border-left: 3px solid transparent;
       transition: all 0.3s ease;
     }
 
     #sidebar a:hover, #sidebar a.active {
-      background: rgba(109, 40, 217, 0.1);
-      border-left-color: #6d28d9;
-      color: #6d28d9;
+      background: var(--sidebar-active-bg);
+      border-left-color: var(--sidebar-active-border);
+      color: var(--sidebar-active-border);
       transform: scale(1.02);
     }
 
@@ -167,7 +255,7 @@
     }
 
     .category {
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--category-bg);
       margin-bottom: 15px;
       padding: 15px;
       border-radius: 10px;
@@ -176,7 +264,7 @@
     }
 
     .category h2 {
-      color: #1e3a8a;
+      color: var(--text-color);
       margin-bottom: 15px;
       padding-bottom: 8px;
       border-bottom: 1px solid rgba(203, 213, 225, 0.3);
@@ -188,7 +276,7 @@
       align-items: center;
       padding: 10px;
       margin-bottom: 10px;
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--game-item-bg);
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       transition: transform 0.3s ease;
@@ -218,8 +306,8 @@
     .cover-error {
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #6d28d9, #1e3a8a);
-      color: white;
+      background: var(--error-bg);
+      color: var(--error-text);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -236,7 +324,7 @@
       font-weight: bold;
       margin-bottom: 5px;
       font-size: 16px;
-      color: #1e3a8a;
+      color: var(--text-color);
       white-space: normal;
       overflow: visible;
       text-overflow: clip;
@@ -257,8 +345,8 @@
     .quantity-control button {
       width: 28px;
       height: 28px;
-      background: #6d28d9;
-      color: white;
+      background: var(--button-bg);
+      color: var(--button-text);
       border: none;
       border-radius: 10px;
       cursor: pointer;
@@ -268,7 +356,7 @@
     }
 
     .quantity-control button:not(:disabled):hover {
-      background: #5b21b6;
+      background: var(--button-hover-bg);
       transform: scale(1.03);
     }
 
@@ -282,7 +370,7 @@
       width: 30px;
       text-align: center;
       font-weight: 600;
-      color: #1e3a8a;
+      color: var(--text-color);
     }
 
     .footer {
@@ -291,7 +379,7 @@
       left: 0;
       width: 100%;
       height: 60px;
-      background: rgba(255, 255, 255, 0.15);
+      background: var(--footer-bg);
       backdrop-filter: blur(12px);
       display: flex;
       justify-content: space-between;
@@ -304,13 +392,13 @@
 
     .footer span {
       font-weight: 500;
-      color: #1e3a8a;
+      color: var(--text-color);
       font-size: 16px;
     }
 
     .footer button {
-      background: #6d28d9;
-      color: white;
+      background: var(--button-bg);
+      color: var(--button-text);
       border: none;
       padding: 12px 25px;
       border-radius: 10px;
@@ -322,14 +410,14 @@
     }
 
     .footer button:hover {
-      background: #5b21b6;
+      background: var(--button-hover-bg);
       transform: scale(1.03);
     }
 
     #orderPage {
       display: none;
       padding: 20px;
-      background: rgba(255, 255, 255, 0.2);
+      background: var(--modal-bg);
       border-radius: 10px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.15);
       margin: 30px auto;
@@ -348,7 +436,7 @@
     }
 
     .order-header h2 {
-      color: #1e3a8a;
+      color: var(--text-color);
       font-size: 28px;
       margin-bottom: 8px;
     }
@@ -362,7 +450,7 @@
       max-height: 60vh;
       overflow-y: auto;
       scrollbar-width: thin;
-      scrollbar-color: #6d28d9 #e2e8f0;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
       padding: 5px;
       touch-action: pan-y;
     }
@@ -372,11 +460,11 @@
     }
 
     .order-game-list::-webkit-scrollbar-track {
-      background: #e2e8f0;
+      background: var(--scrollbar-track);
     }
 
     .order-game-list::-webkit-scrollbar-thumb {
-      background-color: #6d28d9;
+      background-color: var(--scrollbar-thumb);
       border-radius: 3px;
     }
 
@@ -385,7 +473,7 @@
       align-items: center;
       padding: 12px;
       margin-bottom: 12px;
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--game-item-bg);
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       border: 1px solid rgba(203, 213, 225, 0.3);
@@ -415,8 +503,8 @@
     .order-cover-error {
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #6d28d9, #1e3a8a);
-      color: white;
+      background: var(--error-bg);
+      color: var(--error-text);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -432,7 +520,7 @@
     .order-game-title {
       font-weight: bold;
       font-size: 16px;
-      color: #1e3a8a;
+      color: var(--text-color);
       margin-bottom: 6px;
       white-space: nowrap;
       overflow: hidden;
@@ -445,8 +533,8 @@
     }
 
     .remove-btn {
-      background: #ef4444;
-      color: white;
+      background: var(--warning-text);
+      color: var(--button-text);
       border: none;
       padding: 8px 14px;
       border-radius: 10px;
@@ -466,7 +554,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(255, 255, 255, 0.15);
+      background: var(--footer-bg);
       padding: 12px 20px;
       border-radius: 10px;
       margin: 15px 0;
@@ -475,14 +563,14 @@
 
     .order-summary-label {
       font-size: 16px;
-      color: #1e3a8a;
+      color: var(--text-color);
       font-weight: 500;
     }
 
     .order-summary-value {
       font-size: 20px;
       font-weight: bold;
-      color: #6d28d9;
+      color: var(--button-bg);
     }
 
     .buttons-container {
@@ -508,24 +596,24 @@
     }
 
     .back-btn {
-      background: rgba(255, 255, 255, 0.95);
-      border: 2px solid #6d28d9;
-      color: #6d28d9;
+      background: var(--category-bg);
+      border: 2px solid var(--button-bg);
+      color: var(--button-bg);
     }
 
     .back-btn:hover {
-      background: rgba(241, 245, 249, 0.95);
+      background: var(--input-bg);
       transform: scale(1.03);
     }
 
     .confirm-btn {
-      background: linear-gradient(to right, #6d28d9, #1e3a8a);
-      color: white;
+      background: var(--header-bg);
+      color: var(--button-text);
       border: none;
     }
 
     .confirm-btn:hover {
-      background: linear-gradient(to right, #5b21b6, #1e3a8a);
+      background: var(--button-hover-bg);
       transform: scale(1.03);
     }
 
@@ -534,8 +622,8 @@
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(109, 40, 217, 0.95);
-      color: white;
+      background: var(--button-bg);
+      color: var(--button-text);
       padding: 12px 25px;
       border-radius: 10px;
       box-shadow: 0 8px 25px rgba(0,0,0,0.2);
@@ -575,7 +663,7 @@
     }
 
     .storage-modal, .game-detail-modal {
-      background: rgba(255, 255, 255, 0.2);
+      background: var(--modal-bg);
       width: 90%;
       max-width: 400px;
       max-height: 80vh;
@@ -605,7 +693,7 @@
 
     .modal-title {
       font-size: 20px;
-      color: #1e3a8a;
+      color: var(--text-color);
       font-weight: 600;
     }
 
@@ -620,7 +708,7 @@
     }
 
     .close-modal:hover {
-      color: #6d28d9;
+      color: var(--button-bg);
     }
 
     .storage-list {
@@ -628,20 +716,21 @@
     }
 
     .storage-item {
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--modal-content-bg);
       padding: 10px 12px;
       border-radius: 10px;
       margin-bottom: 8px;
-      border-left: 3px solid #6d28d9;
+      border-left: 3px solid var(--button-bg);
       font-size: 14px;
+      color: var(--text-color);
     }
 
     .storage-item strong {
-      color: #6d28d9;
+      color: var(--button-bg);
     }
 
     .warning {
-      color: #ef4444;
+      color: var(--warning-text);
       font-weight: 500;
     }
 
@@ -656,21 +745,22 @@
       height: 150px;
       margin-bottom: 12px;
       padding: 12px;
-      border: 2px solid rgba(109, 40, 217, 0.3);
+      border: 2px solid var(--input-border);
       border-radius: 10px;
       font-family: 'Microsoft YaHei', sans-serif;
       resize: none;
       font-size: 14px;
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--input-bg);
       touch-action: auto;
       white-space: pre-wrap;
       user-select: text;
       -webkit-user-select: text;
+      color: var(--text-color);
     }
 
     .copy-btn {
-      background: #6d28d9;
-      color: white;
+      background: var(--button-bg);
+      color: var(--button-text);
       border: none;
       padding: 10px 15px;
       border-radius: 10px;
@@ -682,12 +772,12 @@
     }
 
     .copy-btn:hover {
-      background: #5b21b6;
+      background: var(--button-hover-bg);
       transform: scale(1.03);
     }
 
     .copy-error {
-      color: #ef4444;
+      color: var(--warning-text);
       font-size: 12px;
       margin-top: 5px;
       display: none;
@@ -718,8 +808,8 @@
     .game-detail-error {
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #6d28d9, #1e3a8a);
-      color: white;
+      background: var(--error-bg);
+      color: var(--error-text);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -728,20 +818,20 @@
     }
 
     .game-detail-info {
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--modal-content-bg);
       padding: 10px;
       border-radius: 10px;
-      border-left: 3px solid #6d28d9;
+      border-left: 3px solid var(--button-bg);
     }
 
     .game-detail-info p {
       margin: 5px 0;
       font-size: 14px;
-      color: #1e3a8a;
+      color: var(--text-color);
     }
 
     .game-detail-info p strong {
-      color: #6d28d9;
+      color: var(--button-bg);
     }
 
     .game-detail-carousel {
@@ -751,7 +841,7 @@
       margin: 0 auto;
       overflow: hidden;
       border-radius: 10px;
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--modal-content-bg);
       padding: 10px;
     }
 
@@ -771,8 +861,8 @@
     .carousel-error {
       width: 100%;
       height: 150px;
-      background: linear-gradient(135deg, #6d28d9, #1e3a8a);
-      color: white;
+      background: var(--error-bg);
+      color: var(--error-text);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -786,8 +876,8 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(109, 40, 217, 0.7);
-      color: white;
+      background: var(--button-bg);
+      color: var(--button-text);
       border: none;
       border-radius: 50%;
       width: 30px;
@@ -801,7 +891,7 @@
     }
 
     .carousel-button:hover {
-      background: rgba(91, 33, 182, 0.9);
+      background: var(--button-hover-bg);
       transform: translateY(-50%) scale(1.1);
     }
 
@@ -832,7 +922,7 @@
       right: 20px;
       width: 280px;
       max-height: 50vh;
-      background: rgba(255, 255, 255, 0.95);
+      background: var(--order-preview-bg);
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       z-index: 99;
@@ -850,15 +940,15 @@
       justify-content: space-between;
       align-items: center;
       padding: 10px 15px;
-      background: linear-gradient(to right, #6d28d9, #1e3a8a);
-      color: white;
+      background: var(--header-bg);
+      color: var(--header-text);
       cursor: pointer;
       font-size: 14px;
       font-weight: bold;
     }
 
     .order-preview-header:hover {
-      background: linear-gradient(to right, #5b21b6, #1e3a8a);
+      background: var(--button-hover-bg);
     }
 
     .order-preview-toggle {
@@ -870,7 +960,7 @@
       max-height: calc(50vh - 40px);
       overflow-y: auto;
       scrollbar-width: thin;
-      scrollbar-color: #6d28d9 #e2e8f0;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
     }
 
     .order-preview-content::-webkit-scrollbar {
@@ -878,11 +968,11 @@
     }
 
     .order-preview-content::-webkit-scrollbar-track {
-      background: #e2e8f0;
+      background: var(--scrollbar-track);
     }
 
     .order-preview-content::-webkit-scrollbar-thumb {
-      background-color: #6d28d9;
+      background-color: var(--scrollbar-thumb);
       border-radius: 3px;
     }
 
@@ -892,7 +982,7 @@
       align-items: center;
       padding: 5px 0;
       font-size: 13px;
-      color: #1e3a8a;
+      color: var(--text-color);
       border-bottom: 1px solid rgba(203, 213, 225, 0.3);
     }
 
@@ -1163,7 +1253,7 @@
 
     @media (max-width: 360px) {
       #searchBox {
-        padding: 5px;
+        padding: 3px;
       }
       #searchBox input {
         width: 90%;
@@ -1225,7 +1315,10 @@
   </style>
 </head>
 <body ondblclick="return false;">
-  <header>DH游戏选择菜单</header>
+  <header>
+    <span>DH游戏选择菜单</span>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">☀️</button>
+  </header>
   
   <div id="searchBox">
     <input type="text" id="searchInput" placeholder="搜索游戏...">
@@ -1342,6 +1435,9 @@
       ],
     };
 
+    // 数据版本号，用于缓存管理
+    const dataVersion = '1.0.0';
+
     // 禁用双指缩放和双击放大
     document.addEventListener('touchstart', function (event) {
       if (event.touches.length > 1) {
@@ -1397,24 +1493,116 @@
           selectedGames = {};
           totalSize = 0;
         }
-        generateSidebar();
-        displayCategories();
-        updateTotal();
-        updateOrderPreview();
-        initScrollSpy();
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-          searchInput.addEventListener('input', () => {
-            filterGames();
+        // 加载主题
+        loadTheme();
+        // 加载缓存的游戏数据
+        loadGameData(() => {
+          generateSidebar();
+          displayCategories();
+          updateTotal();
+          updateOrderPreview();
+          initScrollSpy();
+          initLazyLoading();
+          const searchInput = document.getElementById('searchInput');
+          if (searchInput) {
+            searchInput.addEventListener('input', () => {
+              filterGames();
+              toggleClearButton();
+            });
             toggleClearButton();
-          });
-          toggleClearButton();
-        }
+          }
+        });
       } catch (err) {
         console.error('页面初始化失败:', err);
         alert('页面加载失败，请刷新重试');
       }
     };
+
+    // 加载主题
+    function loadTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeToggle(savedTheme);
+    }
+
+    // 切换主题
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeToggle(newTheme);
+    }
+
+    // 更新主题切换按钮图标
+    function updateThemeToggle(theme) {
+      const toggle = document.getElementById('themeToggle');
+      if (toggle) {
+        toggle.textContent = theme === 'light' ? '🌙' : '☀️';
+      }
+    }
+
+    // 加载游戏数据（从缓存或默认数据）
+    function loadGameData(callback) {
+      try {
+        const cachedData = localStorage.getItem('gameData');
+        const cachedVersion = localStorage.getItem('gameDataVersion');
+        if (cachedData && cachedVersion === dataVersion) {
+          Object.assign(gameData, JSON.parse(cachedData));
+          callback();
+        } else {
+          localStorage.setItem('gameData', JSON.stringify(gameData));
+          localStorage.setItem('gameDataVersion', dataVersion);
+          callback();
+        }
+      } catch (err) {
+        console.error('加载游戏数据缓存失败:', err);
+        callback();
+      }
+    }
+
+    // 初始化图片懒加载
+    function initLazyLoading() {
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            if (img.dataset.src) {
+              img.src = img.dataset.src;
+              img.removeAttribute('data-src');
+              observer.unobserve(img);
+            }
+          }
+        });
+      }, observerOptions);
+
+      // 观察游戏列表图片
+      document.querySelectorAll('.game-cover, .order-game-cover').forEach(img => {
+        if (img.src) {
+          img.dataset.src = img.src;
+          img.src = '';
+          observer.observe(img);
+        }
+      });
+
+      // 观察详情弹窗图片（动态生成后处理）
+      const modalObserver = new MutationObserver(() => {
+        document.querySelectorAll('.game-detail-image, .carousel-image').forEach(img => {
+          if (img.src && !img.dataset.src) {
+            img.dataset.src = img.src;
+            img.src = '';
+            observer.observe(img);
+          }
+        });
+      });
+      modalObserver.observe(document.getElementById('gameDetailModal'), { childList: true, subtree: true });
+    }
 
     // 生成侧边栏分类
     function generateSidebar() {
@@ -1510,9 +1698,8 @@
       if (game.image) {
         const img = document.createElement('img');
         img.className = 'game-cover';
-        img.src = game.image;
+        img.dataset.src = game.image; // 使用 data-src 进行懒加载
         img.alt = game.name;
-        img.loading = 'lazy';
         img.onerror = function () {
           const span = document.createElement('span');
           span.className = 'cover-error';
@@ -1565,7 +1752,7 @@
               <button class="carousel-button prev" onclick="moveCarousel('${game.code}', -1)" disabled>&larr;</button>
               <div class="carousel-container" id="carousel-container-${game.code}">
                 ${game.additionalImages.map(img => `
-                  <img src="${img}" alt="${game.name} 截图" class="carousel-image" onerror="this.outerHTML='<div class=&quot;carousel-error&quot;>截图加载失败</div>'" loading="lazy">
+                  <img data-src="${img}" alt="${game.name} 截图" class="carousel-image" onerror="this.outerHTML='<div class=&quot;carousel-error&quot;>截图加载失败</div>'">
                 `).join('')}
               </div>
               <button class="carousel-button next" onclick="moveCarousel('${game.code}', 1)"${game.additionalImages.length <= 1 ? ' disabled' : ''}>&rarr;</button>
@@ -1579,7 +1766,7 @@
           <div class="game-detail-image-container">
             ${
               game.image ?
-              `<img src="${game.image}" alt="${game.name}" class="game-detail-image" onerror="this.parentNode.innerHTML='<div class=&quot;game-detail-error&quot;>${game.name.substring(0, 2)}</div>'" loading="lazy">` :
+              `<img data-src="${game.image}" alt="${game.name}" class="game-detail-image" onerror="this.parentNode.innerHTML='<div class=&quot;game-detail-error&quot;>${game.name.substring(0, 2)}</div>'">` :
               `<div class="game-detail-error">${game.name.substring(0, 2)}</div>`
             }
           </div>
@@ -1771,7 +1958,7 @@
                 <div class="order-game-cover-container">
                   ${
                     game.image ?
-                    `<img src="${game.image}" alt="${game.name}" class="order-game-cover" onerror="handleOrderImageError(this)" loading="lazy">` :
+                    `<img data-src="${game.image}" alt="${game.name}" class="order-game-cover" onerror="handleOrderImageError(this)">` :
                     `<div class="order-cover-error">${game.name.substring(0, 2)}</div>`
                   }
                 </div>
@@ -1961,44 +2148,43 @@
       if (!keyword) {
         displayCategories();
         toggleClearButton();
+        initLazyLoading();
         return;
       }
 
       for (const category in gameData) {
-        filtered[category] = gameData[category].filter(game => {
-          const nameLower = game.name.toLowerCase();
-          return nameLower.includes(keyword);
-        });
-
-        if (filtered[category].length === 0) {
-          delete filtered[category];
+        const filteredGames = gameData[category].filter(game => 
+          game.name.toLowerCase().includes(keyword)
+        );
+        if (filteredGames.length > 0) {
+          filtered[category] = filteredGames;
         }
       }
 
       displayCategories(filtered);
       toggleClearButton();
+      initLazyLoading();
     }
 
-    // 控制清空按钮显示/隐藏
+    // 显示/隐藏清空搜索按钮
     function toggleClearButton() {
       const searchInput = document.getElementById('searchInput');
       const clearButton = document.querySelector('.clear-search');
       if (searchInput && clearButton) {
-        clearButton.style.display = searchInput.value ? 'block' : 'none';
+        clearButton.style.display = searchInput.value.trim() ? 'block' : 'none';
       }
     }
 
-    // 清空搜索输入
+    // 清空搜索
     function clearSearch() {
       const searchInput = document.getElementById('searchInput');
       if (searchInput) {
         searchInput.value = '';
-        toggleClearButton();
-        displayCategories();
+        filterGames();
       }
     }
 
-    // 返回商店
+    // 返回商店页面
     function backToShop() {
       document.getElementById('content').style.display = 'block';
       document.getElementById('sidebar').style.display = 'block';
@@ -2007,32 +2193,65 @@
       document.getElementById('orderPreview').style.display = 'block';
       const searchBox = document.getElementById('searchBox');
       if (searchBox) searchBox.style.display = 'flex';
+      updateTotal();
+      updateOrderPreview();
+      initScrollSpy();
+      initLazyLoading();
     }
 
-    // 点击弹窗外部关闭
-    document.getElementById('storageModal').addEventListener('click', function (e) {
-      if (e.target === this) {
-        closeStorageModal();
-      }
-    });
-
-    document.getElementById('gameDetailModal').addEventListener('click', function (e) {
-      if (e.target === this) {
-        closeGameDetailModal();
-      }
-    });
-
-    // 按ESC键关闭弹窗
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        if (document.getElementById('storageModal').classList.contains('active')) {
-          closeStorageModal();
-        }
-        if (document.getElementById('gameDetailModal').classList.contains('active')) {
-          closeGameDetailModal();
+    // 一键添加核心组件
+    function addCoreComponent() {
+      if (!selectedGames['0']) {
+        selectedGames['0'] = 1;
+        totalSize += 5; // 游戏前端大小为 5GB
+        updateAllGameDisplays('0');
+        updateOrderPreview();
+        saveToLocalStorage();
+        const notification = document.getElementById('copyNotification');
+        if (notification) {
+          notification.textContent = '已添加核心组件：游戏前端';
+          notification.style.display = 'block';
+          setTimeout(() => {
+            notification.style.display = 'none';
+          }, 2500);
         }
       }
+    }
+
+    // 页面加载时自动检查是否需要添加核心组件
+    function checkCoreComponent() {
+      if (!selectedGames['0'] && Object.keys(selectedGames).some(code => selectedGames[code] && code !== '0')) {
+        addCoreComponent();
+      }
+    }
+
+    // 初始化时检查核心组件
+    document.addEventListener('DOMContentLoaded', checkCoreComponent);
+
+    // 动态加载非关键 CSS（性能优化）
+    function loadNonCriticalCSS() {
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'non-critical.css'; // 假设非关键 CSS 文件
+            document.head.appendChild(link);
+            observer.disconnect();
+          }
+        });
+      }, { rootMargin: '100px' });
+      observer.observe(document.getElementById('content'));
+    }
+
+    // 窗口大小调整时更新布局
+    window.addEventListener('resize', () => {
+      initScrollSpy();
+      updateOrderPreview();
     });
+
+    // 初始化非关键 CSS 加载
+    loadNonCriticalCSS();
   </script>
 </body>
 </html>
