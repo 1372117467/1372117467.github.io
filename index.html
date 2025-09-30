@@ -1,75 +1,17 @@
 <!DOCTYPE html>
-<html lang="zh-CN" oncontextmenu="return false;" data-theme="light">
+<html lang="zh-CN" oncontextmenu="return false;">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>DH游戏目录</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#6d28d9">
+  <link rel="icon" href="images/icon-192.png">
   <style>
-    :root {
-      /* 浅色主题 */
-      --background-color: #f1f5f9; /* 浅灰背景 */
-      --text-color: #1e3a8a; /* 深蓝文字 */
-      --header-bg: linear-gradient(to right, #6d28d9, #1e3a8a); /* 紫到深蓝渐变 */
-      --header-text: white; /* 白色 */
-      --sidebar-bg: rgba(255, 255, 255, 0.15); /* 白色透明 */
-      --sidebar-text: #1e3a8a; /* 深蓝 */
-      --sidebar-active-bg: rgba(109, 40, 217, 0.1); /* 紫色透明 */
-      --sidebar-active-border: #6d28d9; /* 紫色 */
-      --category-bg: rgba(255, 255, 255, 0.95); /* 白色透明 */
-      --game-item-bg: rgba(255, 255, 255, 0.95); /* 白色透明 */
-      --button-bg: #6d28d9; /* 紫色 */
-      --button-hover-bg: #5b21b6; /* 深紫色 */
-      --button-text: white; /* 白色 */
-      --modal-bg: rgba(255, 255, 255, 0.2); /* 白色透明 */
-      --modal-content-bg: rgba(255, 255, 255, 0.95); /* 白色透明 */
-      --scrollbar-track: #e2e8f0; /* 浅灰 */
-      --scrollbar-thumb: #6d28d9; /* 紫色 */
-      --error-bg: linear-gradient(135deg, #6d28d9, #1e3a8a); /* 紫到深蓝渐变 */
-      --error-text: white; /* 白色 */
-      --warning-text: #ef4444; /* 红色 */
-      --input-bg: rgba(255, 255, 255, 0.95); /* 白色透明 */
-      --input-border: rgba(109, 40, 217, 0.3); /* 紫色透明 */
-      --footer-bg: rgba(255, 255, 255, 0.15); /* 白色透明 */
-      --toggle-bg: #d1d5db; /* 浅灰色（开关未选中背景） */
-      --toggle-slider: #ffffff; /* 白色（开关滑块） */
-      --toggle-border: #6d28d9; /* 紫色（开关边框，浅色主题） */
-    }
-
-    [data-theme="dark"] {
-      /* 深色主题 */
-      --background-color: #1a202c; /* 深灰背景 */
-      --text-color: #e2e8f0; /* 浅灰文字 */
-      --header-bg: linear-gradient(to right, #4c1d95, #1e3a8a); /* 深紫到深蓝渐变 */
-      --header-text: #e2e8f0; /* 浅灰 */
-      --sidebar-bg: rgba(45, 55, 72, 0.95); /* 深灰透明 */
-      --sidebar-text: #e2e8f0; /* 浅灰 */
-      --sidebar-active-bg: rgba(109, 40, 217, 0.2); /* 紫色透明 */
-      --sidebar-active-border: #7c3aed; /* 深紫色 */
-      --category-bg: rgba(45, 55, 72, 0.95); /* 深灰透明 */
-      --game-item-bg: rgba(45, 55, 72, 0.95); /* 深灰透明 */
-      --button-bg: #7c3aed; /* 深紫色 */
-      --button-hover-bg: #6d28d9; /* 紫色 */
-      --button-text: #e2e8f0; /* 浅灰 */
-      --modal-bg: rgba(45, 55, 72, 0.95); /* 深灰透明 */
-      --modal-content-bg: rgba(45, 55, 72, 0.95); /* 深灰透明 */
-      --scrollbar-track: #2d3748; /* 深灰 */
-      --scrollbar-thumb: #7c3aed; /* 深紫色 */
-      --error-bg: linear-gradient(135deg, #4c1d95, #1e3a8a); /* 深紫到深蓝渐变 */
-      --error-text: #e2e8f0; /* 浅灰 */
-      --warning-text: #f87171; /* 浅红 */
-      --input-bg: rgba(45, 55, 72, 0.95); /* 深灰透明 */
-      --input-border: rgba(124, 58, 237, 0.3); /* 深紫透明 */
-      --footer-bg: rgba(45, 55, 72, 0.95); /* 深灰透明 */
-      --toggle-bg: #4b5563; /* 深灰色（开关未选中背景） */
-      --toggle-slider: #e2e8f0; /* 浅灰（开关滑块） */
-      --toggle-border: #7c3aed; /* 深紫色（开关边框，深色主题） */
-    }
-
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
     html, body {
@@ -83,14 +25,13 @@
 
     body {
       font-family: 'Microsoft YaHei', sans-serif;
-      background-color: var(--background-color);
+      background-color: #f1f5f9;
       -webkit-user-select: none;
       user-select: none;
       padding-bottom: env(safe-area-inset-bottom);
       display: flex;
       justify-content: center;
       min-height: 100vh;
-      color: var(--text-color);
     }
 
     header {
@@ -99,8 +40,8 @@
       left: 0;
       width: 100%;
       height: 60px;
-      background: var(--header-bg);
-      color: var(--header-text);
+      background: linear-gradient(to right, #6d28d9, #1e3a8a);
+      color: white;
       text-align: center;
       line-height: 60px;
       font-size: 22px;
@@ -109,64 +50,6 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       padding-top: env(safe-area-inset-top);
       backdrop-filter: blur(12px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 15px;
-    }
-
-    .theme-toggle-container {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .theme-toggle-label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-    }
-
-    .theme-toggle {
-      position: relative;
-      width: 48px;
-      height: 24px;
-      background: var(--toggle-bg); /* 浅色模式：#d1d5db（浅灰），深色模式：#4b5563（深灰） */
-      border-radius: 12px;
-      border: 2px solid var(--toggle-border); /* 浅色模式：#6d28d9（紫色），深色模式：#7c3aed（深紫） */
-      appearance: none;
-      -webkit-appearance: none;
-      outline: none;
-      cursor: pointer;
-      transition: background 0.3s ease, border-color 0.3s ease;
-      touch-action: auto;
-    }
-
-    .theme-toggle:checked {
-      background: var(--button-bg); /* 浅色模式：#6d28d9（紫色），深色模式：#7c3aed（深紫） */
-    }
-
-    .theme-toggle::before {
-      content: '';
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      background: var(--toggle-slider); /* 浅色/深色模式：#ffffff（白色） */
-      border-radius: 50%;
-      top: 3px;
-      left: 3px;
-      transition: transform 0.3s ease;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-
-    .theme-toggle:checked::before {
-      transform: translateX(24px);
-    }
-
-    .theme-icon {
-      font-size: 18px;
-      color: var(--header-text); /* 浅色模式：#ffffff（白色），深色模式：#e2e8f0（浅灰） */
     }
 
     #searchBox {
@@ -175,7 +58,7 @@
       left: 0;
       width: 100%;
       height: 50px;
-      background: var(--footer-bg);
+      background: rgba(255, 255, 255, 0.15);
       padding: 10px;
       display: flex;
       justify-content: center;
@@ -189,19 +72,19 @@
       width: 90%;
       height: 36px;
       padding: 8px 80px 8px 8px;
-      border: 1px solid var(--input-border);
+      border: 1px solid rgba(203, 213, 225, 0.3);
       border-radius: 10px;
       font-size: 14px;
-      background: var(--input-bg);
+      background: rgba(255, 255, 255, 0.95);
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
       position: relative;
       touch-action: auto;
-      color: var(--text-color);
+      transition: border-color 0.3s ease;
     }
 
     #searchBox input:focus {
-      border-color: var(--button-bg);
-      box-shadow: 0 0 0 2px var(--input-border);
+      border-color: #6d28d9;
+      box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.3);
       outline: none;
     }
 
@@ -210,8 +93,8 @@
       right: 35px;
       top: 50%;
       transform: translateY(-50%);
-      background: var(--button-bg);
-      color: var(--button-text);
+      background: #6d28d9;
+      color: white;
       border: none;
       border-radius: 5px;
       width: 40px;
@@ -228,7 +111,7 @@
     }
 
     .clear-search:hover {
-      background: var(--button-hover-bg);
+      background: #5b21b6;
       transform: translateY(-50%) scale(1.03);
     }
 
@@ -238,12 +121,12 @@
       left: 0;
       width: 120px;
       height: calc(100vh - 170px);
-      background: var(--sidebar-bg);
+      background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(12px);
       overflow-y: auto;
       border-right: 1px solid rgba(203, 213, 225, 0.3);
       scrollbar-width: thin;
-      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+      scrollbar-color: #6d28d9 #e2e8f0;
       z-index: 98;
       transition: width 0.3s ease;
       touch-action: pan-y;
@@ -254,27 +137,27 @@
     }
 
     #sidebar::-webkit-scrollbar-track {
-      background: var(--scrollbar-track);
+      background: #e2e8f0;
     }
 
     #sidebar::-webkit-scrollbar-thumb {
-      background-color: var(--scrollbar-thumb);
+      background-color: #6d28d9;
       border-radius: 3px;
     }
 
     #sidebar a {
       display: block;
       padding: 12px 15px;
-      color: var(--sidebar-text);
+      color: #1e3a8a;
       text-decoration: none;
       border-left: 3px solid transparent;
       transition: all 0.3s ease;
     }
 
     #sidebar a:hover, #sidebar a.active {
-      background: var(--sidebar-active-bg);
-      border-left-color: var(--sidebar-active-border);
-      color: var(--sidebar-active-border);
+      background: rgba(109, 40, 217, 0.1);
+      border-left-color: #6d28d9;
+      color: #6d28d9;
       transform: scale(1.02);
     }
 
@@ -287,7 +170,7 @@
     }
 
     .category {
-      background: var(--category-bg);
+      background: rgba(255, 255, 255, 0.95);
       margin-bottom: 15px;
       padding: 15px;
       border-radius: 10px;
@@ -296,7 +179,7 @@
     }
 
     .category h2 {
-      color: var(--text-color);
+      color: #1e3a8a;
       margin-bottom: 15px;
       padding-bottom: 8px;
       border-bottom: 1px solid rgba(203, 213, 225, 0.3);
@@ -308,15 +191,19 @@
       align-items: center;
       padding: 10px;
       margin-bottom: 10px;
-      background: var(--game-item-bg);
+      background: rgba(255, 255, 255, 0.95);
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       transition: transform 0.3s ease;
+    }
+
+    .game-item.clickable {
       cursor: pointer;
     }
 
-    .game-item:hover {
+    .game-item.clickable:hover {
       transform: scale(1.01);
+      background: rgba(109, 40, 217, 0.05);
     }
 
     .game-cover-container {
@@ -338,8 +225,8 @@
     .cover-error {
       width: 100%;
       height: 100%;
-      background: var(--error-bg);
-      color: var(--error-text);
+      background: linear-gradient(135deg, #6d28d9, #1e3a8a);
+      color: white;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -356,7 +243,7 @@
       font-weight: bold;
       margin-bottom: 5px;
       font-size: 16px;
-      color: var(--text-color);
+      color: #1e3a8a;
       white-space: normal;
       overflow: visible;
       text-overflow: clip;
@@ -377,8 +264,8 @@
     .quantity-control button {
       width: 28px;
       height: 28px;
-      background: var(--button-bg);
-      color: var(--button-text);
+      background: #6d28d9;
+      color: white;
       border: none;
       border-radius: 10px;
       cursor: pointer;
@@ -388,12 +275,12 @@
     }
 
     .quantity-control button:not(:disabled):hover {
-      background: var(--button-hover-bg);
+      background: #5b21b6;
       transform: scale(1.03);
     }
 
     .quantity-control button:disabled {
-      background: #d1d5db; /* 浅灰 */
+      background: #d1d5db;
       cursor: not-allowed;
       opacity: 0.7;
     }
@@ -402,7 +289,7 @@
       width: 30px;
       text-align: center;
       font-weight: 600;
-      color: var(--text-color);
+      color: #1e3a8a;
     }
 
     .footer {
@@ -411,7 +298,7 @@
       left: 0;
       width: 100%;
       height: 60px;
-      background: var(--footer-bg);
+      background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(12px);
       display: flex;
       justify-content: space-between;
@@ -424,13 +311,13 @@
 
     .footer span {
       font-weight: 500;
-      color: var(--text-color);
+      color: #1e3a8a;
       font-size: 16px;
     }
 
     .footer button {
-      background: var(--button-bg);
-      color: var(--button-text);
+      background: #6d28d9;
+      color: white;
       border: none;
       padding: 12px 25px;
       border-radius: 10px;
@@ -442,14 +329,14 @@
     }
 
     .footer button:hover {
-      background: var(--button-hover-bg);
+      background: #5b21b6;
       transform: scale(1.03);
     }
 
     #orderPage {
       display: none;
       padding: 20px;
-      background: var(--modal-bg);
+      background: rgba(255, 255, 255, 0.2);
       border-radius: 10px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.15);
       margin: 30px auto;
@@ -468,7 +355,7 @@
     }
 
     .order-header h2 {
-      color: var(--text-color);
+      color: #1e3a8a;
       font-size: 28px;
       margin-bottom: 8px;
     }
@@ -482,7 +369,7 @@
       max-height: 60vh;
       overflow-y: auto;
       scrollbar-width: thin;
-      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+      scrollbar-color: #6d28d9 #e2e8f0;
       padding: 5px;
       touch-action: pan-y;
     }
@@ -492,11 +379,11 @@
     }
 
     .order-game-list::-webkit-scrollbar-track {
-      background: var(--scrollbar-track);
+      background: #e2e8f0;
     }
 
     .order-game-list::-webkit-scrollbar-thumb {
-      background-color: var(--scrollbar-thumb);
+      background-color: #6d28d9;
       border-radius: 3px;
     }
 
@@ -505,7 +392,7 @@
       align-items: center;
       padding: 12px;
       margin-bottom: 12px;
-      background: var(--game-item-bg);
+      background: rgba(255, 255, 255, 0.95);
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       border: 1px solid rgba(203, 213, 225, 0.3);
@@ -535,8 +422,8 @@
     .order-cover-error {
       width: 100%;
       height: 100%;
-      background: var(--error-bg);
-      color: var(--error-text);
+      background: linear-gradient(135deg, #6d28d9, #1e3a8a);
+      color: white;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -552,7 +439,7 @@
     .order-game-title {
       font-weight: bold;
       font-size: 16px;
-      color: var(--text-color);
+      color: #1e3a8a;
       margin-bottom: 6px;
       white-space: nowrap;
       overflow: hidden;
@@ -565,8 +452,8 @@
     }
 
     .remove-btn {
-      background: var(--warning-text);
-      color: var(--button-text);
+      background: #ef4444;
+      color: white;
       border: none;
       padding: 8px 14px;
       border-radius: 10px;
@@ -578,7 +465,7 @@
     }
 
     .remove-btn:hover {
-      background: #dc2626; /* 深红 */
+      background: #dc2626;
       transform: scale(1.03);
     }
 
@@ -586,7 +473,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: var(--footer-bg);
+      background: rgba(255, 255, 255, 0.15);
       padding: 12px 20px;
       border-radius: 10px;
       margin: 15px 0;
@@ -595,14 +482,14 @@
 
     .order-summary-label {
       font-size: 16px;
-      color: var(--text-color);
+      color: #1e3a8a;
       font-weight: 500;
     }
 
     .order-summary-value {
       font-size: 20px;
       font-weight: bold;
-      color: var(--button-bg);
+      color: #6d28d9;
     }
 
     .buttons-container {
@@ -628,24 +515,24 @@
     }
 
     .back-btn {
-      background: var(--category-bg);
-      border: 2px solid var(--button-bg);
-      color: var(--button-bg);
+      background: rgba(255, 255, 255, 0.95);
+      border: 2px solid #6d28d9;
+      color: #6d28d9;
     }
 
     .back-btn:hover {
-      background: var(--input-bg);
+      background: rgba(241, 245, 249, 0.95);
       transform: scale(1.03);
     }
 
     .confirm-btn {
-      background: var(--header-bg);
-      color: var(--button-text);
+      background: linear-gradient(to right, #6d28d9, #1e3a8a);
+      color: white;
       border: none;
     }
 
     .confirm-btn:hover {
-      background: var(--button-hover-bg);
+      background: linear-gradient(to right, #5b21b6, #1e3a8a);
       transform: scale(1.03);
     }
 
@@ -654,8 +541,8 @@
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--button-bg);
-      color: var(--button-text);
+      background: rgba(109, 40, 217, 0.95);
+      color: white;
       padding: 12px 25px;
       border-radius: 10px;
       box-shadow: 0 8px 25px rgba(0,0,0,0.2);
@@ -678,7 +565,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0,0,0,0.5); /* 半透明黑色 */
+      background: rgba(0,0,0,0.5);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -694,8 +581,8 @@
       visibility: visible;
     }
 
-    .storage-modal, .game-detail-modal {
-      background: var(--modal-bg);
+    .storage-modal, .detail-modal {
+      background: rgba(255, 255, 255, 0.2);
       width: 90%;
       max-width: 400px;
       max-height: 80vh;
@@ -709,8 +596,7 @@
       touch-action: pan-y;
     }
 
-    .modal-overlay.active .storage-modal,
-    .modal-overlay.active .game-detail-modal {
+    .modal-overlay.active .storage-modal, .modal-overlay.active .detail-modal {
       transform: translateY(0);
     }
 
@@ -725,7 +611,7 @@
 
     .modal-title {
       font-size: 20px;
-      color: var(--text-color);
+      color: #1e3a8a;
       font-weight: 600;
     }
 
@@ -734,13 +620,13 @@
       border: none;
       font-size: 24px;
       cursor: pointer;
-      color: #475569; /* 灰色 */
+      color: #475569;
       touch-action: auto;
       transition: color 0.3s ease;
     }
 
     .close-modal:hover {
-      color: var(--button-bg);
+      color: #6d28d9;
     }
 
     .storage-list {
@@ -748,21 +634,20 @@
     }
 
     .storage-item {
-      background: var(--modal-content-bg);
+      background: rgba(255, 255, 255, 0.95);
       padding: 10px 12px;
       border-radius: 10px;
       margin-bottom: 8px;
-      border-left: 3px solid var(--button-bg);
+      border-left: 3px solid #6d28d9;
       font-size: 14px;
-      color: var(--text-color);
     }
 
     .storage-item strong {
-      color: var(--button-bg);
+      color: #6d28d9;
     }
 
     .warning {
-      color: var(--warning-text);
+      color: #ef4444;
       font-weight: 500;
     }
 
@@ -777,22 +662,19 @@
       height: 150px;
       margin-bottom: 12px;
       padding: 12px;
-      border: 2px solid var(--input-border);
+      border: 2px solid rgba(109, 40, 217, 0.3);
       border-radius: 10px;
       font-family: 'Microsoft YaHei', sans-serif;
       resize: none;
       font-size: 14px;
-      background: var(--input-bg);
+      background: rgba(255, 255, 255, 0.95);
       touch-action: auto;
       white-space: pre-wrap;
-      user-select: text;
-      -webkit-user-select: text;
-      color: var(--text-color);
     }
 
     .copy-btn {
-      background: var(--button-bg);
-      color: var(--button-text);
+      background: #6d28d9;
+      color: white;
       border: none;
       padding: 10px 15px;
       border-radius: 10px;
@@ -804,148 +686,53 @@
     }
 
     .copy-btn:hover {
-      background: var(--button-hover-bg);
+      background: #5b21b6;
       transform: scale(1.03);
     }
 
     .copy-error {
-      color: var(--warning-text);
+      color: #ef4444;
       font-size: 12px;
       margin-top: 5px;
       display: none;
     }
 
-    .game-detail-content {
+    .detail-content {
+      margin-top: 10px;
+    }
+
+    .detail-description {
+      font-size: 14px;
+      color: #475569;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+
+    .detail-images {
       display: flex;
-      flex-direction: column;
-      gap: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .game-detail-image-container {
-      width: 100%;
-      max-width: 200px;
-      height: 150px;
-      margin: 0 auto;
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .game-detail-image {
-      width: 100%;
-      height: 100%;
+    .detail-image {
+      width: 100px;
+      height: 100px;
       object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
-    .game-detail-error {
-      width: 100%;
-      height: 100%;
-      background: var(--error-bg);
-      color: var(--error-text);
+    .detail-image-error {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, #6d28d9, #1e3a8a);
+      color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: bold;
-    }
-
-    .game-detail-info {
-      background: var(--modal-content-bg);
-      padding: 10px;
-      border-radius: 10px;
-      border-left: 3px solid var(--button-bg);
-    }
-
-    .game-detail-info p {
-      margin: 5px 0;
-      font-size: 14px;
-      color: var(--text-color);
-    }
-
-    .game-detail-info p strong {
-      color: var(--button-bg);
-    }
-
-    .game-detail-carousel {
-      position: relative;
-      width: 100%;
-      max-width: 300px;
-      margin: 0 auto;
-      overflow: hidden;
-      border-radius: 10px;
-      background: var(--modal-content-bg);
-      padding: 10px;
-    }
-
-    .carousel-container {
-      display: flex;
-      transition: transform 0.3s ease;
-    }
-
-    .carousel-image {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      flex-shrink: 0;
-      border-radius: 5px;
-    }
-
-    .carousel-error {
-      width: 100%;
-      height: 150px;
-      background: var(--error-bg);
-      color: var(--error-text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: bold;
-      flex-shrink: 0;
-      border-radius: 5px;
-    }
-
-    .carousel-button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: var(--button-bg);
-      color: var(--button-text);
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.3s ease, transform 0.3s ease;
-    }
-
-    .carousel-button:hover {
-      background: var(--button-hover-bg);
-      transform: translateY(-50%) scale(1.1);
-    }
-
-    .carousel-button:disabled {
-      background: rgba(209, 213, 219, 0.7); /* 浅灰透明 */
-      cursor: not-allowed;
-      opacity: 0.5;
-    }
-
-    .carousel-button.prev {
-      left: 10px;
-    }
-
-    .carousel-button.next {
-      right: 10px;
-    }
-
-    .carousel-placeholder {
-      text-align: center;
-      color: #475569; /* 灰色 */
-      font-size: 14px;
-      padding: 20px;
+      border-radius: 8px;
     }
 
     @media (max-width: 768px) {
@@ -1014,7 +801,7 @@
         width: 100%;
         padding: 12px;
       }
-      .storage-modal, .game-detail-modal {
+      .storage-modal, .detail-modal {
         width: 90%;
         max-width: 320px;
       }
@@ -1047,39 +834,9 @@
       #sidebar::-webkit-scrollbar, .order-game-list::-webkit-scrollbar {
         display: none;
       }
-      .game-detail-image-container {
-        max-width: 150px;
-        height: 120px;
-      }
-      .game-detail-info p {
-        font-size: 13px;
-      }
-      .game-detail-carousel {
-        max-width: 240px;
-      }
-      .carousel-image, .carousel-error {
-        height: 120px;
-      }
-      .carousel-button {
-        width: 25px;
-        height: 25px;
-        font-size: 16px;
-      }
-      .theme-toggle {
-        width: 40px;
-        height: 20px;
-      }
-      .theme-toggle::before {
-        width: 16px;
-        height: 16px;
-        top: 2px;
-        left: 2px;
-      }
-      .theme-toggle:checked::before {
-        transform: translateX(20px);
-      }
-      .theme-icon {
-        font-size: 16px;
+      .detail-image {
+        width: 80px;
+        height: 80px;
       }
     }
 
@@ -1110,7 +867,7 @@
         padding: 10px 20px;
         font-size: 14px;
       }
-      .storage-modal, .game-detail-modal {
+      .storage-modal, .detail-modal {
         max-width: 300px;
         width: 90%;
         padding: 12px;
@@ -1168,45 +925,15 @@
         margin-left: 0;
         margin-top: 10px;
       }
-      .game-detail-image-container {
-        max-width: 120px;
-        height: 100px;
-      }
-      .game-detail-info p {
-        font-size: 12px;
-      }
-      .game-detail-carousel {
-        max-width: 200px;
-      }
-      .carousel-image, .carousel-error {
-        height: 100px;
-      }
-      .carousel-button {
-        width: 22px;
-        height: 22px;
-        font-size: 14px;
-      }
-      .theme-toggle {
-        width: 36px;
-        height: 18px;
-      }
-      .theme-toggle::before {
-        width: 14px;
-        height: 14px;
-        top: 2px;
-        left: 2px;
-      }
-      .theme-toggle:checked::before {
-        transform: translateX(18px);
-      }
-      .theme-icon {
-        font-size: 14px;
+      .detail-image {
+        width: 70px;
+        height: 70px;
       }
     }
 
     @media (max-width: 360px) {
       #searchBox {
-        padding: 3px;
+        padding: 5px;
       }
       #searchBox input {
         width: 90%;
@@ -1229,21 +956,9 @@
         padding: 8px 12px;
         font-size: 12px;
       }
-      .theme-toggle {
-        width: 32px;
-        height: 16px;
-      }
-      .theme-toggle::before {
-        width: 12px;
-        height: 12px;
-        top: 2px;
-        left: 2px;
-      }
-      .theme-toggle:checked::before {
-        transform: translateX(16px);
-      }
-      .theme-icon {
-        font-size: 12px;
+      .detail-image {
+        width: 60px;
+        height: 60px;
       }
     }
 
@@ -1272,36 +987,15 @@
         padding: 6px 10px;
         font-size: 11px;
       }
-      .theme-toggle {
-        width: 30px;
-        height: 15px;
-      }
-      .theme-toggle::before {
-        width: 11px;
-        height: 11px;
-        top: 2px;
-        left: 2px;
-      }
-      .theme-toggle:checked::before {
-        transform: translateX(15px);
-      }
-      .theme-icon {
-        font-size: 11px;
+      .detail-image {
+        width: 60px;
+        height: 60px;
       }
     }
   </style>
 </head>
 <body ondblclick="return false;">
-  <header>
-    <span>DH游戏选择菜单</span>
-    <div class="theme-toggle-container">
-      <label class="theme-toggle-label">
-        <span class="theme-icon">☀️</span>
-        <input type="checkbox" class="theme-toggle" id="themeToggle">
-        <span class="theme-icon">🌙</span>
-      </label>
-    </div>
-  </header>
+  <header>DH游戏选择菜单</header>
   
   <div id="searchBox">
     <input type="text" id="searchInput" placeholder="搜索游戏...">
@@ -1351,39 +1045,39 @@
       <div class="storage-list" id="modalStorageList"></div>
       <div class="copy-container">
         <textarea class="copy-text-area" id="modalCopyTextArea" readonly></textarea>
-        <p class="copy-error" id="copyError">复制失败，请手动长按或选中文本框内容并复制（Ctrl+C），然后发给客服</p>
+        <p class="copy-error" id="copyError">复制失败，请手动选中并复制</p>
         <button class="copy-btn" onclick="copyFromModal()">复制游戏编号和总容量</button>
       </div>
     </div>
   </div>
 
-  <div class="modal-overlay" id="gameDetailModal">
-    <div class="game-detail-modal">
+  <div class="modal-overlay" id="detailModal">
+    <div class="detail-modal">
       <div class="modal-header">
-        <h3 class="modal-title" id="gameDetailTitle"></h3>
-        <button class="close-modal" onclick="closeGameDetailModal()">&times;</button>
+        <h3 class="modal-title" id="detailModalTitle"></h3>
+        <button class="close-modal" onclick="closeDetailModal()">&times;</button>
       </div>
-      <div class="game-detail-content" id="gameDetailContent"></div>
+      <div class="detail-content" id="detailModalContent"></div>
     </div>
   </div>
   
   <script>
-    // 游戏数据
-    const gameData = {
+    // 默认游戏数据
+    const defaultGameData = {
       "游戏前端": [
         { 
           "code": "0", 
           "name": "游戏前端（必选）", 
-          "size": 5, 
+          "size": 10, 
           "image": "images/游戏前端.webp",
-          "description": "游戏前端是运行游戏套餐的核心组件，提供流畅的游戏加载和用户界面支持。必须选择此项以确保所有游戏正常运行，适合所有游戏爱好者。",
+          "description": "游戏前端是必选的基础组件，提供游戏运行所需的通用框架和优化工具，确保流畅的游戏体验。",
           "additionalImages": [
-            "images/placeholder1.webp",
-            "images/placeholder2.webp"
+            "images/placeholder5.webp",
+            "images/placeholder6.webp"
           ]
         }
       ],
-      "游戏套餐": [
+      "游戏套餐": [ 
         { 
           "code": "PG", 
           "name": "天马怀旧包6500款经典游戏", 
@@ -1391,9 +1085,8 @@
           "image": "images/天马怀旧包.webp",
           "description": "天马怀旧包包含6500款经典复古游戏，涵盖街机、红白机、掌机等多种平台，重温80年代至2000年代的游戏经典，适合怀旧玩家和收藏爱好者。",
           "additionalImages": [
-            "images/placeholder3.webp",
-            "images/placeholder4.webp",
-            "images/placeholder5.webp"
+            "images/placeholder1.webp",
+            "images/placeholder2.webp"
           ]
         },
         { 
@@ -1401,15 +1094,14 @@
           "name": "双人游戏亲子73款合集（休闲多人游戏总和）", 
           "size": 304, 
           "image": "images/双人游戏亲子合集.webp",
-          "description": "双人游戏亲子73款合集包含73款精心挑选的休闲多人游戏，适合家庭娱乐和亲子互动。游戏类型涵盖益智、竞技、合作等，适合各个年龄段玩家。无论是朋友聚会还是家庭时光，都能带来欢乐体验。",
+          "description": "双人游戏亲子73款合集包含73款精心挑选的休闲多人游戏，适合家庭娱乐和亲子互动。游戏类型涵盖益智、竞技、合作等，适合各个年龄段玩家。",
           "additionalImages": [
-            "images/placeholder6.webp",
-            "images/placeholder7.webp"
+            "images/placeholder3.webp",
+            "images/placeholder4.webp"
           ]
         }
-
       ],
-     "必玩3A大作": [
+      "必玩3A大作": [
     {"code":"X29","name":"消逝的光芒：困兽 [预购奖励+全DLC]","size":62.3,"image":"images/X29.webp"},
     { "code": "W19", "name": "黑神话悟空豪华版", "size": 134, "image": "images/W19.webp" },
     {"code":"J29","name":"寂静岭f","size":46.8,"image":"images/J29.webp"},
@@ -2146,8 +1838,52 @@
   ],
     };
 
-    // 数据版本号，用于缓存管理
-    const dataVersion = '1.0.0';
+    // 版本控制
+    const dataVersion = '1.0.2';
+
+    // 加载外部 games.json
+    let gameData = defaultGameData;
+    async function loadGameData() {
+      try {
+        const response = await fetch(`/games.json?v=${dataVersion}`);
+        if (!response.ok) throw new Error('Failed to fetch games.json');
+        const data = await response.json();
+        gameData = data;
+      } catch (err) {
+        console.error('加载 games.json 失败，使用默认数据:', err);
+        gameData = defaultGameData;
+      }
+      // 在数据加载后初始化页面
+      generateSidebar();
+      displayCategories();
+      updateTotal();
+    }
+
+    // 硬盘容量配置
+    const storageOptions = [
+      { label: "500G硬盘", actual: 460, recommendedMax: 450 },
+      { label: "1T硬盘", actual: 931, recommendedMax: 921 },
+      { label: "3T硬盘", actual: 2850, recommendedMax: 2830 },
+      { label: "2T硬盘", actual: 1830, recommendedMax: 1810 },
+      { label: "4T硬盘", actual: 3640, recommendedMax: 3620 }
+    ];
+
+    // 从localStorage加载数据
+    let selectedGames = { "0": 1 }; // 默认选中游戏前端
+    let totalSize = 10; // 默认包含游戏前端的10GB
+    let isOrderConfirmed = false;
+    try {
+      const savedGames = JSON.parse(localStorage.getItem('selectedGames'));
+      const savedSize = parseFloat(localStorage.getItem('totalSize'));
+      if (savedGames && !isNaN(savedSize)) {
+        selectedGames = { ...savedGames, "0": 1 }; // 确保游戏前端始终选中
+        totalSize = savedSize >= 10 ? savedSize : 10; // 确保总容量至少包含游戏前端
+      }
+    } catch (err) {
+      console.error('加载本地存储数据失败:', err);
+      localStorage.removeItem('selectedGames');
+      localStorage.removeItem('totalSize');
+    }
 
     // 禁用双指缩放和双击放大
     document.addEventListener('touchstart', function (event) {
@@ -2170,154 +1906,38 @@
       event.preventDefault();
     }, { passive: false });
 
-    // 硬盘容量配置
-    const storageOptions = [
-      { label: "500G硬盘", actual: 460, recommendedMax: 450 },
-      { label: "1T硬盘", actual: 931, recommendedMax: 921 },
-      { label: "3T硬盘", actual: 2850, recommendedMax: 2830 },
-      { label: "2T硬盘", actual: 1830, recommendedMax: 1810 },
-      { label: "4T硬盘", actual: 3640, recommendedMax: 3620 }
-    ];
-
-    // 从localStorage加载数据
-    let selectedGames = {};
-    let totalSize = 0;
-    let isOrderConfirmed = false;
-    try {
-      const savedGames = JSON.parse(localStorage.getItem('selectedGames'));
-      const savedSize = parseFloat(localStorage.getItem('totalSize'));
-      if (savedGames && !isNaN(savedSize)) {
-        selectedGames = savedGames;
-        totalSize = savedSize;
-      }
-    } catch (err) {
-      console.error('加载本地存储数据失败:', err);
-      localStorage.removeItem('selectedGames');
-      localStorage.removeItem('totalSize');
-    }
-
     // 初始化页面
     window.onload = function () {
       try {
-        if (isNaN(totalSize)) {
-          localStorage.clear();
-          selectedGames = {};
-          totalSize = 0;
+        // 注册 Service Worker
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/sw.js').then(reg => {
+            console.log('Service Worker 注册成功:', reg);
+          }).catch(err => {
+            console.error('Service Worker 注册失败:', err);
+          });
         }
-        // 加载主题
-        loadTheme();
-        // 加载缓存的游戏数据
-        loadGameData(() => {
-          generateSidebar();
-          displayCategories();
-          updateTotal();
-          initScrollSpy();
-          initLazyLoading();
-          const searchInput = document.getElementById('searchInput');
-          if (searchInput) {
-            searchInput.addEventListener('input', () => {
-              filterGames();
-              toggleClearButton();
-            });
+
+        // 加载游戏数据
+        loadGameData();
+
+        // 初始化搜索
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+          searchInput.addEventListener('input', () => {
+            filterGames();
             toggleClearButton();
-          }
-          // 初始化主题切换开关
-          const themeToggle = document.getElementById('themeToggle');
-          if (themeToggle) {
-            themeToggle.addEventListener('change', toggleTheme);
-          }
-        });
+          });
+          toggleClearButton();
+        }
+
+        // 初始化滚动监听
+        initScrollSpy();
       } catch (err) {
         console.error('页面初始化失败:', err);
         alert('页面加载失败，请刷新重试');
       }
     };
-
-    // 加载主题
-    function loadTheme() {
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', savedTheme);
-      updateThemeToggle(savedTheme);
-    }
-
-    // 切换主题
-    function toggleTheme() {
-      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      updateThemeToggle(newTheme);
-    }
-
-    // 更新主题切换开关状态
-    function updateThemeToggle(theme) {
-      const toggle = document.getElementById('themeToggle');
-      if (toggle) {
-        toggle.checked = theme === 'dark';
-      }
-    }
-
-    // 加载游戏数据（从缓存或默认数据）
-    function loadGameData(callback) {
-      try {
-        const cachedData = localStorage.getItem('gameData');
-        const cachedVersion = localStorage.getItem('gameDataVersion');
-        if (cachedData && cachedVersion === dataVersion) {
-          Object.assign(gameData, JSON.parse(cachedData));
-          callback();
-        } else {
-          localStorage.setItem('gameData', JSON.stringify(gameData));
-          localStorage.setItem('gameDataVersion', dataVersion);
-          callback();
-        }
-      } catch (err) {
-        console.error('加载游戏数据缓存失败:', err);
-        callback();
-      }
-    }
-
-    // 初始化图片懒加载
-    function initLazyLoading() {
-      const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-      };
-
-      const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const img = entry.target;
-            if (img.dataset.src) {
-              img.src = img.dataset.src;
-              img.removeAttribute('data-src');
-              observer.unobserve(img);
-            }
-          }
-        });
-      }, observerOptions);
-
-      // 观察游戏列表图片
-      document.querySelectorAll('.game-cover, .order-game-cover').forEach(img => {
-        if (img.src) {
-          img.dataset.src = img.src;
-          img.src = '';
-          observer.observe(img);
-        }
-      });
-
-      // 观察详情弹窗图片（动态生成后处理）
-      const modalObserver = new MutationObserver(() => {
-        document.querySelectorAll('.game-detail-image, .carousel-image').forEach(img => {
-          if (img.src && !img.dataset.src) {
-            img.dataset.src = img.src;
-            img.src = '';
-            observer.observe(img);
-          }
-        });
-      });
-      modalObserver.observe(document.getElementById('gameDetailModal'), { childList: true, subtree: true });
-    }
 
     // 生成侧边栏分类
     function generateSidebar() {
@@ -2392,20 +2012,23 @@
         title.textContent = category;
         categoryDiv.appendChild(title);
 
-        data[category].forEach(game => createGameItem(categoryDiv, game));
+        data[category].forEach(game => createGameItem(categoryDiv, game, category));
         container.appendChild(categoryDiv);
       }
     }
 
     // 创建单个游戏项
-    function createGameItem(container, game) {
+    function createGameItem(container, game, category) {
       const gameItem = document.createElement('div');
       gameItem.className = 'game-item';
-      gameItem.onclick = function(e) {
-        if (!e.target.closest('.quantity-control')) {
-          showGameDetail(game);
-        }
-      };
+      if (category === '游戏套餐' || game.code === '0') {
+        gameItem.classList.add('clickable');
+        gameItem.onclick = (e) => {
+          if (!e.target.closest('.quantity-control')) {
+            showGameDetail(game);
+          }
+        };
+      }
 
       const coverDiv = document.createElement('div');
       coverDiv.className = 'game-cover-container';
@@ -2413,8 +2036,9 @@
       if (game.image) {
         const img = document.createElement('img');
         img.className = 'game-cover';
-        img.dataset.src = game.image; // 使用 data-src 进行懒加载
+        img.src = game.image;
         img.alt = game.name;
+        img.loading = 'lazy';
         img.onerror = function () {
           const span = document.createElement('span');
           span.className = 'cover-error';
@@ -2441,9 +2065,9 @@
 
       const quantityControl = document.createElement('div');
       quantityControl.className = 'quantity-control';
-      const isCoreComponent = game.code === '0';
+      const isMandatory = game.code === '0';
       quantityControl.innerHTML = `
-        <button ${isCoreComponent || selectedGames[game.code] ? '' : 'disabled'} ${isCoreComponent ? 'disabled' : ''} onclick="decreaseQuantity('${game.code}', ${game.size})">-</button>
+        <button ${isMandatory || selectedGames[game.code] ? 'disabled' : ''} onclick="decreaseQuantity('${game.code}', ${game.size})">-</button>
         <span id="qty-${game.code}">${selectedGames[game.code] || 0}</span>
         <button ${selectedGames[game.code] ? 'disabled' : ''} onclick="increaseQuantity('${game.code}', ${game.size})">+</button>
       `;
@@ -2454,80 +2078,32 @@
 
     // 显示游戏详情弹窗
     function showGameDetail(game) {
-      const modal = document.getElementById('gameDetailModal');
-      const title = document.getElementById('gameDetailTitle');
-      const content = document.getElementById('gameDetailContent');
+      const modal = document.getElementById('detailModal');
+      const modalTitle = document.getElementById('detailModalTitle');
+      const modalContent = document.getElementById('detailModalContent');
 
-      if (modal && title && content) {
-        title.textContent = game.name;
-        let carouselHTML = '';
-        if (game.additionalImages && game.additionalImages.length > 0) {
-          carouselHTML = `
-            <div class="game-detail-carousel" id="carousel-${game.code}">
-              <button class="carousel-button prev" onclick="moveCarousel('${game.code}', -1)" disabled>&larr;</button>
-              <div class="carousel-container" id="carousel-container-${game.code}">
-                ${game.additionalImages.map(img => `
-                  <img data-src="${img}" alt="${game.name} 截图" class="carousel-image" onerror="this.outerHTML='<div class=&quot;carousel-error&quot;>截图加载失败</div>'">
-                `).join('')}
-              </div>
-              <button class="carousel-button next" onclick="moveCarousel('${game.code}', 1)"${game.additionalImages.length <= 1 ? ' disabled' : ''}>&rarr;</button>
-            </div>
-          `;
-        } else {
-          carouselHTML = `<div class="carousel-placeholder">暂无更多图片</div>`;
-        }
+      if (!modal || !modalTitle || !modalContent) return;
 
-        content.innerHTML = `
-          <div class="game-detail-image-container">
-            ${
-              game.image ?
-              `<img data-src="${game.image}" alt="${game.name}" class="game-detail-image" onerror="this.parentNode.innerHTML='<div class=&quot;game-detail-error&quot;>${game.name.substring(0, 2)}</div>'">` :
-              `<div class="game-detail-error">${game.name.substring(0, 2)}</div>`
-            }
-          </div>
-          <div class="game-detail-info">
-            <p><strong>大小:</strong> ${game.size} GB</p>
-            <p><strong>介绍:</strong> ${game.description || '暂无详细介绍'}</p>
-          </div>
-          ${carouselHTML}
-        `;
-        modal.classList.add('active');
+      modalTitle.textContent = game.name;
+      modalContent.innerHTML = `
+        <div class="detail-description">${game.description || '暂无描述'}</div>
+        <div class="detail-images">
+          ${game.additionalImages && game.additionalImages.length > 0 ? 
+            game.additionalImages.map(img => `
+              <img src="${img}" alt="${game.name} 额外图片" class="detail-image" loading="lazy" onerror="this.outerHTML='<div class=&quot;detail-image-error&quot;>${game.name.substring(0, 2)}</div>'">
+            `).join('') : 
+            '<p>暂无额外图片</p>'
+          }
+        </div>
+      `;
 
-        // 初始化轮播
-        if (game.additionalImages && game.additionalImages.length > 0) {
-          updateCarouselButtons(game.code, 0);
-        }
-      }
+      modal.classList.add('active');
     }
 
-    // 轮播图片切换
-    let currentIndexes = {};
-    function moveCarousel(code, direction) {
-      const container = document.getElementById(`carousel-container-${code}`);
-      const images = container.querySelectorAll('.carousel-image, .carousel-error');
-      if (!currentIndexes[code]) currentIndexes[code] = 0;
-
-      currentIndexes[code] = Math.max(0, Math.min(currentIndexes[code] + direction, images.length - 1));
-      container.style.transform = `translateX(-${currentIndexes[code] * 100}%)`;
-      updateCarouselButtons(code, currentIndexes[code]);
-    }
-
-    // 更新轮播按钮状态
-    function updateCarouselButtons(code, index) {
-      const prevButton = document.querySelector(`#carousel-${code} .prev`);
-      const nextButton = document.querySelector(`#carousel-${code} .next`);
-      const images = document.querySelectorAll(`#carousel-container-${code} .carousel-image, #carousel-container-${code} .carousel-error`);
-
-      prevButton.disabled = index === 0;
-      nextButton.disabled = index === images.length - 1;
-    }
-
-    // 关闭游戏详情弹窗
-    function closeGameDetailModal() {
-      const modal = document.getElementById('gameDetailModal');
+    // 关闭详情弹窗
+    function closeDetailModal() {
+      const modal = document.getElementById('detailModal');
       if (modal) modal.classList.remove('active');
-      // 重置轮播索引
-      currentIndexes = {};
     }
 
     // 增加数量
@@ -2535,7 +2111,7 @@
       if (!selectedGames[code]) {
         selectedGames[code] = 1;
         totalSize += size;
-        if (totalSize < 0) totalSize = 0;
+        if (totalSize < 10) totalSize = 10; // 确保包含游戏前端
         updateAllGameDisplays(code);
         saveToLocalStorage();
       }
@@ -2543,14 +2119,11 @@
 
     // 减少数量
     function decreaseQuantity(code, size) {
-      if (code === '0') {
-        // 禁止移除“游戏前端（必选）”
-        return;
-      }
+      if (code === '0') return; // 禁止取消游戏前端
       if (selectedGames[code]) {
         selectedGames[code] = 0;
         totalSize -= size;
-        if (totalSize < 0) totalSize = 0;
+        if (totalSize < 10) totalSize = 10; // 确保包含游戏前端
         updateAllGameDisplays(code);
         saveToLocalStorage();
       }
@@ -2561,7 +2134,7 @@
       document.querySelectorAll(`[id="qty-${code}"]`).forEach(qtyElement => {
         const buttons = qtyElement.parentElement.getElementsByTagName('button');
         qtyElement.textContent = selectedGames[code] || 0;
-        buttons[0].disabled = !selectedGames[code] || code === '0'; // 禁用“游戏前端”的减号按钮
+        buttons[0].disabled = code === '0' || !selectedGames[code];
         buttons[1].disabled = !!selectedGames[code];
       });
       updateTotal();
@@ -2587,22 +2160,6 @@
 
     // 生成订单
     function generateOrder() {
-      // 自动添加“游戏前端（必选）”
-      if (!selectedGames['0']) {
-        selectedGames['0'] = 1;
-        totalSize += 5; // 游戏前端大小为 5GB
-        updateAllGameDisplays('0');
-        saveToLocalStorage();
-        const notification = document.getElementById('copyNotification');
-        if (notification) {
-          notification.textContent = '已自动添加必选游戏前端';
-          notification.style.display = 'block';
-          setTimeout(() => {
-            notification.style.display = 'none';
-          }, 2500);
-        }
-      }
-
       const orderBody = document.getElementById('orderListContainer');
       if (!orderBody) throw new Error('Order list container not found');
       orderBody.innerHTML = '';
@@ -2629,7 +2186,7 @@
                 <div class="order-game-cover-container">
                   ${
                     game.image ?
-                    `<img data-src="${game.image}" alt="${game.name}" class="order-game-cover" onerror="handleOrderImageError(this)">` :
+                    `<img src="${game.image}" alt="${game.name}" class="order-game-cover" onerror="handleOrderImageError(this)" loading="lazy">` :
                     `<div class="order-cover-error">${game.name.substring(0, 2)}</div>`
                   }
                 </div>
@@ -2673,13 +2230,10 @@
 
     // 删除订单项
     function removeFromOrder(code, size) {
-      if (code === '0') {
-        // 禁止移除“游戏前端（必选）”
-        return;
-      }
+      if (code === '0') return; // 禁止删除游戏前端
       selectedGames[code] = 0;
       totalSize -= size;
-      if (totalSize < 0) totalSize = 0;
+      if (totalSize < 10) totalSize = 10; // 确保包含游戏前端
       saveToLocalStorage();
       generateOrder();
       updateTotal();
@@ -2708,6 +2262,7 @@
 
     // 确认订单 - 显示硬盘容量建议弹窗
     function confirmOrder() {
+      isOrderConfirmed = true;
       const selectedCodes = sortGameCodes(
         Object.keys(selectedGames).filter(code => selectedGames[code])
       );
@@ -2719,8 +2274,6 @@
         alert('您还没有选择任何游戏');
         return;
       }
-
-      isOrderConfirmed = true;
 
       let storageHTML = '';
       storageOptions.forEach(option => {
@@ -2742,15 +2295,12 @@
 
       const searchBox = document.getElementById('searchBox');
       if (searchBox) searchBox.style.display = 'none';
-      const modal = document.getElementById('storageModal');
-      setTimeout(() => {
-        modal.classList.add('active');
-      }, 0);
+      document.getElementById('storageModal').classList.add('active');
 
       copyTextToClipboard(selectedCodes, totalGB, selectedCount);
     }
 
-    // 关闭硬盘容量建议弹窗
+    // 关闭弹窗
     function closeStorageModal() {
       const modal = document.getElementById('storageModal');
       const copyError = document.getElementById('copyError');
@@ -2760,25 +2310,14 @@
       backToShop();
     }
 
-    // 使用 document.execCommand 复制文本
+    // 使用 Clipboard API 复制文本
     function copyTextToClipboard(selectedCodes, totalGB, selectedCount) {
-      const textToCopy = `${selectedCodes.join(',')}  总容量: ${totalGB} GB`;
+      const textToCopy = `已选游戏编号: ${selectedCodes.join(',')}  总容量: ${totalGB} GB`;
       const notification = document.getElementById('copyNotification');
       const copyError = document.getElementById('copyError');
-      const textarea = document.getElementById('modalCopyTextArea');
 
-      // 确保textarea选中
-      textarea.focus();
-      textarea.select();
-      try {
-        textarea.setSelectionRange(0, 99999); // 移动端兼容
-      } catch (e) {
-        console.warn('setSelectionRange failed:', e);
-      }
-
-      try {
-        const success = document.execCommand('copy');
-        if (success) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
           if (notification) {
             notification.textContent = `已复制 ${selectedCount} 个游戏编号和总容量`;
             notification.style.display = 'block';
@@ -2787,15 +2326,37 @@
             }, 2500);
           }
           if (copyError) copyError.style.display = 'none';
-        } else {
-          throw new Error('Copy command failed');
+        }).catch(err => {
+          console.error('Clipboard API 复制失败:', err);
+          fallbackCopy(textToCopy, selectedCount);
+        });
+      } else {
+        fallbackCopy(textToCopy, selectedCount);
+      }
+    }
+
+    // 回退到 document.execCommand 复制
+    function fallbackCopy(text, selectedCount) {
+      const textarea = document.getElementById('modalCopyTextArea');
+      const notification = document.getElementById('copyNotification');
+      const copyError = document.getElementById('copyError');
+
+      try {
+        textarea.select();
+        document.execCommand('copy');
+        if (notification) {
+          notification.textContent = `已复制 ${selectedCount} 个游戏编号和总容量`;
+          notification.style.display = 'block';
+          setTimeout(() => {
+            notification.style.display = 'none';
+          }, 2500);
         }
+        if (copyError) copyError.style.display = 'none';
       } catch (err) {
-        console.error('复制失败:', err);
+        console.error('回退复制失败:', err);
         if (copyError) {
           copyError.style.display = 'block';
         }
-        alert('自动复制失败！请手动长按或选中文本框内容并复制（Ctrl+C），然后发给客服。');
       }
     }
 
@@ -2806,54 +2367,64 @@
       );
       const selectedCount = selectedCodes.length;
       const totalGB = totalSize.toFixed(1);
+
       copyTextToClipboard(selectedCodes, totalGB, selectedCount);
     }
 
-    // 搜索功能（支持游戏名中的字母和数字，不包括编号）
+    // 搜索功能（仅汉字模糊搜索）
     function filterGames() {
-      const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+      const keyword = document.getElementById('searchInput').value;
       const filtered = {};
 
       if (!keyword) {
         displayCategories();
         toggleClearButton();
-        initLazyLoading();
         return;
       }
 
+      const chineseKeyword = keyword.match(/[\u4e00-\u9fa5]/g);
+      if (!chineseKeyword || chineseKeyword.length === 0) {
+        displayCategories();
+        toggleClearButton();
+        return;
+      }
+
+      const searchTerm = chineseKeyword.join('');
       for (const category in gameData) {
-        const filteredGames = gameData[category].filter(game => 
-          game.name.toLowerCase().includes(keyword)
+        filtered[category] = gameData[category].filter(game =>
+          game.name.includes(searchTerm) ||
+          game.code.includes(searchTerm)
         );
-        if (filteredGames.length > 0) {
-          filtered[category] = filteredGames;
+
+        if (filtered[category].length === 0) {
+          delete filtered[category];
         }
       }
 
       displayCategories(filtered);
       toggleClearButton();
-      initLazyLoading();
     }
 
-    // 显示/隐藏清空搜索按钮
+    // 控制清空按钮显示/隐藏
     function toggleClearButton() {
       const searchInput = document.getElementById('searchInput');
       const clearButton = document.querySelector('.clear-search');
       if (searchInput && clearButton) {
-        clearButton.style.display = searchInput.value.trim() ? 'block' : 'none';
+        clearButton.style.display = searchInput.value ? 'block' : 'none';
       }
     }
 
-    // 清空搜索
+    // 清空搜索输入
     function clearSearch() {
       const searchInput = document.getElementById('searchInput');
       if (searchInput) {
         searchInput.value = '';
-        filterGames();
+        toggleClearButton();
+        displayCategories();
       }
     }
 
-    // 返回商店页面
+    // 返回商店
     function backToShop() {
       document.getElementById('content').style.display = 'block';
       document.getElementById('sidebar').style.display = 'block';
@@ -2861,64 +2432,32 @@
       document.getElementById('orderPage').style.display = 'none';
       const searchBox = document.getElementById('searchBox');
       if (searchBox) searchBox.style.display = 'flex';
-      updateTotal();
-      initScrollSpy();
-      initLazyLoading();
     }
 
-    // 一键添加核心组件
-    function addCoreComponent() {
-      if (!selectedGames['0']) {
-        selectedGames['0'] = 1;
-        totalSize += 5; // 游戏前端大小为 5GB
-        updateAllGameDisplays('0');
-        updateOrderPreview();
-        saveToLocalStorage();
-        const notification = document.getElementById('copyNotification');
-        if (notification) {
-          notification.textContent = '已添加核心组件：游戏前端';
-          notification.style.display = 'block';
-          setTimeout(() => {
-            notification.style.display = 'none';
-          }, 2500);
-        }
+    // 点击弹窗外部关闭
+    document.getElementById('storageModal').addEventListener('click', function (e) {
+      if (e.target === this) {
+        closeStorageModal();
       }
-    }
-
-    // 页面加载时自动检查是否需要添加核心组件
-    function checkCoreComponent() {
-      if (!selectedGames['0'] && Object.keys(selectedGames).some(code => selectedGames[code] && code !== '0')) {
-        addCoreComponent();
-      }
-    }
-
-    // 初始化时检查核心组件
-    document.addEventListener('DOMContentLoaded', checkCoreComponent);
-
-    // 动态加载非关键 CSS（性能优化）
-    function loadNonCriticalCSS() {
-      const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = 'non-critical.css'; // 假设非关键 CSS 文件
-            document.head.appendChild(link);
-            observer.disconnect();
-          }
-        });
-      }, { rootMargin: '100px' });
-      observer.observe(document.getElementById('content'));
-    }
-
-    // 窗口大小调整时更新布局
-    window.addEventListener('resize', () => {
-      initScrollSpy();
-      updateOrderPreview();
     });
 
-    // 初始化非关键 CSS 加载
-    loadNonCriticalCSS();
+    document.getElementById('detailModal').addEventListener('click', function (e) {
+      if (e.target === this) {
+        closeDetailModal();
+      }
+    });
+
+    // 按ESC键关闭弹窗
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        if (document.getElementById('storageModal').classList.contains('active')) {
+          closeStorageModal();
+        }
+        if (document.getElementById('detailModal').classList.contains('active')) {
+          closeDetailModal();
+        }
+      }
+    });
   </script>
 </body>
 </html>
