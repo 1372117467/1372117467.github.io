@@ -139,6 +139,28 @@
             opacity: 0.7;
         }
         
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         @media (max-width: 480px) {
             .container {
                 padding: 15px;
@@ -156,7 +178,12 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div>正在检测环境...</div>
+    </div>
+    
+    <div class="container" id="mainContent" style="display: none;">
         <div class="logo">🎮</div>
         <h1>极客单机</h1>
         <div class="subtitle">精品游戏，畅快体验</div>
@@ -165,11 +192,11 @@
             
         </div>
         
-        <div class="tips">使用微信扫描二维码，立即体验极客单机</div>
+        <div class="tips" id="tips">使用微信扫描二维码，立即体验极客单机</div>
         
         <div class="btn-container">
             <button class="btn" id="openBtn">直接打开小程序</button>
-            <div class="status" id="status">检测到微信环境，即将自动跳转...</div>
+            <div class="status" id="status"></div>
         </div>
         
         <div class="countdown" id="countdown"></div>
@@ -186,44 +213,43 @@
             qrcode: 'https://i.ibb.co/qhmwTkr/geek-game-qrcode.png'  // 您的二维码图片URL
         };
         
-        // 初始化页面
+        // 页面加载后立即执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检测是否在微信内打开
+            if (isWeixin()) {
+                // 微信环境：立即跳转
+                document.getElementById('loading').innerHTML = `
+                    <div class="spinner"></div>
+                    <div>检测到微信环境，正在跳转小程序...</div>
+                `;
+                
+                // 延迟一小段时间后跳转，确保页面已加载
+                setTimeout(() => {
+                    openWeixinApp();
+                }, 500);
+            } else {
+                // 非微信环境：显示主内容
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'flex';
+                initPage();
+            }
+        });
+        
+        // 初始化页面（非微信环境）
         function initPage() {
             // 设置状态信息
-            document.getElementById('status').textContent = isWeixin() ? 
-                '检测到微信环境，即将自动跳转...' : 
-                '请在微信中打开此页面，或使用微信扫描二维码';
+            document.getElementById('status').textContent = '请在微信中打开此页面，或使用微信扫描二维码';
             
             // 设置打开按钮事件
             document.getElementById('openBtn').addEventListener('click', function() {
+                document.getElementById('status').textContent = '正在尝试跳转...';
                 openWeixinApp();
             });
-            
-            // 微信环境自动跳转
-            if (isWeixin()) {
-                startCountdown();
-            }
         }
         
         // 检测是否在微信内打开
         function isWeixin() {
             return /MicroMessenger/i.test(navigator.userAgent);
-        }
-        
-        // 开始倒计时
-        function startCountdown() {
-            let count = 3;
-            const countdownEl = document.getElementById('countdown');
-            countdownEl.textContent = `${count}秒后自动跳转...`;
-            
-            const timer = setInterval(() => {
-                count--;
-                if (count > 0) {
-                    countdownEl.textContent = `${count}秒后自动跳转...`;
-                } else {
-                    clearInterval(timer);
-                    openWeixinApp();
-                }
-            }, 1000);
         }
         
         // 打开微信小程序
@@ -236,13 +262,10 @@
             // 如果跳转失败，显示提示
             setTimeout(() => {
                 if (!document.hidden) {
-                    document.getElementById('status').textContent = '跳转失败，请点击上方按钮重试';
+                    document.getElementById('status').textContent = '跳转失败，请点击上方按钮重试或扫描二维码';
                 }
             }, 2000);
         }
-        
-        // 页面加载完成后初始化
-        window.onload = initPage;
     </script>
 </body>
 </html>
